@@ -49,6 +49,7 @@ lib/
 # eclipse specific git ignore
  *.pydevproject
 EyeDroid/.project
+EyeDroid/.cproject
 .metadata
 bin/**
 tmp/**
