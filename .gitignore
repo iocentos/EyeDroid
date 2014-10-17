@@ -48,7 +48,7 @@ lib/
 
 # eclipse specific git ignore
  *.pydevproject
-*.project
+EyeDroid/.project
 .metadata
 bin/**
 tmp/**
@@ -58,7 +58,7 @@ tmp/**/*
 *.swp
 *~.nib
 local.properties
-*.classpath
+EyeDroid/.classpath
 *.settings/
 *.loadpath
 
