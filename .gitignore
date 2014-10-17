@@ -62,6 +62,9 @@ EyeDroid/.classpath
 *.settings/
 *.loadpath
 
+*.a
+*.so
+
 # # External tool builders
  .externalToolBuilders/
 #
