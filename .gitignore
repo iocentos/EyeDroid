@@ -30,12 +30,6 @@ proguard/
 *.iml
 *.iws
 
-# External jars
-lib/
-
-
-
-
 ###############################
 #eclipse
 ###############################
@@ -46,7 +40,7 @@ lib/
 *.class
 
 # eclipse specific git ignore
- *.pydevproject
+*.pydevproject
 EyeDroid/.project
 EyeDroid/.cproject
 .metadata
@@ -61,12 +55,13 @@ local.properties
 EyeDroid/.classpath
 *.settings/
 *.loadpath
-
 *.a
 *.so
+obj/
+libs/armeabi/
 
 # # External tool builders
- .externalToolBuilders/
+.externalToolBuilders/
 #
 # # Locally stored "Eclipse launch configurations"
- *.launch
+*.launch
