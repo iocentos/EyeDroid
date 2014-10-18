@@ -50,11 +50,24 @@ public class MainActivity extends Activity implements
 	@Override
 	public void onNavigationDrawerItemSelected(int position) {
 		// update the main content by replacing fragments
+		
+		if( position == 1 ){
+			Fragment frag = new TestFragment();
+			
+		this.getFragmentManager()
+				.beginTransaction()
+				.replace(R.id.container,frag).commit();
+						
+		}else{
+			
 		FragmentManager fragmentManager = getFragmentManager();
 		fragmentManager
 				.beginTransaction()
 				.replace(R.id.container,
 						PlaceholderFragment.newInstance(position + 1)).commit();
+		}
+		
+		
 	}
 
 	public void onSectionAttached(int number) {
