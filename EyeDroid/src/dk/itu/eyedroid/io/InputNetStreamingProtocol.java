@@ -8,7 +8,6 @@ import dk.itu.spcl.jlpf.io.IOProtocolReader;
 
 public class InputNetStreamingProtocol implements IOProtocolReader{
 	
-	
 	public static final String INPUT_BITMAP = "initial_bitmap";
 	
 	private String mUrl;
@@ -23,7 +22,6 @@ public class InputNetStreamingProtocol implements IOProtocolReader{
 		try {
 			mInputStream.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -42,5 +40,4 @@ public class InputNetStreamingProtocol implements IOProtocolReader{
 		
 		return bundle;
 	}
-
 }
