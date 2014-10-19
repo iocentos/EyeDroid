@@ -43,6 +43,7 @@ proguard/
 *.pydevproject
 EyeDroid/.project
 EyeDroid/.cproject
+EyeDroid/project.properties
 .metadata
 bin/**
 tmp/**
