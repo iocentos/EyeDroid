@@ -18,6 +18,6 @@ public class ReadingThread extends IORunner {
 	
 	@Override
 	public void onRun() throws IOException {
-		
+		ioController.read();
 	}
 }

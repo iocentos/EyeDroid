@@ -73,8 +73,6 @@ CvCameraViewListener2 {
 					break;
 				}
 				}
-
-				mOpenCvCameraView.enableView();
 			}
 		};
 
@@ -133,7 +131,6 @@ CvCameraViewListener2 {
 		try {
 			endGate.await();
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		endGate = new CountDownLatch(1);

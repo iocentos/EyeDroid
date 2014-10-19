@@ -27,8 +27,11 @@ public class InputNetStreamingProtocol implements IOProtocolReader{
 	}
 
 	@Override
-	public void init() {
+	public void init() throws IOException{
 		mInputStream = MjpegInputStream.read(mUrl);
+		if( mInputStream == null ){
+			throw new IOException();
+		}
 	}
 
 	@Override
