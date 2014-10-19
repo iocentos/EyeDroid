@@ -12,9 +12,12 @@ public class ReadingThread extends IORunner {
 	}
 
 	@Override
+	public void onInit() throws IOException{
+		ioController.getInputReader().initReader();
+	}
+	
+	@Override
 	public void onRun() throws IOException {
-		while (!super.isStopped()) {
-			
-		}
+		
 	}
 }
