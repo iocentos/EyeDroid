@@ -27,7 +27,6 @@ public abstract class IORunner extends Thread{
 	@Override
 	public void run(){
 		try {
-
 			while(attempt_count <= MAX_TRIALS){
 				try{
 					onInit();
@@ -41,6 +40,7 @@ public abstract class IORunner extends Thread{
 			}
 
 			if(attempt_count <= MAX_TRIALS){
+				attempt_count = 1;
 				while (!isStopped()) {
 					onRun();
 				}

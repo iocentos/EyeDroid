@@ -21,9 +21,9 @@ public class WritingThread extends IORunner {
 		try {
 			ioController.write();
 		} catch (IOException e) {
-			ioController.getOutputWriter().cleanup();
-			ioController.getOutputWriter().initWriter();
 			e.printStackTrace();
+			ioController.getOutputWriter().cleanupWriter();
+			ioController.getOutputWriter().initWriter();
 		}
 	}
 }

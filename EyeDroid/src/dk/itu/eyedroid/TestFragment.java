@@ -36,8 +36,8 @@ public class TestFragment extends Fragment {
 		mImageView = (ImageView) mRootView.findViewById(R.id.mjpeg_view);
 
 		InputNetStreamingProtocol inProtocol = new InputNetStreamingProtocol(URL);
-//		OutputNetTCPProtocol outProtocol = new OutputNetTCPProtocol(6000);
-		TestWriter outProtocol = new TestWriter();
+		OutputNetTCPProtocol outProtocol = new OutputNetTCPProtocol(6000);
+//		TestWriter outProtocol = new TestWriter();
 		IORWDefaultImpl io_rw = new IORWDefaultImpl(inProtocol, outProtocol);
 
 		core = new ProcessingCore();
