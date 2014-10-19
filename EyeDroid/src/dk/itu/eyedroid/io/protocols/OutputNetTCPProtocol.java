@@ -1,4 +1,4 @@
-package dk.itu.eyedroid.io;
+package dk.itu.eyedroid.io.protocols;
 
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -27,7 +27,7 @@ public class OutputNetTCPProtocol implements IOProtocolWriter{
 	}
 
 	@Override
-	public void init() {
+	public void init() throws IOException{
 		try {
 			if(!isWaitingForConnection && !isConnectionSet.get()){
 				isWaitingForConnection = true;
@@ -41,7 +41,7 @@ public class OutputNetTCPProtocol implements IOProtocolWriter{
 		} catch (IOException e) {
 			isWaitingForConnection = false;
 			isConnectionSet.set(false);
-			e.printStackTrace();
+			throw e;
 		}
 	}
 

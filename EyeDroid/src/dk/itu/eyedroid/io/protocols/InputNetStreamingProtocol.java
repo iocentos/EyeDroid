@@ -1,4 +1,4 @@
-package dk.itu.eyedroid.io;
+package dk.itu.eyedroid.io.protocols;
 
 import java.io.IOException;
 

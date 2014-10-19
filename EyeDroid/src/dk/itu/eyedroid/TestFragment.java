@@ -2,15 +2,6 @@ package dk.itu.eyedroid;
 
 import java.io.IOException;
 
-import dk.itu.eyedroid.io.InputNetStreamingProtocol;
-import dk.itu.eyedroid.io.OutputNetTCPProtocol;
-import dk.itu.spcl.jlpf.core.Filter;
-import dk.itu.spcl.jlpf.core.ProcessingCore;
-import dk.itu.spcl.jlpf.io.IOController;
-import dk.itu.spcl.jlpf.io.IOProtocolWriter;
-import dk.itu.spcl.jlpf.io.IORWDefaultImpl;
-import dk.itu.spcl.jlpf.io.InputReader;
-import dk.itu.spcl.jlpf.io.OutputWriter;
 import android.app.Fragment;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -19,6 +10,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import dk.itu.eyedroid.io.AndroidIOController;
+import dk.itu.eyedroid.io.protocols.InputNetStreamingProtocol;
+import dk.itu.eyedroid.io.protocols.OutputNetTCPProtocol;
+import dk.itu.spcl.jlpf.core.Filter;
+import dk.itu.spcl.jlpf.core.ProcessingCore;
+import dk.itu.spcl.jlpf.io.IOController;
+import dk.itu.spcl.jlpf.io.IOProtocolWriter;
+import dk.itu.spcl.jlpf.io.IORWDefaultImpl;
 
 public class TestFragment extends Fragment {
 	
@@ -62,83 +61,6 @@ public class TestFragment extends Fragment {
 		super.onPause();
 		core.stop();
 		ioController.stop();
-	}
-
-	public class AndroidIOController extends IOController {
-
-		private ReadingThread readerThread;
-		private WritingThread writerThread;
-
-		public AndroidIOController(ProcessingCore core, InputReader reader, OutputWriter writer) {
-			super(core, reader, writer);
-		}
-
-		@Override
-		public void init() {
-			readerThread = new ReadingThread();
-			writerThread = new WritingThread();
-		}
-
-		@Override
-		protected void onExecute() {
-			readerThread.start();
-			writerThread.start();
-		}
-
-		@Override
-		protected void onStop() {
-			readerThread.stopThread();
-			writerThread.stopThread();
-		}
-
-		public class ReadingThread extends Thread {
-
-			private volatile boolean isStopped = false;
-
-			@Override
-			public void run() {
-				((IORWDefaultImpl) InputReader).initReader();
-				while (!isStopped) {
-					try {
-						Log.i("---------------","reader thread is fucking running");
-						AndroidIOController.this.read();
-					} catch (IOException e) {
-						((IORWDefaultImpl) InputReader).cleanup();
-						e.printStackTrace();
-						break;
-					}
-				}
-			}
-
-			public void stopThread() {
-				isStopped = true;
-			}
-		}
-
-		public class WritingThread extends Thread {
-
-			private volatile boolean isStopped = false;
-
-			public void stopThread() {
-				isStopped = true;
-			}
-
-			@Override
-			public void run() {
-				((IORWDefaultImpl) OutputWriter).initWriter();
-				while (!isStopped) {
-					try {
-						Log.i("---------------","writer thread is fucking running");
-						AndroidIOController.this.write();
-					} catch (IOException e) {
-						((IORWDefaultImpl) OutputWriter).cleanup();
-						((IORWDefaultImpl) OutputWriter).initWriter();
-						e.printStackTrace();
-						break;
-					}
-				}
-			}
-		}
 	}
 
 	public class TestWriter implements IOProtocolWriter {

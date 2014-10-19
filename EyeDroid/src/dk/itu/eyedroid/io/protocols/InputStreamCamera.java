@@ -1,4 +1,4 @@
-package dk.itu.eyedroid.io;
+package dk.itu.eyedroid.io.protocols;
 
 import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
@@ -7,24 +7,19 @@ import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.CameraBridgeViewBase;
 import org.opencv.android.CameraBridgeViewBase.CvCameraViewFrame;
 import org.opencv.android.CameraBridgeViewBase.CvCameraViewListener2;
-import org.opencv.android.JavaCameraView;
 import org.opencv.android.LoaderCallbackInterface;
-import org.opencv.android.NativeCameraView;
 import org.opencv.android.OpenCVLoader;
 import org.opencv.android.Utils;
 import org.opencv.core.Mat;
 
-import dk.itu.eyedroid.R;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.Camera;
 import android.util.Log;
-import dk.itu.eyedroid.MainActivity;
 import dk.itu.spcl.jlpf.common.Bundle;
 import dk.itu.spcl.jlpf.io.IOProtocolReader;
 
 public class InputStreamCamera implements IOProtocolReader,
-		CvCameraViewListener2 {
+CvCameraViewListener2 {
 
 	private static final String TAG = "InputStreamCamera";
 
