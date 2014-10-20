@@ -1,6 +1,8 @@
 EyeDroid: Gaze tracking component for Android
 ========
 
+![EyeDroid: Gaze tracking component for Android - logo](https://raw.githubusercontent.com/centosGit/EyeDroid/develop/Pictures/EyeDroid_logo.png =300x300)
+
 Background
 
 Gaze-based interaction techniques are among the most interesting touchless interaction techniques for mobile and wearable systems. 
@@ -15,3 +17,5 @@ and calculates the gaze point in a 2D surface. The gaze information can be sent 
 through bluetooth or WIFI network.
 
 Technology: Android, OpenCV
+
+[IT University of Copenhagen](www.itu.dk/en)
