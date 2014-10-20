@@ -9,25 +9,38 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import dk.itu.spcl.jlpf.common.Bundle;
 import dk.itu.spcl.jlpf.io.IOProtocolWriter;
 
+/**
+ * TCP/IP output protocol implementation. Used to send processed bundle results to a connected client.
+ * Sends X and Y gaze position coordinates as result.
+ */
+
 public class OutputNetTCPProtocol implements IOProtocolWriter{
 
-	public final String X_COORDINATE = "x";
-	public final String Y_COORDINATE = "y";
+	public final String X_COORDINATE = "x";	//Gaze position X coordinate
+	public final String Y_COORDINATE = "y"; //Gaze position Y coordinate
 
-	private final int mPort;
-	private ServerSocket serverSocket;
-	private Socket mSocket;
-	private PrintWriter mOutput;
-	private AtomicBoolean isConnectionSet;
-	private boolean isWaitingForConnection;
-	private boolean isSocketServerClosed;
+	private final int mPort;				//Server port
+	private ServerSocket serverSocket;		//Server socket for new incomming connections
+	private Socket mSocket;					//Client socket
+	private PrintWriter mOutput;			//Spcket output stream
+	private AtomicBoolean isConnectionSet;	//Client connection status
+	private boolean isWaitingForConnection;	//Server waiting for client status
+	private boolean isSocketServerClosed;	//Server socket was intentionally closed.
 
+	/**
+	 * Deafult constructor
+	 * @param port Server listener port
+	 */
 	public OutputNetTCPProtocol(int port) {
 		mPort = port;
 		isConnectionSet = new AtomicBoolean();
 		isConnectionSet.set(false);
 	}
 
+	/**
+	 * Initialize server and wait for incoming connections. When a client connects, close server socket.
+	 * If non-intentional error ocurrs, throw it to a higher level. 
+	 */
 	@Override
 	public void init() throws IOException{
 		try {
@@ -51,6 +64,9 @@ public class OutputNetTCPProtocol implements IOProtocolWriter{
 		}
 	}
 
+	/**
+	 * Send result to client. In case of error throw an exception in order to restart the protocol.
+	 */
 	@Override
 	public void write(Bundle bundle) throws IOException{
 		if(bundle != null && isConnectionSet.get()){
@@ -69,6 +85,9 @@ public class OutputNetTCPProtocol implements IOProtocolWriter{
 		}
 	}
 
+	/**
+	 * Close server and connected client socket in case they are open.
+	 */
 	@Override
 	public void cleanup() {
 		isConnectionSet.set(false);
@@ -91,6 +110,12 @@ public class OutputNetTCPProtocol implements IOProtocolWriter{
 		}
 	}
 
+	/**
+	 * Generate JSON output containing the gaze position coordinates. I.e. {"x":"1.2","y":"4.5"}
+	 * @param x X coordinate
+	 * @param y Y coordinate
+	 * @return JSON string
+	 */
 	private String generateOutput (double x, double y){
 		return "{\"x\":\"" + x + "\",\"y\":\"" + y + "\"}";
 	}
