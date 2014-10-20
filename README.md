@@ -1,7 +1,8 @@
 EyeDroid: Gaze tracking component for Android
 ========
 
-![EyeDroid: Gaze tracking component for Android - logo](https://raw.githubusercontent.com/centosGit/EyeDroid/develop/Pictures/EyeDroid_logo.png =300x300)
+<div style="text-align:center"><img src="https://raw.githubusercontent.com/centosGit/EyeDroid/develop/Pictures/EyeDroid_logo.png*" height="300" width="300"/>
+</div>
 
 Background
 
