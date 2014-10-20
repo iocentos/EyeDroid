@@ -10,7 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import dk.itu.eyedroid.io.AndroidIOController;
+import dk.itu.eyedroid.io.IOAndroidController;
 import dk.itu.eyedroid.io.protocols.InputNetStreamingProtocol;
 import dk.itu.eyedroid.io.protocols.OutputNetTCPProtocol;
 import dk.itu.spcl.jlpf.core.Filter;
@@ -44,7 +44,7 @@ public class TestFragment extends Fragment {
 		core.addFilter(new TestFilter());
 		core.addFilter(new TestFilter());
 
-		ioController = new AndroidIOController(core, io_rw, io_rw);
+		ioController = new IOAndroidController(core, io_rw, io_rw);
 
 		return mRootView;
 	}

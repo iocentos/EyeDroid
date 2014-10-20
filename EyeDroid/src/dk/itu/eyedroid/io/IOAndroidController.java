@@ -13,7 +13,7 @@ import dk.itu.spcl.jlpf.io.OutputWriter;
  * Write: pop a bundle from the processing core and write it to the output protocol.
  */
 
-public class AndroidIOController extends IOController {
+public class IOAndroidController extends IOController {
 
 	private ReadingThread readerThread;	//Reading thread
 	private WritingThread writerThread; //Writing thread
@@ -24,7 +24,7 @@ public class AndroidIOController extends IOController {
 	 * @param reader Input reader
 	 * @param writer Output writer.
 	 */
-	public AndroidIOController(ProcessingCore core, InputReader reader, OutputWriter writer) {
+	public IOAndroidController(ProcessingCore core, InputReader reader, OutputWriter writer) {
 		super(core, reader, writer);
 	}
 	
