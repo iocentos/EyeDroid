@@ -94,16 +94,16 @@ public class InputStreamUSBCamera implements IOProtocolReader {
 
 	@Override
 	public Bundle read() throws IOException {
-		// obtaining a camera image (pixel data are stored in an array in JNI).
-//		if (cameraExists) {
-//			processCamera();
-//			// camera image to bmp
-//			pixeltobmp(bmp);
-//
-//			Bundle bundle = new Bundle();
-//			bundle.put(InputNetStreamingProtocol.INPUT_BITMAP, bmp);
-//			return bundle;
-//		}
+//		 obtaining a camera image (pixel data are stored in an array in JNI).
+		if (cameraExists) {
+			processCamera();
+			// camera image to bmp
+			pixeltobmp(bmp);
+
+			Bundle bundle = new Bundle();
+			bundle.put(InputNetStreamingProtocol.INPUT_BITMAP, bmp);
+			return bundle;
+		}
 		
 		Bundle b = new Bundle();
 		b.put(InputNetStreamingProtocol.INPUT_BITMAP, BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher));

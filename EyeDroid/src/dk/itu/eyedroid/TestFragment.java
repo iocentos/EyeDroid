@@ -42,11 +42,11 @@ public class TestFragment extends Fragment {
 		
 		CameraBridgeViewBase camera = (CameraBridgeViewBase) mRootView.findViewById(R.id.opencv_camera_view);
 
-		InputNetStreamingProtocol inProtocol = new InputNetStreamingProtocol(URL);
+//		InputNetStreamingProtocol inProtocol = new InputNetStreamingProtocol(URL);
 //		InputStreamCamera inProtocol = new InputStreamCamera(getActivity(), 
 //				camera	, CameraInfo.CAMERA_FACING_BACK);
 		
-//		InputStreamUSBCamera inProtocol = new InputStreamUSBCamera(getActivity(), 3);
+		InputStreamUSBCamera inProtocol = new InputStreamUSBCamera(getActivity(), 3);
 //		OutputNetTCPProtocol outProtocol = new OutputNetTCPProtocol(6000);
 		TestWriter outProtocol = new TestWriter();
 		IORWDefaultImpl io_rw = new IORWDefaultImpl(inProtocol, outProtocol);

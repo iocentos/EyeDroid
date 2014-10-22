@@ -78,8 +78,8 @@ int closedevice(void);
 
 void yuyv422toABGRY(unsigned char *src);
 
-jint Java_com_camera_simplewebcam_CameraPreview_prepareCamera( JNIEnv* env,jobject thiz, jint videoid);
-jint Java_com_camera_simplewebcam_CameraPreview_prepareCameraWithBase( JNIEnv* env,jobject thiz, jint videoid, jint videobase);
-void Java_com_camera_simplewebcam_CameraPreview_processCamera( JNIEnv* env,jobject thiz);
-void Java_com_camera_simplewebcam_CameraPreview_stopCamera(JNIEnv* env,jobject thiz);
-void Java_com_camera_simplewebcam_CameraPreview_pixeltobmp( JNIEnv* env,jobject thiz,jobject bitmap);                                                  
+jint Java_dk_itu_eyedroid_io_protocols_InputStreamUSBCamera_prepareCamera( JNIEnv* env,jobject thiz, jint videoid);
+jint Java_dk_itu_eyedroid_io_protocols_InputStreamUSBCamera_prepareCameraWithBase( JNIEnv* env,jobject thiz, jint videoid, jint videobase);
+void Java_dk_itu_eyedroid_io_protocols_InputStreamUSBCamera_processCamera( JNIEnv* env,jobject thiz);
+void Java_dk_itu_eyedroid_io_protocols_InputStreamUSBCamera_stopCamera(JNIEnv* env,jobject thiz);
+void Java_dk_itu_eyedroid_io_protocols_InputStreamUSBCamera_pixeltobmp( JNIEnv* env,jobject thiz,jobject bitmap);
