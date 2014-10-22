@@ -2,8 +2,11 @@ package dk.itu.eyedroid;
 
 import java.io.IOException;
 
+import org.opencv.android.CameraBridgeViewBase;
+
 import android.app.Fragment;
 import android.graphics.Bitmap;
+import android.hardware.Camera.CameraInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,6 +15,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import dk.itu.eyedroid.io.IOAndroidController;
 import dk.itu.eyedroid.io.protocols.InputNetStreamingProtocol;
+import dk.itu.eyedroid.io.protocols.InputStreamCamera;
+import dk.itu.eyedroid.io.protocols.InputStreamUSBCamera;
 import dk.itu.eyedroid.io.protocols.OutputNetTCPProtocol;
 import dk.itu.spcl.jlpf.core.Filter;
 import dk.itu.spcl.jlpf.core.ProcessingCore;
@@ -34,10 +39,16 @@ public class TestFragment extends Fragment {
 
 		mRootView = inflater.inflate(R.layout.streaming_layout, container,false);
 		mImageView = (ImageView) mRootView.findViewById(R.id.mjpeg_view);
+		
+		CameraBridgeViewBase camera = (CameraBridgeViewBase) mRootView.findViewById(R.id.opencv_camera_view);
 
 		InputNetStreamingProtocol inProtocol = new InputNetStreamingProtocol(URL);
-		OutputNetTCPProtocol outProtocol = new OutputNetTCPProtocol(6000);
-//		TestWriter outProtocol = new TestWriter();
+//		InputStreamCamera inProtocol = new InputStreamCamera(getActivity(), 
+//				camera	, CameraInfo.CAMERA_FACING_BACK);
+		
+//		InputStreamUSBCamera inProtocol = new InputStreamUSBCamera(getActivity(), 3);
+//		OutputNetTCPProtocol outProtocol = new OutputNetTCPProtocol(6000);
+		TestWriter outProtocol = new TestWriter();
 		IORWDefaultImpl io_rw = new IORWDefaultImpl(inProtocol, outProtocol);
 
 		core = new ProcessingCore();

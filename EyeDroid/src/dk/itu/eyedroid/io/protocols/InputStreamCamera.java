@@ -19,7 +19,7 @@ import dk.itu.spcl.jlpf.common.Bundle;
 import dk.itu.spcl.jlpf.io.IOProtocolReader;
 
 public class InputStreamCamera implements IOProtocolReader,
-CvCameraViewListener2 {
+		CvCameraViewListener2 {
 
 	private static final String TAG = "InputStreamCamera";
 
@@ -59,25 +59,7 @@ CvCameraViewListener2 {
 
 		mOpenCvCameraView.setCvCameraViewListener(this);
 
-		BaseLoaderCallback mLoaderCallbacks = new BaseLoaderCallback(mContext) {
-
-			@Override
-			public void onManagerConnected(int status) {
-				switch (status) {
-				case LoaderCallbackInterface.SUCCESS: {
-					mOpenCvCameraView.enableView();
-					break;
-				}
-				default: {
-					super.onManagerConnected(status);
-					break;
-				}
-				}
-			}
-		};
-
-		OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_2_4_9, mContext,
-				mLoaderCallbacks);
+		mOpenCvCameraView.enableView();
 	}
 
 	@Override

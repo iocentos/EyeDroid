@@ -1,5 +1,9 @@
 package dk.itu.eyedroid;
 
+import org.opencv.android.BaseLoaderCallback;
+import org.opencv.android.LoaderCallbackInterface;
+import org.opencv.android.OpenCVLoader;
+
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
@@ -11,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 public class MainActivity extends Activity implements
 		NavigationDrawerFragment.NavigationDrawerCallbacks {
@@ -27,6 +32,12 @@ public class MainActivity extends Activity implements
 	 */
 	private CharSequence mTitle;
 
+	BaseLoaderCallback mLoaderCallbacks;
+	
+	static {
+		System.loadLibrary("EyeDroid");
+	}
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -39,29 +50,70 @@ public class MainActivity extends Activity implements
 		// Set up the drawer.
 		mNavigationDrawerFragment.setUp(R.id.navigation_drawer,
 				(DrawerLayout) findViewById(R.id.drawer_layout));
+		
+		
+		mLoaderCallbacks = new BaseLoaderCallback(this) {
+
+		@Override
+		public void onManagerConnected(int status) {
+			switch (status) {
+			case LoaderCallbackInterface.SUCCESS: {
+				MainActivity.this.runOnUiThread(new Runnable() {
+					@Override
+					public void run() {
+						Toast.makeText(MainActivity.this, "OpenCV library is loaded", Toast.LENGTH_SHORT).show();
+					}
+				});
+				break;
+			}
+			
+			case LoaderCallbackInterface.INIT_FAILED: {
+				MainActivity.this.runOnUiThread(new Runnable() {
+					@Override
+					public void run() {
+						Toast.makeText(MainActivity.this, "Could not load OpenCV", Toast.LENGTH_SHORT).show();
+					}
+				});
+				break;
+			}
+			
+			
+			default: {
+				super.onManagerConnected(status);
+				break;
+			}
+			}
+		}
+	};
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_2_4_9, this,
+				mLoaderCallbacks);
 	}
 
 	@Override
 	public void onNavigationDrawerItemSelected(int position) {
 		// update the main content by replacing fragments
-		
-		if( position == 1 ){
+
+		if (position == 1) {
 			Fragment frag = new TestFragment();
-			
-		this.getFragmentManager()
-				.beginTransaction()
-				.replace(R.id.container,frag).commit();
-						
-		}else{
-			
-		FragmentManager fragmentManager = getFragmentManager();
-		fragmentManager
-				.beginTransaction()
-				.replace(R.id.container,
-						PlaceholderFragment.newInstance(position + 1)).commit();
+
+			this.getFragmentManager().beginTransaction()
+					.replace(R.id.container, frag).commit();
+
+		} else {
+
+			FragmentManager fragmentManager = getFragmentManager();
+			fragmentManager
+					.beginTransaction()
+					.replace(R.id.container,
+							PlaceholderFragment.newInstance(position + 1))
+					.commit();
 		}
-		
-		
+
 	}
 
 	public void onSectionAttached(int number) {
