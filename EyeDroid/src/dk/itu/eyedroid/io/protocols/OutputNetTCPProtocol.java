@@ -1,9 +1,10 @@
 package dk.itu.eyedroid.io.protocols;
 
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.ByteBuffer;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import dk.itu.spcl.jlpf.common.Bundle;
@@ -16,13 +17,16 @@ import dk.itu.spcl.jlpf.io.IOProtocolWriter;
 
 public class OutputNetTCPProtocol implements IOProtocolWriter{
 
-	public final String X_COORDINATE = "x";	//Gaze position X coordinate
-	public final String Y_COORDINATE = "y"; //Gaze position Y coordinate
+	public final int INDICATOR = 0;			//Message descriptor
+	public final int MSG_SIZE = 12;			//byteArray[12]
+	
+	public final String X_COORDINATE = "x";	//Gaze position X coordinate bundle identifier
+	public final String Y_COORDINATE = "y"; //Gaze position Y coordinate bundle identifier
 
 	private final int mPort;				//Server port
 	private ServerSocket serverSocket;		//Server socket for new incomming connections
 	private Socket mSocket;					//Client socket
-	private PrintWriter mOutput;			//Spcket output stream
+	private OutputStream mOutput;			//Spcket output stream
 	private AtomicBoolean isConnectionSet;	//Client connection status
 	private boolean isWaitingForConnection;	//Server waiting for client status
 	private boolean isSocketServerClosed;	//Server socket was intentionally closed.
@@ -48,7 +52,7 @@ public class OutputNetTCPProtocol implements IOProtocolWriter{
 				isWaitingForConnection = true;
 				serverSocket = new ServerSocket(mPort);
 				mSocket = serverSocket.accept();		
-				mOutput = new PrintWriter(mSocket.getOutputStream(), true);			
+				mOutput = mSocket.getOutputStream();			
 				serverSocket.close();
 				isWaitingForConnection = false;
 				isConnectionSet.set(true);
@@ -68,19 +72,15 @@ public class OutputNetTCPProtocol implements IOProtocolWriter{
 	 * Send result to client. In case of error throw an exception in order to restart the protocol.
 	 */
 	@Override
-	public void write(Bundle bundle) throws IOException{
+	public void write(Bundle bundle) throws IOException{		
 		if(bundle != null && isConnectionSet.get()){
-
 			//TODO Uncomment and remove output test.
-			//String output = generateOutput(
-			//		(double)bundle.get(X_COORDINATE),(double)bundle.get(Y_COORDINATE));
-			String output = generateOutput(1,2);
+			//byte[] output = generateOutput((int)bundle.get(X_COORDINATE),(int)bundle.get(Y_COORDINATE));
+			byte[] output = generateOutput(1,2);
 
 			synchronized(mSocket){			
-				mOutput.println(output);
-				if(mOutput.checkError()){
-					throw new IOException("Unable to write into output stream");
-				}
+				mOutput.write(output);
+				mOutput.flush();
 			}
 		}
 	}
@@ -111,12 +111,16 @@ public class OutputNetTCPProtocol implements IOProtocolWriter{
 	}
 
 	/**
-	 * Generate JSON output containing the gaze position coordinates. I.e. {"x":"1.2","y":"4.5"}
+	 * Create byte[] output containing the gaze position coordinates.
 	 * @param x X coordinate
 	 * @param y Y coordinate
-	 * @return JSON string
+	 * @return Byte array.
 	 */
-	private String generateOutput (double x, double y){
-		return "{\"x\":\"" + x + "\",\"y\":\"" + y + "\"}";
+	private byte[] generateOutput (int x, int y){		
+		ByteBuffer b =  ByteBuffer.allocate(MSG_SIZE);
+		b.putInt(0,this.INDICATOR);
+		b.putInt(4,x);
+		b.putInt(8,y);
+		return b.array();
 	}
 }
