@@ -35,7 +35,7 @@ public class MainActivity extends Activity implements
 	BaseLoaderCallback mLoaderCallbacks;
 	
 	static {
-//		System.loadLibrary("opencv_java");
+		System.loadLibrary("opencv_java");
 		System.loadLibrary("EyeDroid");
 	}
 
