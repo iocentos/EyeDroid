@@ -29,7 +29,7 @@ public class InputStreamCamera implements IOProtocolReader,
 	private int mCameraId;
 
 	private Mat rgba;
-	private Mat grey;
+	private Mat gray;
 
 	private CountDownLatch startGate;
 	private CountDownLatch endGate;
@@ -60,6 +60,7 @@ public class InputStreamCamera implements IOProtocolReader,
 		mOpenCvCameraView.setCvCameraViewListener(this);
 
 		mOpenCvCameraView.enableView();
+		
 	}
 
 	@Override
@@ -70,6 +71,8 @@ public class InputStreamCamera implements IOProtocolReader,
 			startGate.await();
 			Log.i(TAG, "reader entered read method");
 			bundle.put(InputNetStreamingProtocol.INPUT_BITMAP, mBitmap);
+			bundle.put(InputNetStreamingProtocol.INPUT_RGBA_MAT, rgba);
+			bundle.put(InputNetStreamingProtocol.INPUT_GRAY_MAT, gray);
 			startGate = new CountDownLatch(1);
 			endGate.countDown();
 		} catch (InterruptedException e) {
@@ -84,14 +87,14 @@ public class InputStreamCamera implements IOProtocolReader,
 	public void onCameraViewStarted(int width, int height) {
 		Log.i(TAG, "started");
 		rgba = new Mat();
-		grey = new Mat();
+		gray = new Mat();
 	}
 
 	@Override
 	public void onCameraViewStopped() {
 		Log.i(TAG, "stopped");
 		rgba.release();
-		grey.release();
+		gray.release();
 
 	}
 
@@ -100,6 +103,7 @@ public class InputStreamCamera implements IOProtocolReader,
 		Log.i(TAG, "got frame");
 
 		rgba = inputFrame.rgba();
+		gray = inputFrame.gray();
 
 		try {
 			mBitmap = Bitmap.createBitmap(rgba.cols(), rgba.rows(),

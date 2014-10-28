@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import dk.itu.eyedroid.filters.EyeDetectionFilter;
 import dk.itu.eyedroid.io.IOAndroidController;
 import dk.itu.eyedroid.io.protocols.InputNetStreamingProtocol;
 import dk.itu.eyedroid.io.protocols.InputStreamCamera;
@@ -52,8 +53,9 @@ public class TestFragment extends Fragment {
 		IORWDefaultImpl io_rw = new IORWDefaultImpl(inProtocol, outProtocol);
 
 		core = new ProcessingCore();
-		core.addFilter(new TestFilter());
-		core.addFilter(new TestFilter());
+		EyeDetectionFilter eyeDetectionFilter = new EyeDetectionFilter();
+		core.addFilter(eyeDetectionFilter);
+//		core.addFilter(new TestFilter());
 
 		ioController = new IOAndroidController(core, io_rw, io_rw);
 

@@ -2,6 +2,8 @@ package dk.itu.eyedroid.io.protocols;
 
 import java.io.IOException;
 
+import org.opencv.android.Utils;
+import org.opencv.core.Mat;
 import org.opencv.core.Rect;
 
 import dk.itu.eyedroid.R;
@@ -106,11 +108,14 @@ public class InputStreamUSBCamera implements IOProtocolReader {
 			processCamera();
 			// camera image to bmp
 			pixeltobmp(bmp);
+			
+			Mat mat = new Mat();
+			Utils.bitmapToMat(bmp, mat);
 
 			Bundle bundle = new Bundle();
 			Log.i(TAG, "Usb camera got new frame " + cameraId
 					+ "Could not open");
-			bundle.put(InputNetStreamingProtocol.INPUT_BITMAP, bmp);
+			bundle.put(InputNetStreamingProtocol.INPUT_RGBA_MAT, mat);
 			return bundle;
 		}
 

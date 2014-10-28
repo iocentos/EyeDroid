@@ -9,6 +9,8 @@ import dk.itu.spcl.jlpf.io.IOProtocolReader;
 public class InputNetStreamingProtocol implements IOProtocolReader{
 	
 	public static final String INPUT_BITMAP = "initial_bitmap";
+	public static final String INPUT_RGBA_MAT = "rgba";
+	public static final String INPUT_GRAY_MAT = "gray";
 	
 	private String mUrl;
 	private MjpegInputStream mInputStream;
