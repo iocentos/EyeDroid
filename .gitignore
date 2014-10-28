@@ -41,7 +41,6 @@ proguard/
 
 # eclipse specific git ignore
 *.pydevproject
-EyeDroid/.cproject
 EyeDroid/project.properties
 .metadata
 bin/**
