@@ -44,18 +44,24 @@ public class TestFragment extends Fragment {
 		CameraBridgeViewBase camera = (CameraBridgeViewBase) mRootView.findViewById(R.id.opencv_camera_view);
 
 //		InputNetStreamingProtocol inProtocol = new InputNetStreamingProtocol(URL);
-//		InputStreamCamera inProtocol = new InputStreamCamera(getActivity(), 
-//				camera	, CameraInfo.CAMERA_FACING_BACK);
+		InputStreamCamera inProtocol = new InputStreamCamera(getActivity(), 
+				camera	, CameraInfo.CAMERA_FACING_BACK);
 		
-		InputStreamUSBCamera inProtocol = new InputStreamUSBCamera(getActivity(), 3);
+//		InputStreamUSBCamera inProtocol = new InputStreamUSBCamera(getActivity(), 3);
 //		OutputNetTCPProtocol outProtocol = new OutputNetTCPProtocol(6000);
 		TestWriter outProtocol = new TestWriter();
 		IORWDefaultImpl io_rw = new IORWDefaultImpl(inProtocol, outProtocol);
 
-		core = new ProcessingCore();
+		core = new ProcessingCore(10);
 		EyeDetectionFilter eyeDetectionFilter = new EyeDetectionFilter();
+		eyeDetectionFilter.setFilterName("Eye detection");
 		core.addFilter(eyeDetectionFilter);
-//		core.addFilter(new TestFilter());
+		TestFilter filter1 = new TestFilter();
+		filter1.setFilterName("Filter 1");
+		TestFilter filter2 = new TestFilter();
+		filter2.setFilterName("Filter 2");
+		core.addFilter(filter1);
+		core.addFilter(filter2);
 
 		ioController = new IOAndroidController(core, io_rw, io_rw);
 
@@ -66,6 +72,7 @@ public class TestFragment extends Fragment {
 	public void onResume() {
 		super.onResume();
 		core.start(1);
+		core.enableStatistics(new StatistcsLogger(), 5000);
 		ioController.start();
 	}
 
