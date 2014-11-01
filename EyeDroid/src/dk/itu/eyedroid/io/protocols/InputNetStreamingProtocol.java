@@ -2,15 +2,17 @@ package dk.itu.eyedroid.io.protocols;
 
 import java.io.IOException;
 
+import org.opencv.android.Utils;
+import org.opencv.core.Mat;
+
 import android.graphics.Bitmap;
+import dk.itu.eyedroid.Constants;
 import dk.itu.spcl.jlpf.common.Bundle;
 import dk.itu.spcl.jlpf.io.IOProtocolReader;
 
 public class InputNetStreamingProtocol implements IOProtocolReader{
 	
-	public static final String INPUT_BITMAP = "initial_bitmap";
-	public static final String INPUT_RGBA_MAT = "rgba";
-	public static final String INPUT_GRAY_MAT = "gray";
+
 	
 	private String mUrl;
 	private MjpegInputStream mInputStream;
@@ -41,7 +43,11 @@ public class InputNetStreamingProtocol implements IOProtocolReader{
 		Bundle bundle = new Bundle();
 		Bitmap bitmap = mInputStream.readMjpegFrame();
 		
-		bundle.put(INPUT_BITMAP, bitmap);
+		Mat mat = new Mat();
+		Utils.bitmapToMat(bitmap, mat);
+		
+		bundle.put( Constants.SOURCE_MAT_RGB , mat);
+		bundle.put(Constants.SOURCE_BITMAP, bitmap);
 		
 		return bundle;
 	}

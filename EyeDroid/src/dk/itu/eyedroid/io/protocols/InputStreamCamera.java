@@ -15,6 +15,7 @@ import org.opencv.core.Mat;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.util.Log;
+import dk.itu.eyedroid.Constants;
 import dk.itu.spcl.jlpf.common.Bundle;
 import dk.itu.spcl.jlpf.io.IOProtocolReader;
 
@@ -70,9 +71,9 @@ public class InputStreamCamera implements IOProtocolReader,
 		try {
 			startGate.await();
 			Log.i(TAG, "reader entered read method");
-			bundle.put(InputNetStreamingProtocol.INPUT_BITMAP, mBitmap);
-			bundle.put(InputNetStreamingProtocol.INPUT_RGBA_MAT, rgba);
-			bundle.put(InputNetStreamingProtocol.INPUT_GRAY_MAT, gray);
+			bundle.put(Constants.SOURCE_BITMAP, mBitmap);
+			bundle.put(Constants.SOURCE_MAT_RGB, rgba);
+			bundle.put(Constants.SOURCE_MAT_GRAY, gray);
 			startGate = new CountDownLatch(1);
 			endGate.countDown();
 		} catch (InterruptedException e) {

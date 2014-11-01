@@ -4,6 +4,7 @@ import org.opencv.android.Utils;
 import org.opencv.core.Mat;
 
 import android.graphics.Bitmap;
+import dk.itu.eyedroid.Constants;
 import dk.itu.eyedroid.io.protocols.InputNetStreamingProtocol;
 import dk.itu.spcl.jlpf.common.Bundle;
 import dk.itu.spcl.jlpf.core.Filter;
@@ -27,7 +28,7 @@ public class EyeDetectionFilter extends Filter{
 	@Override
 	protected Bundle execute(Bundle arg0) {
 		
-		Mat rgba = (Mat) arg0.get(InputNetStreamingProtocol.INPUT_RGBA_MAT);
+		Mat rgba = (Mat) arg0.get(Constants.SOURCE_MAT_RGB);
 		Mat gray = new Mat();
 		
 		process(rgba, gray);
@@ -36,7 +37,7 @@ public class EyeDetectionFilter extends Filter{
 		Utils.matToBitmap(rgba, bmp);
 		
 		Bundle bundle = new Bundle();
-		bundle.put(InputNetStreamingProtocol.INPUT_BITMAP, bmp);
+		bundle.put(Constants.SINK_BITMAP, bmp);
 		
 		return bundle;
 	}

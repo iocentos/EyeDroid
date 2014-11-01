@@ -6,6 +6,7 @@ import org.opencv.android.Utils;
 import org.opencv.core.Mat;
 import org.opencv.core.Rect;
 
+import dk.itu.eyedroid.Constants;
 import dk.itu.eyedroid.R;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -115,7 +116,8 @@ public class InputStreamUSBCamera implements IOProtocolReader {
 			Bundle bundle = new Bundle();
 			Log.i(TAG, "Usb camera got new frame " + cameraId
 					+ "Could not open");
-			bundle.put(InputNetStreamingProtocol.INPUT_RGBA_MAT, mat);
+			bundle.put(Constants.SOURCE_MAT_RGB, mat);
+			bundle.put(Constants.SOURCE_BITMAP, bmp);
 			return bundle;
 		}
 

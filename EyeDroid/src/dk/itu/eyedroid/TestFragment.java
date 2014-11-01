@@ -99,7 +99,7 @@ public class TestFragment extends Fragment {
 		public void write(dk.itu.spcl.jlpf.common.Bundle arg0) throws IOException {
 			Log.i("---------------", "Writer is active");
 
-			final Bitmap bitmap = (Bitmap) arg0.get(InputNetStreamingProtocol.INPUT_BITMAP);
+			final Bitmap bitmap = (Bitmap) arg0.get(Constants.SINK_BITMAP);
 			TestFragment.this.getActivity().runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
