@@ -14,8 +14,10 @@ import org.opencv.core.Mat;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 import dk.itu.eyedroid.Constants;
+import dk.itu.eyedroid.filters.RGB2GRAYFilter;
 import dk.itu.spcl.jlpf.common.Bundle;
 import dk.itu.spcl.jlpf.io.IOProtocolReader;
 
@@ -61,6 +63,7 @@ public class InputStreamCamera implements IOProtocolReader,
 		mOpenCvCameraView.setCvCameraViewListener(this);
 
 		mOpenCvCameraView.enableView();
+		
 		
 	}
 
@@ -109,6 +112,13 @@ public class InputStreamCamera implements IOProtocolReader,
 		try {
 			mBitmap = Bitmap.createBitmap(rgba.cols(), rgba.rows(),
 					Bitmap.Config.ARGB_8888);
+			
+			Bitmap temp = Bitmap.createScaledBitmap(mBitmap, 640, 480, false);
+			Log.i(RGB2GRAYFilter.TAG, "W :" + temp.getWidth() + " H : " + temp.getHeight());
+			
+			mBitmap = temp;
+			
+			
 			Utils.matToBitmap(rgba, mBitmap);
 		} catch (Exception ex) {
 			System.out.println(ex.getMessage());

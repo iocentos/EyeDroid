@@ -13,4 +13,8 @@ public class Constants {
 
 	public static final String PUPIL_COORDINATES_X = "pupil_coordinates_x";
 	public static final String PUPIL_COORDINATES_Y = "pupil_coordinates_y";
+	
+	
+	public static final String PUPIL_ROI_RECT = "pupil_roi_rect";
+	public static final String DETECTED_CIRCLES = "detected_circles";
 }

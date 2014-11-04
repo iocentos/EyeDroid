@@ -13,13 +13,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import dk.itu.eyedroid.filters.AfterErodeDilateFilter;
+import dk.itu.eyedroid.filters.BeforeErodeDilateFilter;
+import dk.itu.eyedroid.filters.BlobDetectionFilter;
+import dk.itu.eyedroid.filters.DetectAndDrawPupilFilter;
 import dk.itu.eyedroid.filters.EyeDetectionFilter;
+import dk.itu.eyedroid.filters.RGB2GRAYFilter;
+import dk.itu.eyedroid.filters.ThresholdFilter;
 import dk.itu.eyedroid.io.IOAndroidController;
 import dk.itu.eyedroid.io.protocols.InputNetStreamingProtocol;
 import dk.itu.eyedroid.io.protocols.InputStreamCamera;
 import dk.itu.eyedroid.io.protocols.InputStreamUSBCamera;
 import dk.itu.eyedroid.io.protocols.OutputNetTCPProtocol;
 import dk.itu.spcl.jlpf.core.Filter;
+import dk.itu.spcl.jlpf.core.FilterComposite;
 import dk.itu.spcl.jlpf.core.ProcessingCore;
 import dk.itu.spcl.jlpf.io.IOController;
 import dk.itu.spcl.jlpf.io.IOProtocolWriter;
@@ -44,35 +51,66 @@ public class TestFragment extends Fragment {
 		CameraBridgeViewBase camera = (CameraBridgeViewBase) mRootView.findViewById(R.id.opencv_camera_view);
 
 //		InputNetStreamingProtocol inProtocol = new InputNetStreamingProtocol(URL);
-		InputStreamCamera inProtocol = new InputStreamCamera(getActivity(), 
-				camera	, CameraInfo.CAMERA_FACING_BACK);
+//		InputStreamCamera inProtocol = new InputStreamCamera(getActivity(), 
+//				camera	, CameraInfo.CAMERA_FACING_BACK);
 		
-//		InputStreamUSBCamera inProtocol = new InputStreamUSBCamera(getActivity(), 3);
+		InputStreamUSBCamera inProtocol = new InputStreamUSBCamera(getActivity(), 3);
 //		OutputNetTCPProtocol outProtocol = new OutputNetTCPProtocol(6000);
 		TestWriter outProtocol = new TestWriter();
 		IORWDefaultImpl io_rw = new IORWDefaultImpl(inProtocol, outProtocol);
 
-		core = new ProcessingCore(10);
-		EyeDetectionFilter eyeDetectionFilter = new EyeDetectionFilter();
-		eyeDetectionFilter.setFilterName("Eye detection");
-		core.addFilter(eyeDetectionFilter);
-		TestFilter filter1 = new TestFilter();
-		filter1.setFilterName("Filter 1");
-		TestFilter filter2 = new TestFilter();
-		filter2.setFilterName("Filter 2");
-		core.addFilter(filter1);
-		core.addFilter(filter2);
+		setUp();
 
 		ioController = new IOAndroidController(core, io_rw, io_rw);
 
 		return mRootView;
 	}
+	
+	
+	public void setUp(){
+		core = new ProcessingCore(10);
+		RGB2GRAYFilter rgb2gray = new RGB2GRAYFilter();
+		rgb2gray.setFilterName("RGB2Gray");
+		FilterComposite compo1 = new FilterComposite();
+		FilterComposite compo2 = new FilterComposite();
+		
+		BeforeErodeDilateFilter beforeErode = new BeforeErodeDilateFilter();
+		beforeErode.setFilterName("Before dilation");
+		
+		ThresholdFilter thresholdFilter = new ThresholdFilter();
+		thresholdFilter.setFilterName("Threshold");
+		
+		AfterErodeDilateFilter afterErode = new AfterErodeDilateFilter();
+		afterErode.setFilterName("After dilation");
+		
+		BlobDetectionFilter blobDetectionFilter = new BlobDetectionFilter();
+		blobDetectionFilter.setFilterName("Blob detection");
+		
+		DetectAndDrawPupilFilter detectAndDrawPupilFilter = new DetectAndDrawPupilFilter();
+		detectAndDrawPupilFilter.setFilterName("Detect and draw");
+		
+		compo1.addFilter(rgb2gray);
+		compo1.addFilter(beforeErode);
+		compo1.addFilter(thresholdFilter);
+		compo1.addFilter(afterErode);
+		
+		compo2.addFilter(blobDetectionFilter);
+		compo2.addFilter(detectAndDrawPupilFilter);
+		
+		core.addFilter(compo1);
+		core.addFilter(compo2);
+		
+		
+		
+		
+		
+	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
-		core.start(1);
-		core.enableStatistics(new StatistcsLogger(), 5000);
+		core.start(2);
+//		core.enableStatistics(new StatistcsLogger(), 5000);
 		ioController.start();
 	}
 
@@ -100,6 +138,8 @@ public class TestFragment extends Fragment {
 			Log.i("---------------", "Writer is active");
 
 			final Bitmap bitmap = (Bitmap) arg0.get(Constants.SINK_BITMAP);
+			Log.i(RGB2GRAYFilter.TAG , "----------------------------------------");
+			arg0 = null;
 			TestFragment.this.getActivity().runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
