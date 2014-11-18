@@ -62,7 +62,6 @@ public class TestFragment extends Fragment {
 	}
 
 	public void setUpAlgorithm() {
-		core = new ProcessingCore(10);
 		RGB2GRAYFilter rgb2gray = new RGB2GRAYFilter();
 		rgb2gray.setFilterName("RGB2Gray");
 		FilterComposite compo1 = new FilterComposite();
@@ -130,6 +129,7 @@ public class TestFragment extends Fragment {
 		IORWDefaultImpl io_rw = new IORWDefaultImpl(inProtocol, outProtocol);
 
 
+		core = new ProcessingCore(10);
 		ioController = new IOAndroidController(core, io_rw, io_rw);
 
 	}

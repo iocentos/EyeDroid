@@ -20,38 +20,38 @@ public:
 
 	class ErodeDilate{
 	public:
-		 static int BEFORE_THRESHOLD_ERODE;
-		 static int BEFORE_THRESHOLD_DILATE;
-		 static int AFTER_THRESHOLD_ERODE;
-		 static int AFTER_THRESHOLD_DILATE;
+		 volatile static int BEFORE_THRESHOLD_ERODE;
+		 volatile static int BEFORE_THRESHOLD_DILATE;
+		 volatile static int AFTER_THRESHOLD_ERODE;
+		 volatile static int AFTER_THRESHOLD_DILATE;
 	};
 
 
 	class PupilROI{
 	public:
-		 static int DIAMETER_FACTOR;
-		 static int ROI_CONSTANT_X;
-		 static int ROI_CONSTANT_Y;
-		 static int ROI_CONSTANT_W;
-		 static int ROI_CONSTANT_H;
-		 static int ROI_PUPIL_FOUND_W;
-		 static int ROI_PUPIL_FOUND_H;
+		 volatile static int DIAMETER_FACTOR;
+		 volatile static int ROI_CONSTANT_X;
+		 volatile static int ROI_CONSTANT_Y;
+		 volatile static int ROI_CONSTANT_W;
+		 volatile static int ROI_CONSTANT_H;
+		 volatile static int ROI_PUPIL_FOUND_W;
+		 volatile static int ROI_PUPIL_FOUND_H;
 	};
 
 
 	class Thresshold{
 	public:
-		 static int LOWER_LIMIT;
+		 volatile static int LOWER_LIMIT;
 	};
 
 	class BlobDetection{
 	public:
-		 static int MIN_NEIGHBOR_DISTANCE_FACTOR;
-		 static int MIN_BLOB_SIZE;
-		 static int MAX_BLOB_SIZE;
-		 static int UPPER_THRESHOLD;
-		 static int THRESHOLD_CENTER;
-		 static int SCALE_FACTOR;
+		 volatile static int MIN_NEIGHBOR_DISTANCE_FACTOR;
+		 volatile static int MIN_BLOB_SIZE;
+		 volatile static int MAX_BLOB_SIZE;
+		 volatile static int UPPER_THRESHOLD;
+		 volatile static int THRESHOLD_CENTER;
+		 volatile static int SCALE_FACTOR;
 	};
 
 };
