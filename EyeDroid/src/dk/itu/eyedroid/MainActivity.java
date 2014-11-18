@@ -1,13 +1,17 @@
+
+
 package dk.itu.eyedroid;
 
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
 
+import dk.itu.eyedroid.settings.SettingsActivity;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.view.LayoutInflater;
@@ -33,7 +37,7 @@ public class MainActivity extends Activity implements
 	private CharSequence mTitle;
 
 	BaseLoaderCallback mLoaderCallbacks;
-	
+
 	static {
 		System.loadLibrary("opencv_java");
 		System.loadLibrary("EyeDroid");
@@ -51,70 +55,80 @@ public class MainActivity extends Activity implements
 		// Set up the drawer.
 		mNavigationDrawerFragment.setUp(R.id.navigation_drawer,
 				(DrawerLayout) findViewById(R.id.drawer_layout));
-		
-		
+
 		mLoaderCallbacks = new BaseLoaderCallback(this) {
 
-		@Override
-		public void onManagerConnected(int status) {
-			switch (status) {
-			case LoaderCallbackInterface.SUCCESS: {
-				MainActivity.this.runOnUiThread(new Runnable() {
-					@Override
-					public void run() {
-						Toast.makeText(MainActivity.this, "OpenCV library is loaded", Toast.LENGTH_SHORT).show();
-					}
-				});
-				break;
+			@Override
+			public void onManagerConnected(int status) {
+				switch (status) {
+				case LoaderCallbackInterface.SUCCESS: {
+					MainActivity.this.runOnUiThread(new Runnable() {
+						@Override
+						public void run() {
+							Toast.makeText(MainActivity.this,
+									"OpenCV library is loaded",
+									Toast.LENGTH_SHORT).show();
+						}
+					});
+					break;
+				}
+
+				case LoaderCallbackInterface.INIT_FAILED: {
+					MainActivity.this.runOnUiThread(new Runnable() {
+						@Override
+						public void run() {
+							Toast.makeText(MainActivity.this,
+									"Could not load OpenCV", Toast.LENGTH_SHORT)
+									.show();
+						}
+					});
+					break;
+				}
+
+				default: {
+					super.onManagerConnected(status);
+					break;
+				}
+				}
 			}
-			
-			case LoaderCallbackInterface.INIT_FAILED: {
-				MainActivity.this.runOnUiThread(new Runnable() {
-					@Override
-					public void run() {
-						Toast.makeText(MainActivity.this, "Could not load OpenCV", Toast.LENGTH_SHORT).show();
-					}
-				});
-				break;
-			}
-			
-			
-			default: {
-				super.onManagerConnected(status);
-				break;
-			}
-			}
-		}
-	};
+		};
+		
+		
+		OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_2_4_9, this,
+				mLoaderCallbacks);
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
-		OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_2_4_9, this,
-				mLoaderCallbacks);
+//		OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_2_4_9, this,
+//				mLoaderCallbacks);
 	}
 
 	@Override
 	public void onNavigationDrawerItemSelected(int position) {
 		// update the main content by replacing fragments
 
-		if (position == 1) {
-			Fragment frag = new TestFragment();
-
-			this.getFragmentManager().beginTransaction()
-					.replace(R.id.container, frag).commit();
-
-		} else {
-
-			FragmentManager fragmentManager = getFragmentManager();
-			fragmentManager
-					.beginTransaction()
-					.replace(R.id.container,
-							PlaceholderFragment.newInstance(position + 1))
-					.commit();
+		Bundle bundle = new Bundle();
+		switch (position) {
+		case TestFragment.FRONT_CAMERA:
+			bundle.putInt(TestFragment.CAMERA_OPTION, TestFragment.FRONT_CAMERA);
+			break;
+		case TestFragment.BACK_CAMERA:
+			bundle.putInt(TestFragment.CAMERA_OPTION, TestFragment.BACK_CAMERA);
+			break;
+		case TestFragment.USB_CAMERA:
+			bundle.putInt(TestFragment.CAMERA_OPTION, TestFragment.USB_CAMERA);
+			break;
+		default:
+			break;
 		}
 
+		Fragment frag = new TestFragment();
+		frag.setArguments(bundle);
+
+		this.getFragmentManager().beginTransaction()
+				.replace(R.id.container, frag).commit();
 	}
 
 	public void onSectionAttached(int number) {
@@ -158,49 +172,13 @@ public class MainActivity extends Activity implements
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
 		if (id == R.id.action_settings) {
+			Intent intent = new Intent(this, SettingsActivity.class);
+			this.startActivity(intent);
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
 
-	/**
-	 * A placeholder fragment containing a simple view.
-	 */
-	public static class PlaceholderFragment extends Fragment {
-		/**
-		 * The fragment argument representing the section number for this
-		 * fragment.
-		 */
-		private static final String ARG_SECTION_NUMBER = "section_number";
-
-		/**
-		 * Returns a new instance of this fragment for the given section number.
-		 */
-		public static PlaceholderFragment newInstance(int sectionNumber) {
-			PlaceholderFragment fragment = new PlaceholderFragment();
-			Bundle args = new Bundle();
-			args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-			fragment.setArguments(args);
-			return fragment;
-		}
-
-		public PlaceholderFragment() {
-		}
-
-		@Override
-		public View onCreateView(LayoutInflater inflater, ViewGroup container,
-				Bundle savedInstanceState) {
-			View rootView = inflater.inflate(R.layout.fragment_main, container,
-					false);
-			return rootView;
-		}
-
-		@Override
-		public void onAttach(Activity activity) {
-			super.onAttach(activity);
-			((MainActivity) activity).onSectionAttached(getArguments().getInt(
-					ARG_SECTION_NUMBER));
-		}
-	}
+	
 
 }

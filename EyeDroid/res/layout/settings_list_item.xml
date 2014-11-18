@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/settings_list_item_root_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/darker_gray"
+    android:layout_margin="5dp"
+     >
+
+    <TextView
+        android:id="@+id/settings_list_item_title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/settings_text_views_height"
+        android:layout_alignParentTop="true"
+        android:gravity="center"
+        android:text="erode"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:id="@+id/settings_values"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/settings_text_views_height"
+        android:layout_below="@+id/settings_list_item_title"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/settings_list_item_lower_limit"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_marginLeft="5dp"
+            android:gravity="left"
+            android:text="0"/>
+
+        <TextView
+            android:id="@+id/settings_list_item_current_value"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:text="20" />
+
+        <TextView
+            android:id="@+id/settings_list_item_upper_limit"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_marginRight="5dp"
+            android:gravity="right"
+            android:text="200" />
+    </LinearLayout>
+
+    <SeekBar
+        android:id="@+id/settings_seekbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/settings_progress_bar_height"
+        android:layout_below="@+id/settings_values" >
+    </SeekBar>
+
+</RelativeLayout>
