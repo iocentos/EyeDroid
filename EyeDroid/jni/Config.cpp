@@ -14,12 +14,12 @@ volatile int Config::ErodeDilate::AFTER_THRESHOLD_ERODE = 8;
 volatile int Config::ErodeDilate::AFTER_THRESHOLD_DILATE = 6;
 
 volatile int Config::PupilROI::DIAMETER_FACTOR = 3;
-volatile int Config::PupilROI::ROI_CONSTANT_X = 150;
-volatile int Config::PupilROI::ROI_CONSTANT_Y = 150;
+volatile int Config::PupilROI::ROI_CONSTANT_X = 100;
+volatile int Config::PupilROI::ROI_CONSTANT_Y = 50;
 volatile int Config::PupilROI::ROI_CONSTANT_W = 400;
-volatile int Config::PupilROI::ROI_CONSTANT_H = 250;
-volatile int Config::PupilROI::ROI_PUPIL_FOUND_W = 300;
-volatile int Config::PupilROI::ROI_PUPIL_FOUND_H = 200;
+volatile int Config::PupilROI::ROI_CONSTANT_H = 350;
+volatile int Config::PupilROI::ROI_PUPIL_FOUND_W = 80;
+volatile int Config::PupilROI::ROI_PUPIL_FOUND_H = 80;
 
 volatile int Config::Thresshold::LOWER_LIMIT = 70;
 

@@ -34,11 +34,11 @@ cv::Rect EyeDroid::getPupilRoi(cv::Mat& input, bool useDiameter) {
 		}
 
 		if (tempEye->getPupil_X() - (W / 2) > 0
-				&& tempEye->getPupil_Y() - (H / 2) > 0
-				&& tempEye->getPupil_X() + (W / 2) < input.cols
-				&& tempEye->getPupil_Y() + (H / 2) < input.rows) {
-			pupilROI = new cv::Rect(tempEye->getPupil_X() - (W / 2),
-					tempEye->getPupil_Y() - (H / 2), W, H);
+						&& tempEye->getPupil_Y() - (H / 2) > 0
+						&& tempEye->getPupil_X() + (W + 200 - (W / 2)) < input.cols
+						&& tempEye->getPupil_Y() + (H + 150 - (H / 2)) < input.rows) {
+					pupilROI = new cv::Rect(tempEye->getPupil_X() - (W / 2),
+							tempEye->getPupil_Y() - (H / 2), W + 200, H + 150);
 		} else {
 			pupilROI = new cv::Rect(Config::PupilROI::ROI_CONSTANT_X,
 					Config::PupilROI::ROI_CONSTANT_Y,

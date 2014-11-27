@@ -16,7 +16,7 @@ Eye* Eye::instance = NULL;
 void Eye::getInstance(Eye* copy){
 	pthread_mutex_lock(lock);
 		if( instance != NULL ){
-			copy->setPupilFound(true);
+			copy->setPupilFound(instance->isPupilFound());
 			copy->setPupilDiamerer(instance->getPupilDiameter());
 			copy->setPupil_X(instance->getPupil_X());
 			copy->setPupil_Y(instance->getPupil_Y());
