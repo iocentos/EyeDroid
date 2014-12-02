@@ -4,20 +4,25 @@ import java.io.IOException;
 
 import org.opencv.android.CameraBridgeViewBase;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.graphics.Bitmap;
 import android.hardware.Camera.CameraInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import dk.itu.eyedroid.filters.AfterErodeDilateFilter;
 import dk.itu.eyedroid.filters.BeforeErodeDilateFilter;
 import dk.itu.eyedroid.filters.BlobDetectionFilter;
+import dk.itu.eyedroid.filters.CoordinatesFilter;
 import dk.itu.eyedroid.filters.DetectAndDrawPupilFilter;
-import dk.itu.eyedroid.filters.EyeDetectionFilter;
+import dk.itu.eyedroid.filters.PreviewFilter;
 import dk.itu.eyedroid.filters.RGB2GRAYFilter;
 import dk.itu.eyedroid.filters.ThresholdFilter;
 import dk.itu.eyedroid.io.IOAndroidController;
@@ -25,6 +30,7 @@ import dk.itu.eyedroid.io.protocols.InputNetStreamingProtocol;
 import dk.itu.eyedroid.io.protocols.InputStreamCamera;
 import dk.itu.eyedroid.io.protocols.InputStreamUSBCamera;
 import dk.itu.eyedroid.io.protocols.OutputNetTCPProtocol;
+import dk.itu.eyedroid.io.protocols.PreviewProtocol;
 import dk.itu.spcl.jlpf.core.Filter;
 import dk.itu.spcl.jlpf.core.FilterComposite;
 import dk.itu.spcl.jlpf.core.ProcessingCore;
@@ -34,7 +40,7 @@ import dk.itu.spcl.jlpf.io.IOProtocolWriter;
 import dk.itu.spcl.jlpf.io.IORWDefaultImpl;
 import dk.itu.spcl.jlpf.io.InputReader;
 
-public class TestFragment extends Fragment {
+public class MainFragment extends Fragment {
 
 	final String URL = "http://217.197.157.7:7070/axis-cgi/mjpg/video.cgi?resolution=320x240";
 
@@ -50,6 +56,8 @@ public class TestFragment extends Fragment {
 
 	private ProcessingCore core;
 	private IOController ioController;
+	
+	private PreviewFilter mPreviewFilter;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -60,6 +68,43 @@ public class TestFragment extends Fragment {
 		mImageView = (ImageView) mRootView.findViewById(R.id.mjpeg_view);
 		return mRootView;
 	}
+	
+	
+
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		this.setHasOptionsMenu(true);
+	}
+
+
+
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		super.onCreateOptionsMenu(menu, inflater);
+		inflater.inflate(R.menu.main_framgnet, menu);
+	}
+
+
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if( item.getItemId() == R.id.preview ){
+			if( mPreviewFilter.isEnabled()){
+				mPreviewFilter.disablePreview();
+				item.setIcon(getResources().getDrawable(R.drawable.start_btn));
+			}
+			else{
+				mPreviewFilter.enablePreview();
+				item.setIcon(getResources().getDrawable(R.drawable.stop_btn));
+			}
+			
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+
+
 
 	public void setUpAlgorithm() {
 		RGB2GRAYFilter rgb2gray = new RGB2GRAYFilter();
@@ -82,6 +127,12 @@ public class TestFragment extends Fragment {
 
 		DetectAndDrawPupilFilter detectAndDrawPupilFilter = new DetectAndDrawPupilFilter();
 		detectAndDrawPupilFilter.setFilterName("Detect and draw");
+		
+		CoordinatesFilter coordinatesFilter = new CoordinatesFilter();
+		coordinatesFilter.setFilterName("Coordinates");
+		
+		mPreviewFilter = new PreviewFilter(getActivity(), mImageView);
+		mPreviewFilter.setFilterName("Preview filter");
 
 		compo1.addFilter(rgb2gray);
 		compo1.addFilter(beforeErode);
@@ -90,6 +141,8 @@ public class TestFragment extends Fragment {
 
 		compo3.addFilter(blobDetectionFilter);
 		compo3.addFilter(detectAndDrawPupilFilter);
+		compo3.addFilter(coordinatesFilter);
+		compo3.addFilter(mPreviewFilter);
 
 		compo1.setFilterName("Composite 1");
 		compo2.setFilterName("Composite 2");
@@ -125,7 +178,8 @@ public class TestFragment extends Fragment {
 			break;
 		}
 
-		TestWriter outProtocol = new TestWriter();
+//		PreviewProtocol outProtocol = new PreviewProtocol(getActivity(), mImageView);
+		OutputNetTCPProtocol outProtocol = new OutputNetTCPProtocol(5000);
 		IORWDefaultImpl io_rw = new IORWDefaultImpl(inProtocol, outProtocol);
 
 
@@ -155,36 +209,4 @@ public class TestFragment extends Fragment {
 		core.stop();
 		ioController.stop();
 	}
-
-	public class TestWriter implements IOProtocolWriter {
-
-		@Override
-		public void cleanup() {
-
-		}
-
-		@Override
-		public void init() {
-
-		}
-
-		@Override
-		public void write(dk.itu.spcl.jlpf.common.Bundle arg0)
-				throws IOException {
-			Log.i("---------------", "Writer is active");
-
-			final Bitmap bitmap = (Bitmap) arg0.get(Constants.SINK_BITMAP);
-			Log.i(RGB2GRAYFilter.TAG,
-					"----------------------------------------");
-			arg0 = null;
-			TestFragment.this.getActivity().runOnUiThread(new Runnable() {
-				@Override
-				public void run() {
-					mImageView.setImageBitmap(bitmap);
-				}
-			});
-			arg0 = null;
-		}
-	}
-
 }

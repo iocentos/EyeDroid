@@ -111,20 +111,20 @@ public class MainActivity extends Activity implements
 
 		Bundle bundle = new Bundle();
 		switch (position) {
-		case TestFragment.FRONT_CAMERA:
-			bundle.putInt(TestFragment.CAMERA_OPTION, TestFragment.FRONT_CAMERA);
+		case MainFragment.FRONT_CAMERA:
+			bundle.putInt(MainFragment.CAMERA_OPTION, MainFragment.FRONT_CAMERA);
 			break;
-		case TestFragment.BACK_CAMERA:
-			bundle.putInt(TestFragment.CAMERA_OPTION, TestFragment.BACK_CAMERA);
+		case MainFragment.BACK_CAMERA:
+			bundle.putInt(MainFragment.CAMERA_OPTION, MainFragment.BACK_CAMERA);
 			break;
-		case TestFragment.USB_CAMERA:
-			bundle.putInt(TestFragment.CAMERA_OPTION, TestFragment.USB_CAMERA);
+		case MainFragment.USB_CAMERA:
+			bundle.putInt(MainFragment.CAMERA_OPTION, MainFragment.USB_CAMERA);
 			break;
 		default:
 			break;
 		}
 
-		Fragment frag = new TestFragment();
+		Fragment frag = new MainFragment();
 		frag.setArguments(bundle);
 
 		this.getFragmentManager().beginTransaction()

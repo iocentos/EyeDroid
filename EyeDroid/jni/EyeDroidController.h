@@ -71,6 +71,25 @@ JNIEXPORT void JNICALL Java_dk_itu_eyedroid_filters_DetectAndDrawPupilFilter_det
 
 
 
+
+/*
+ * Class:     dk_itu_eyedroid_filters_CoordinatesFilter
+ * Method:    getCoordinates_X
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_dk_itu_eyedroid_filters_CoordinatesFilter_getCoordinates_1X
+  (JNIEnv *, jclass);
+
+/*
+ * Class:     dk_itu_eyedroid_filters_CoordinatesFilter
+ * Method:    getCoordinates_Y
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_dk_itu_eyedroid_filters_CoordinatesFilter_getCoordinates_1Y
+  (JNIEnv *, jclass);
+
+
+
 #ifdef __cplusplus
 }
 #endif

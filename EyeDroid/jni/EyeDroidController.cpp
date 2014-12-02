@@ -116,3 +116,44 @@ JNIEXPORT void JNICALL Java_dk_itu_eyedroid_filters_DetectAndDrawPupilFilter_det
 	delete pupilRoiRect;
 	delete circles;
   }
+
+
+
+
+
+/*
+ * Class:     dk_itu_eyedroid_filters_CoordinatesFilter
+ * Method:    getCoordinates_X
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_dk_itu_eyedroid_filters_CoordinatesFilter_getCoordinates_1X
+  (JNIEnv *, jclass){
+
+	IMGP::Eye* tempEye = new IMGP::Eye();
+	IMGP::Eye::getInstance(tempEye);
+
+	int x = tempEye->getPupil_X();
+
+	delete tempEye;
+
+	return x;
+
+}
+
+/*
+ * Class:     dk_itu_eyedroid_filters_CoordinatesFilter
+ * Method:    getCoordinates_Y
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_dk_itu_eyedroid_filters_CoordinatesFilter_getCoordinates_1Y
+  (JNIEnv *, jclass){
+
+	IMGP::Eye* tempEye = new IMGP::Eye();
+	IMGP::Eye::getInstance(tempEye);
+
+	int y = tempEye->getPupil_Y();
+
+	delete tempEye;
+
+	return y;
+}
