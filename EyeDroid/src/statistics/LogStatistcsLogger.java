@@ -1,10 +1,10 @@
-package dk.itu.eyedroid;
+package statistics;
 
 import android.util.Log;
 import dk.itu.spcl.jlpf.core.CoreStatistics;
 import dk.itu.spcl.jlpf.core.ProcessingCore;
 
-public class StatistcsLogger implements ProcessingCore.StatisticsCallback{
+public class LogStatistcsLogger implements ProcessingCore.StatisticsCallback{
 	
 	public static final String TAG = "Statistics";
 
