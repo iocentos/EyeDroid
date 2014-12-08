@@ -30,7 +30,6 @@ import dk.itu.eyedroid.io.protocols.InputNetStreamingProtocol;
 import dk.itu.eyedroid.io.protocols.InputStreamCamera;
 import dk.itu.eyedroid.io.protocols.InputStreamUSBCamera;
 import dk.itu.eyedroid.io.protocols.OutputNetTCPProtocol;
-import dk.itu.eyedroid.io.protocols.PreviewProtocol;
 import dk.itu.spcl.jlpf.core.Filter;
 import dk.itu.spcl.jlpf.core.FilterComposite;
 import dk.itu.spcl.jlpf.core.ProcessingCore;
@@ -198,7 +197,7 @@ public class MainFragment extends Fragment {
 		setUpAlgorithm();
 
 		core.start(3);
-		core.enableStatistics(new StatistcsLogger(), 5000);
+//		core.enableStatistics(new StatistcsLogger(), 5000);
 		ioController.start();
 	}
 
