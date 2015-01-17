@@ -1,5 +1,10 @@
-package dk.itu.eyedroid;
+package dk.itu.eyedroid.demo;
 
+import dk.itu.eyedroid.R;
+import dk.itu.eyedroid.R.drawable;
+import dk.itu.eyedroid.R.layout;
+import dk.itu.eyedroid.R.menu;
+import dk.itu.eyedroid.R.string;
 import android.app.Activity;
 import android.app.ActionBar;
 import android.app.Fragment;

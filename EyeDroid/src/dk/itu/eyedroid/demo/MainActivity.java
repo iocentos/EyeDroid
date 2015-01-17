@@ -1,11 +1,17 @@
 
 
-package dk.itu.eyedroid;
+package dk.itu.eyedroid.demo;
 
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
 
+import dk.itu.eyedroid.R;
+import dk.itu.eyedroid.R.id;
+import dk.itu.eyedroid.R.layout;
+import dk.itu.eyedroid.R.menu;
+import dk.itu.eyedroid.R.string;
+import dk.itu.eyedroid.demo.NavigationDrawerFragment.NavigationDrawerCallbacks;
 import dk.itu.eyedroid.settings.SettingsActivity;
 import android.app.ActionBar;
 import android.app.Activity;

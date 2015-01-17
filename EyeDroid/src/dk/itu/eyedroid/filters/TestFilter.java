@@ -3,7 +3,7 @@ package dk.itu.eyedroid.filters;
 import statistics.Timer;
 import android.content.Context;
 import android.widget.Toast;
-import dk.itu.eyedroid.MainActivity;
+import dk.itu.eyedroid.demo.MainActivity;
 import dk.itu.spcl.jlpf.common.Bundle;
 import dk.itu.spcl.jlpf.core.Filter;
 
