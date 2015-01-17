@@ -4,39 +4,36 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.SocketTimeoutException;
 import java.nio.ByteBuffer;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import dk.itu.eyedroid.Constants;
+import dk.itu.eyedroid.NetClientConfig;
 import dk.itu.spcl.jlpf.common.Bundle;
 import dk.itu.spcl.jlpf.io.IOProtocolWriter;
 
 /**
- * TCP/IP output protocol implementation. Used to send processed bundle results
+ * Generic TCP/IP output protocol implementation. Used to send processed bundle results
  * to a connected client. Sends X and Y gaze position coordinates as result.
  */
 
 public class OutputNetTCPProtocol implements IOProtocolWriter {
-	private final int MSG_SIZE = 12; // byteArray[12]
 
-	private final int mPort; // Server port
-	private ServerSocket serverSocket; // Server socket for new incomming
-										// connections
-	private Socket mSocket; // Client socket
-	private OutputStream mOutput; // Spcket output stream
-	private AtomicBoolean isConnectionSet; // Client connection status
-	private boolean isWaitingForConnection; // Server waiting for client status
-	private boolean isSocketServerClosed; // Server socket was intentionally
-											// closed.
+	private final int mPort; 					// Server port
+	private ServerSocket serverSocket; 			// Server socket for new incomming
+												// connections
+	private Socket mSocket; 					// Client socket
+	private OutputStream mOutput; 				// Spcket output stream
+	private AtomicBoolean isConnectionSet; 		// Client connection status
+	private boolean isWaitingForConnection;		// Server waiting for client status
+	private boolean isSocketServerClosed; 		// Server socket was intentionally closed.
 	
 	private static final int SERVER_SOCKET_ACCEPT_TIME_OUT = 10;
 
 	/**
 	 * Deafult constructor
 	 * 
-	 * @param port
-	 *            Server listener port
+	 * @param port Server listener port
 	 */
 	public OutputNetTCPProtocol(int port) {
 		mPort = port;
@@ -146,8 +143,13 @@ public class OutputNetTCPProtocol implements IOProtocolWriter {
 	 * @return Byte array.
 	 */
 	private byte[] generateOutput(int x, int y) {
-		ByteBuffer b = ByteBuffer.allocate(MSG_SIZE);
-		b.putInt(0, Constants.NET_MESSAGE_INDICATOR);
+		ByteBuffer b = ByteBuffer.allocate(NetClientConfig.MSG_SIZE);
+		
+		if(NetClientConfig.USE_HMGT)
+			b.putInt(0, NetClientConfig.TO_CLIENT_GAZE_HMGT);
+		else
+			b.putInt(0, NetClientConfig.TO_CLIENT_GAZE_RGT);
+		
 		b.putInt(4, x);
 		b.putInt(8, y);
 		return b.array();
