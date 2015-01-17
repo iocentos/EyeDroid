@@ -1,3 +1,4 @@
+
 package dk.itu.eyedroid;
 
 import java.io.IOException;
@@ -55,9 +56,8 @@ public class MainFragment extends Fragment {
 
 	private View mRootView;
 	private ImageView mImageView;
-
-	private ProcessingCore core;
-	private IOController ioController;
+	
+	private EyeDroid EYEDROID ; 
 
 	private PreviewFilter mPreviewFilter;
 
@@ -68,6 +68,8 @@ public class MainFragment extends Fragment {
 		mRootView = inflater.inflate(R.layout.streaming_layout, container,
 				false);
 		mImageView = (ImageView) mRootView.findViewById(R.id.mjpeg_view);
+		
+		EYEDROID = new EyeDroid(getActivity());
 		return mRootView;
 	}
 
@@ -99,189 +101,7 @@ public class MainFragment extends Fragment {
 		return super.onOptionsItemSelected(item);
 	}
 
-	public void setUpParallelAlgorithm2() {
-
-		RGB2GRAYFilter rgb2gray = new RGB2GRAYFilter();
-		rgb2gray.setFilterName("RGB2Gray");
-		FilterComposite compo1 = new FilterComposite();
-		FilterComposite compo2 = new FilterComposite();
-
-		BeforeErodeDilateFilter beforeErode = new BeforeErodeDilateFilter();
-		beforeErode.setFilterName("Before dilation");
-
-		ThresholdFilter thresholdFilter = new ThresholdFilter();
-		thresholdFilter.setFilterName("Threshold");
-
-		AfterErodeDilateFilter afterErode = new AfterErodeDilateFilter();
-		afterErode.setFilterName("After dilation");
-
-		BlobDetectionFilter blobDetectionFilter = new BlobDetectionFilter();
-		blobDetectionFilter.setFilterName("Blob detection");
-
-		DetectAndDrawPupilFilter detectAndDrawPupilFilter = new DetectAndDrawPupilFilter();
-		detectAndDrawPupilFilter.setFilterName("Detect and draw");
-
-		CoordinatesFilter coordinatesFilter = new CoordinatesFilter();
-		coordinatesFilter.setFilterName("Coordinates");
-
-		mPreviewFilter = new PreviewFilter(getActivity(), mImageView);
-		mPreviewFilter.setFilterName("Preview filter");
-
-		compo1.addFilter(rgb2gray);
-		compo1.addFilter(beforeErode);
-		compo1.addFilter(thresholdFilter);
-		compo1.addFilter(afterErode);
-
-		compo2.addFilter(blobDetectionFilter);
-		compo2.addFilter(detectAndDrawPupilFilter);
-		compo2.addFilter(coordinatesFilter);
-		compo2.addFilter(mPreviewFilter);
-
-		compo1.setFilterName("Composite 1");
-		compo2.setFilterName("Composite 2");
-
-		core.addFilter(compo1);
-		core.addFilter(compo2);
-
-	}
-
-	public void setUpParallelAlgorithm() {
-		RGB2GRAYFilter rgb2gray = new RGB2GRAYFilter();
-		rgb2gray.setFilterName("RGB2Gray");
-		FilterComposite compo1 = new FilterComposite();
-		FilterComposite compo2 = new FilterComposite();
-		FilterComposite compo3 = new FilterComposite();
-
-		BeforeErodeDilateFilter beforeErode = new BeforeErodeDilateFilter();
-		beforeErode.setFilterName("Before dilation");
-
-		ThresholdFilter thresholdFilter = new ThresholdFilter();
-		thresholdFilter.setFilterName("Threshold");
-
-		AfterErodeDilateFilter afterErode = new AfterErodeDilateFilter();
-		afterErode.setFilterName("After dilation");
-
-		BlobDetectionFilter blobDetectionFilter = new BlobDetectionFilter();
-		blobDetectionFilter.setFilterName("Blob detection");
-
-		DetectAndDrawPupilFilter detectAndDrawPupilFilter = new DetectAndDrawPupilFilter();
-		detectAndDrawPupilFilter.setFilterName("Detect and draw");
-
-		CoordinatesFilter coordinatesFilter = new CoordinatesFilter();
-		coordinatesFilter.setFilterName("Coordinates");
-
-		mPreviewFilter = new PreviewFilter(getActivity(), mImageView);
-		mPreviewFilter.setFilterName("Preview filter");
-
-		compo1.addFilter(rgb2gray);
-		compo1.addFilter(beforeErode);
-		compo1.addFilter(thresholdFilter);
-		compo2.addFilter(afterErode);
-
-		compo3.addFilter(blobDetectionFilter);
-		compo3.addFilter(detectAndDrawPupilFilter);
-		compo3.addFilter(coordinatesFilter);
-		compo3.addFilter(mPreviewFilter);
-
-		compo1.setFilterName("Composite 1");
-		compo2.setFilterName("Composite 2");
-		compo3.setFilterName("Composite 3");
-
-		core.addFilter(compo1);
-		core.addFilter(compo2);
-		core.addFilter(compo3);
-
-	}
-
-	public void setUpParallel2Composites(){
-		
-		RGB2GRAYFilter rgb2gray = new RGB2GRAYFilter();
-		rgb2gray.setFilterName("RGB2Gray");
-		FilterComposite compo1 = new FilterComposite();
-		FilterComposite compo2 = new FilterComposite();
-		FilterComposite compo3 = new FilterComposite();
-
-		BeforeErodeDilateFilter beforeErode = new BeforeErodeDilateFilter();
-		beforeErode.setFilterName("Before dilation");
-
-		ThresholdFilter thresholdFilter = new ThresholdFilter();
-		thresholdFilter.setFilterName("Threshold");
-
-		AfterErodeDilateFilter afterErode = new AfterErodeDilateFilter();
-		afterErode.setFilterName("After dilation");
-
-		BlobDetectionFilter blobDetectionFilter = new BlobDetectionFilter();
-		blobDetectionFilter.setFilterName("Blob detection");
-
-		DetectAndDrawPupilFilter detectAndDrawPupilFilter = new DetectAndDrawPupilFilter();
-		detectAndDrawPupilFilter.setFilterName("Detect and draw");
-
-		CoordinatesFilter coordinatesFilter = new CoordinatesFilter();
-		coordinatesFilter.setFilterName("Coordinates");
-
-		mPreviewFilter = new PreviewFilter(getActivity(), mImageView);
-		mPreviewFilter.setFilterName("Preview filter");
-
-		compo1.addFilter(rgb2gray);
-		compo1.addFilter(beforeErode);
-		compo1.addFilter(thresholdFilter);
-		compo3.addFilter(afterErode);
-
-		compo3.addFilter(blobDetectionFilter);
-		compo3.addFilter(detectAndDrawPupilFilter);
-		compo3.addFilter(coordinatesFilter);
-		compo3.addFilter(mPreviewFilter);
-
-		compo1.setFilterName("Composite 1");
-		compo2.setFilterName("Composite 2");
-		compo3.setFilterName("Composite 3");
-
-		core.addFilter(compo1);
-//		core.addFilter(compo2);
-		core.addFilter(compo3);
-
-	}
-	
-	
-	
-	public void setUpSequentialAlgorithm() {
-
-		RGB2GRAYFilter rgb2gray = new RGB2GRAYFilter();
-		rgb2gray.setFilterName("RGB2Gray");
-
-		BeforeErodeDilateFilter beforeErode = new BeforeErodeDilateFilter();
-		beforeErode.setFilterName("Before dilation");
-
-		ThresholdFilter thresholdFilter = new ThresholdFilter();
-		thresholdFilter.setFilterName("Threshold");
-
-		AfterErodeDilateFilter afterErode = new AfterErodeDilateFilter();
-		afterErode.setFilterName("After dilation");
-
-		BlobDetectionFilter blobDetectionFilter = new BlobDetectionFilter();
-		blobDetectionFilter.setFilterName("Blob detection");
-
-		DetectAndDrawPupilFilter detectAndDrawPupilFilter = new DetectAndDrawPupilFilter();
-		detectAndDrawPupilFilter.setFilterName("Detect and draw");
-
-		CoordinatesFilter coordinatesFilter = new CoordinatesFilter();
-		coordinatesFilter.setFilterName("Coordinates");
-
-		mPreviewFilter = new PreviewFilter(getActivity(), mImageView);
-		mPreviewFilter.setFilterName("Preview filter");
-
-		core.addFilter(rgb2gray);
-		core.addFilter(beforeErode);
-		core.addFilter(thresholdFilter);
-		core.addFilter(afterErode);
-		core.addFilter(blobDetectionFilter);
-		core.addFilter(detectAndDrawPupilFilter);
-		core.addFilter(coordinatesFilter);
-		core.addFilter(mPreviewFilter);
-
-	}
-
-	public void createProtocols() {
+	public IORWDefaultImpl createProtocols() {
 
 		int whichCamera = this.getArguments().getInt(CAMERA_OPTION);
 		CameraBridgeViewBase camera = (CameraBridgeViewBase) mRootView
@@ -308,37 +128,23 @@ public class MainFragment extends Fragment {
 		OutputNetTCPProtocol outProtocol = new OutputNetTCPProtocol(5000);
 		IORWDefaultImpl io_rw = new IORWDefaultImpl(inProtocol, outProtocol);
 
-		core = new ProcessingCore(10);
-		ioController = new IOAndroidController(core, io_rw, io_rw);
-
+		return io_rw;
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
 		Log.i(TAG, "OnResume");
-
-		createProtocols();
-
-		setUpParallel2Composites();
-//		 setUpParallelAlgorithm();
-//		 setUpSequentialAlgorithm();
-////		setUpParallelAlgorithm2();
-//		Timer.getInstance();
-//		
-//		core.addFilter(new TestFilter(this.getActivity()));
-
-		core.start(2);
-//		core.enableStatistics(new FileStatisticsLogger(
-//				FileStatisticsLogger.STATISTICS_FULL_PATH), 5000);
-		ioController.start();
+		IORWDefaultImpl io = createProtocols();
+		EYEDROID.setIOProtocols(io , io);
+		mPreviewFilter = EYEDROID.addAndGetPreview(mImageView);
+		EYEDROID.start();
 	}
 
 	@Override
 	public void onPause() {
 		super.onPause();
 		Log.i(TAG, "OnPause");
-		core.stop();
-		ioController.stop();
+		EYEDROID.stop();
 	}
 }
