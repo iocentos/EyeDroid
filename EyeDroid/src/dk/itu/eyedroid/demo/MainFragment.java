@@ -1,5 +1,5 @@
 
-package dk.itu.eyedroid;
+package dk.itu.eyedroid.demo;
 
 import java.io.IOException;
 
@@ -20,6 +20,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import dk.itu.eyedroid.EyeDroid;
+import dk.itu.eyedroid.R;
+import dk.itu.eyedroid.R.drawable;
+import dk.itu.eyedroid.R.id;
+import dk.itu.eyedroid.R.layout;
+import dk.itu.eyedroid.R.menu;
 import dk.itu.eyedroid.filters.AfterErodeDilateFilter;
 import dk.itu.eyedroid.filters.BeforeErodeDilateFilter;
 import dk.itu.eyedroid.filters.BlobDetectionFilter;

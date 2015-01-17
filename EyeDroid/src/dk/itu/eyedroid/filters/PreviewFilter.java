@@ -10,8 +10,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import dk.itu.eyedroid.Constants;
-import dk.itu.eyedroid.MainActivity;
 import dk.itu.eyedroid.R;
+import dk.itu.eyedroid.demo.MainActivity;
 import dk.itu.spcl.jlpf.common.Bundle;
 import dk.itu.spcl.jlpf.core.Filter;
 
