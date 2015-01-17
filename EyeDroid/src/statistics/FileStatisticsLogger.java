@@ -16,7 +16,7 @@ public class FileStatisticsLogger implements ProcessingCore.StatisticsCallback {
 	private String mFileName;
 	
 	
-	public static final String FILE_NAME = "/EyeDroid";
+	public static final String FILE_NAME = "/Skata";
 	
 	public static final String TAG = "Statistics";
 	

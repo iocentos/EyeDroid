@@ -8,10 +8,10 @@
 #include "Config.h"
 
 namespace IMGP {
-volatile int Config::ErodeDilate::BEFORE_THRESHOLD_ERODE = 4;
-volatile int Config::ErodeDilate::BEFORE_THRESHOLD_DILATE = 3;
-volatile int Config::ErodeDilate::AFTER_THRESHOLD_ERODE = 8;
-volatile int Config::ErodeDilate::AFTER_THRESHOLD_DILATE = 6;
+volatile int Config::ErodeDilate::BEFORE_THRESHOLD_ERODE = 3;
+volatile int Config::ErodeDilate::BEFORE_THRESHOLD_DILATE = 2;
+volatile int Config::ErodeDilate::AFTER_THRESHOLD_ERODE = 3;
+volatile int Config::ErodeDilate::AFTER_THRESHOLD_DILATE = 2;
 
 volatile int Config::PupilROI::DIAMETER_FACTOR = 3;
 volatile int Config::PupilROI::ROI_CONSTANT_X = 100;

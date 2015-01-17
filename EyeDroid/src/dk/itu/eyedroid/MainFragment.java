@@ -4,6 +4,8 @@ import java.io.IOException;
 
 import org.opencv.android.CameraBridgeViewBase;
 
+import statistics.FileStatisticsLogger;
+import statistics.Timer;
 import android.app.Activity;
 import android.app.Fragment;
 import android.graphics.Bitmap;
@@ -24,6 +26,7 @@ import dk.itu.eyedroid.filters.CoordinatesFilter;
 import dk.itu.eyedroid.filters.DetectAndDrawPupilFilter;
 import dk.itu.eyedroid.filters.PreviewFilter;
 import dk.itu.eyedroid.filters.RGB2GRAYFilter;
+import dk.itu.eyedroid.filters.TestFilter;
 import dk.itu.eyedroid.filters.ThresholdFilter;
 import dk.itu.eyedroid.io.IOAndroidController;
 import dk.itu.eyedroid.io.protocols.InputNetStreamingProtocol;
@@ -55,7 +58,7 @@ public class MainFragment extends Fragment {
 
 	private ProcessingCore core;
 	private IOController ioController;
-	
+
 	private PreviewFilter mPreviewFilter;
 
 	@Override
@@ -67,8 +70,6 @@ public class MainFragment extends Fragment {
 		mImageView = (ImageView) mRootView.findViewById(R.id.mjpeg_view);
 		return mRootView;
 	}
-	
-	
 
 	@Override
 	public void onAttach(Activity activity) {
@@ -76,36 +77,75 @@ public class MainFragment extends Fragment {
 		this.setHasOptionsMenu(true);
 	}
 
-
-
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		super.onCreateOptionsMenu(menu, inflater);
 		inflater.inflate(R.menu.main_framgnet, menu);
 	}
 
-
-
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		if( item.getItemId() == R.id.preview ){
-			if( mPreviewFilter.isEnabled()){
+		if (item.getItemId() == R.id.preview) {
+			if (mPreviewFilter.isEnabled()) {
 				mPreviewFilter.disablePreview();
 				item.setIcon(getResources().getDrawable(R.drawable.start_btn));
-			}
-			else{
+			} else {
 				mPreviewFilter.enablePreview();
 				item.setIcon(getResources().getDrawable(R.drawable.stop_btn));
 			}
-			
+
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
 
+	public void setUpParallelAlgorithm2() {
 
+		RGB2GRAYFilter rgb2gray = new RGB2GRAYFilter();
+		rgb2gray.setFilterName("RGB2Gray");
+		FilterComposite compo1 = new FilterComposite();
+		FilterComposite compo2 = new FilterComposite();
 
-	public void setUpAlgorithm() {
+		BeforeErodeDilateFilter beforeErode = new BeforeErodeDilateFilter();
+		beforeErode.setFilterName("Before dilation");
+
+		ThresholdFilter thresholdFilter = new ThresholdFilter();
+		thresholdFilter.setFilterName("Threshold");
+
+		AfterErodeDilateFilter afterErode = new AfterErodeDilateFilter();
+		afterErode.setFilterName("After dilation");
+
+		BlobDetectionFilter blobDetectionFilter = new BlobDetectionFilter();
+		blobDetectionFilter.setFilterName("Blob detection");
+
+		DetectAndDrawPupilFilter detectAndDrawPupilFilter = new DetectAndDrawPupilFilter();
+		detectAndDrawPupilFilter.setFilterName("Detect and draw");
+
+		CoordinatesFilter coordinatesFilter = new CoordinatesFilter();
+		coordinatesFilter.setFilterName("Coordinates");
+
+		mPreviewFilter = new PreviewFilter(getActivity(), mImageView);
+		mPreviewFilter.setFilterName("Preview filter");
+
+		compo1.addFilter(rgb2gray);
+		compo1.addFilter(beforeErode);
+		compo1.addFilter(thresholdFilter);
+		compo1.addFilter(afterErode);
+
+		compo2.addFilter(blobDetectionFilter);
+		compo2.addFilter(detectAndDrawPupilFilter);
+		compo2.addFilter(coordinatesFilter);
+		compo2.addFilter(mPreviewFilter);
+
+		compo1.setFilterName("Composite 1");
+		compo2.setFilterName("Composite 2");
+
+		core.addFilter(compo1);
+		core.addFilter(compo2);
+
+	}
+
+	public void setUpParallelAlgorithm() {
 		RGB2GRAYFilter rgb2gray = new RGB2GRAYFilter();
 		rgb2gray.setFilterName("RGB2Gray");
 		FilterComposite compo1 = new FilterComposite();
@@ -126,10 +166,10 @@ public class MainFragment extends Fragment {
 
 		DetectAndDrawPupilFilter detectAndDrawPupilFilter = new DetectAndDrawPupilFilter();
 		detectAndDrawPupilFilter.setFilterName("Detect and draw");
-		
+
 		CoordinatesFilter coordinatesFilter = new CoordinatesFilter();
 		coordinatesFilter.setFilterName("Coordinates");
-		
+
 		mPreviewFilter = new PreviewFilter(getActivity(), mImageView);
 		mPreviewFilter.setFilterName("Preview filter");
 
@@ -150,6 +190,94 @@ public class MainFragment extends Fragment {
 		core.addFilter(compo1);
 		core.addFilter(compo2);
 		core.addFilter(compo3);
+
+	}
+
+	public void setUpParallel2Composites(){
+		
+		RGB2GRAYFilter rgb2gray = new RGB2GRAYFilter();
+		rgb2gray.setFilterName("RGB2Gray");
+		FilterComposite compo1 = new FilterComposite();
+		FilterComposite compo2 = new FilterComposite();
+		FilterComposite compo3 = new FilterComposite();
+
+		BeforeErodeDilateFilter beforeErode = new BeforeErodeDilateFilter();
+		beforeErode.setFilterName("Before dilation");
+
+		ThresholdFilter thresholdFilter = new ThresholdFilter();
+		thresholdFilter.setFilterName("Threshold");
+
+		AfterErodeDilateFilter afterErode = new AfterErodeDilateFilter();
+		afterErode.setFilterName("After dilation");
+
+		BlobDetectionFilter blobDetectionFilter = new BlobDetectionFilter();
+		blobDetectionFilter.setFilterName("Blob detection");
+
+		DetectAndDrawPupilFilter detectAndDrawPupilFilter = new DetectAndDrawPupilFilter();
+		detectAndDrawPupilFilter.setFilterName("Detect and draw");
+
+		CoordinatesFilter coordinatesFilter = new CoordinatesFilter();
+		coordinatesFilter.setFilterName("Coordinates");
+
+		mPreviewFilter = new PreviewFilter(getActivity(), mImageView);
+		mPreviewFilter.setFilterName("Preview filter");
+
+		compo1.addFilter(rgb2gray);
+		compo1.addFilter(beforeErode);
+		compo1.addFilter(thresholdFilter);
+		compo3.addFilter(afterErode);
+
+		compo3.addFilter(blobDetectionFilter);
+		compo3.addFilter(detectAndDrawPupilFilter);
+		compo3.addFilter(coordinatesFilter);
+		compo3.addFilter(mPreviewFilter);
+
+		compo1.setFilterName("Composite 1");
+		compo2.setFilterName("Composite 2");
+		compo3.setFilterName("Composite 3");
+
+		core.addFilter(compo1);
+//		core.addFilter(compo2);
+		core.addFilter(compo3);
+
+	}
+	
+	
+	
+	public void setUpSequentialAlgorithm() {
+
+		RGB2GRAYFilter rgb2gray = new RGB2GRAYFilter();
+		rgb2gray.setFilterName("RGB2Gray");
+
+		BeforeErodeDilateFilter beforeErode = new BeforeErodeDilateFilter();
+		beforeErode.setFilterName("Before dilation");
+
+		ThresholdFilter thresholdFilter = new ThresholdFilter();
+		thresholdFilter.setFilterName("Threshold");
+
+		AfterErodeDilateFilter afterErode = new AfterErodeDilateFilter();
+		afterErode.setFilterName("After dilation");
+
+		BlobDetectionFilter blobDetectionFilter = new BlobDetectionFilter();
+		blobDetectionFilter.setFilterName("Blob detection");
+
+		DetectAndDrawPupilFilter detectAndDrawPupilFilter = new DetectAndDrawPupilFilter();
+		detectAndDrawPupilFilter.setFilterName("Detect and draw");
+
+		CoordinatesFilter coordinatesFilter = new CoordinatesFilter();
+		coordinatesFilter.setFilterName("Coordinates");
+
+		mPreviewFilter = new PreviewFilter(getActivity(), mImageView);
+		mPreviewFilter.setFilterName("Preview filter");
+
+		core.addFilter(rgb2gray);
+		core.addFilter(beforeErode);
+		core.addFilter(thresholdFilter);
+		core.addFilter(afterErode);
+		core.addFilter(blobDetectionFilter);
+		core.addFilter(detectAndDrawPupilFilter);
+		core.addFilter(coordinatesFilter);
+		core.addFilter(mPreviewFilter);
 
 	}
 
@@ -177,10 +305,8 @@ public class MainFragment extends Fragment {
 			break;
 		}
 
-//		PreviewProtocol outProtocol = new PreviewProtocol(getActivity(), mImageView);
 		OutputNetTCPProtocol outProtocol = new OutputNetTCPProtocol(5000);
 		IORWDefaultImpl io_rw = new IORWDefaultImpl(inProtocol, outProtocol);
-
 
 		core = new ProcessingCore(10);
 		ioController = new IOAndroidController(core, io_rw, io_rw);
@@ -191,13 +317,20 @@ public class MainFragment extends Fragment {
 	public void onResume() {
 		super.onResume();
 		Log.i(TAG, "OnResume");
-		
-		createProtocols();
-		
-		setUpAlgorithm();
 
-		core.start(3);
-//		core.enableStatistics(new StatistcsLogger(), 5000);
+		createProtocols();
+
+		setUpParallel2Composites();
+//		 setUpParallelAlgorithm();
+//		 setUpSequentialAlgorithm();
+////		setUpParallelAlgorithm2();
+//		Timer.getInstance();
+//		
+//		core.addFilter(new TestFilter(this.getActivity()));
+
+		core.start(2);
+//		core.enableStatistics(new FileStatisticsLogger(
+//				FileStatisticsLogger.STATISTICS_FULL_PATH), 5000);
 		ioController.start();
 	}
 
