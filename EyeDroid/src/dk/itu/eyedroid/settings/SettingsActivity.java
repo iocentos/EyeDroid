@@ -14,7 +14,28 @@ import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 import dk.itu.eyedroid.R;
-
+/*
+ * The class provides a screen with sliders for all the configuration
+ * parameters of the image processing methods. This can be used in order
+ * to change the configuration at runtime . Once the optimum configuration 
+ * has been found the values should be hardcoded and the settings activity 
+ * should be removed from the project. 
+ * 
+ * It is only used for development purposes.
+ * 
+ * WARNING
+ * There is no checking for the values before they are set in the
+ * image processing methods. The settings activity is using sliders to 
+ * set all these values usually ranging from 0 to max.
+ * The real ranges of these values are not the same so if not set
+ * to correct value it might cause the application to crash.
+ * 
+ * The default configuration of EyeDroid has been configured with these
+ * values based on experimentation. If you wish to experiment to tune 
+ * the image processing methods use the settings activity to change the values
+ * at runtime and once you find your configuration you can hardcode it both 
+ * in the Config file and in the jni/Config.h file.
+ */
 public class SettingsActivity extends Activity {
 
 	public static final String TAG = "Settings";

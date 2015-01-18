@@ -11,10 +11,20 @@ import android.util.Log;
 import dk.itu.spcl.jlpf.core.CoreStatistics;
 import dk.itu.spcl.jlpf.core.ProcessingCore;
 
+/*
+ *A logger that can be user with the processing core.
+ *The logger will print in a nice format the state of the core at a specific moment.
+ *It will print the size of the queues in every step, the number of
+ *executions of each filter and the average execution time of each filter 
+ *in an external file that can be reviewed later.
+ *
+ *It is enabled as follows with 5000 being the interval for the statistics thread
+ *		core.enableStatistics(new FileStatisticsLogger(
+ *		FileStatisticsLogger.STATISTICS_FULL_PATH), 5000);
+ */
 public class FileStatisticsLogger implements ProcessingCore.StatisticsCallback {
 
 	private String mFileName;
-	
 	
 	public static final String FILE_NAME = "/Skata";
 	
@@ -22,7 +32,6 @@ public class FileStatisticsLogger implements ProcessingCore.StatisticsCallback {
 	
     public static final String STATISTICS_FULL_PATH = 
     		Environment.getExternalStorageDirectory().getAbsolutePath().concat(FILE_NAME);
-    
     
     private final boolean mFileExists;
 

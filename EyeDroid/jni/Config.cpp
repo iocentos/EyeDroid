@@ -7,6 +7,10 @@
 
 #include "Config.h"
 
+
+/*
+ * Default EyeDroid image processing methods configuration.
+ */
 namespace IMGP {
 volatile int Config::ErodeDilate::BEFORE_THRESHOLD_ERODE = 3;
 volatile int Config::ErodeDilate::BEFORE_THRESHOLD_DILATE = 2;

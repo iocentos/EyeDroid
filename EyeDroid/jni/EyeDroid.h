@@ -22,6 +22,9 @@
 
 namespace IMGP {
 
+/*
+ * All the image processing methods used in EyeDroid.
+ */
 class EyeDroid {
 private:
 

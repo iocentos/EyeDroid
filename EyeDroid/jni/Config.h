@@ -10,6 +10,12 @@
 
 namespace IMGP {
 
+/*
+ * Configuration file for all the image processing methods.
+ * These values can be accessed from java at runtime to change the
+ * configuration.
+ */
+
 class Config {
 private:
 

@@ -1,5 +1,25 @@
 package dk.itu.eyedroid.settings;
 
+/*
+ *This class is a wrapper around the Config.h file in the c++ code.
+ *The getters and setters of the class will modify the configuration
+ *of the image processing c++ methods at runtime.
+ *
+ * The class is used by the settings activity.
+ * 
+ * WARNING
+ * There is no checking for the values before they are set in the
+ * image processing methods. The settings activity is using sliders to 
+ * set all these values usually ranging from 0 to max.
+ * The real ranges of these values is not the same so if not set
+ * to correct value it might cause the application to crash.
+ * 
+ * The default configuration of EyeDroid has been configured with these
+ * values based on experimentation. If you wish to experiment to tune 
+ * the image processing methods use the settings activity to change the values
+ * at runtime and once you find your configuration you can hardcode it both here
+ * in the Config file and in the jni/Config.h file.
+ */
 public class Config {
 
 	public static final int BEFORE_THRESHOLD_ERODE = 0;
