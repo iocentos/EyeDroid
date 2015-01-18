@@ -2,10 +2,11 @@ package dk.itu.eyedroid.io.protocols;
 
 import java.io.IOException;
 
+import android.util.Log;
 import dk.itu.eyedroid.Constants;
+import dk.itu.eyedroid.io.NetClientConfig;
 import dk.itu.eyedroid.io.Server;
 import dk.itu.spcl.jlpf.common.Bundle;
-import dk.itu.spcl.jlpf.io.IOProtocolWriter;
 
 /**
  * UDP/IP output protocol implementation. Used to send processed bundle results
@@ -53,13 +54,20 @@ public class OutputNetProtocolUDP extends OutputNetProtocol   {
 			if(super.mController.isCalibrating.get()){
 				//Set sampled values for calibration
 				super.setXY(x, y);
-			}else
+			}else{
+//				Log.i(NetClientConfig.TAG ,"Reading message from client");
 				super.mController.processMessage(super.mServer.read(false));
+			}
 
 			//Send coordinates if system is calibrated
 			//Check for pupil detection
-			if (x != -1 && y != -1 && super.mController.isStarted.get())
+			if (x != -1 && y != -1 && super.mController.isStarted.get()){
+				Log.i(NetClientConfig.TAG ,"Sending coordinates to client. Calibration is finished here");
+//				 int[] xy = super.mController.mCalibrationController.getCalibrationMapper().map(x, y);
+
+//				 Log.i(NetClientConfig.TAG, "Coords orig : " + x  + "," + y + "  client : " + xy[0] + "," + xy[1]);
 				super.sendCoordinates(x,y);
+			}
 		}
 		bundle = null;
 	}

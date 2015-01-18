@@ -7,6 +7,9 @@ import org.opencv.core.MatOfPoint2f;
 import org.opencv.core.Point;
 import org.opencv.core.Rect;
 
+import android.util.Log;
+import dk.itu.eyedroid.io.NetClientConfig;
+
 /*
  * The class supposes that is working with a matrix of NxN calibration points.
  */
@@ -61,8 +64,12 @@ public class GlassCalibrationMapper extends CalibrationMapper{
 
 		MatOfPoint2f newSource = new MatOfPoint2f(source);
 		MatOfPoint2f newDestination = new MatOfPoint2f(destination);
-
+		
 		homography = Calib3d.findHomography(newSource, newDestination, 0, 5);
+		
+		if(homography != null){
+			Log.i(NetClientConfig.TAG, "Homography is not null" + homography.rows() + " " + homography.cols());
+		}
 	}
 
 	@Override
@@ -99,23 +106,25 @@ public class GlassCalibrationMapper extends CalibrationMapper{
 	private int[] map(float inputX, float inputY, double errorX, double errorY) {
 
 		Point output = new Point();
-		Mat src = new Mat(3, 1, CvType.CV_32F);
-		Mat dst = new Mat(3, 1, CvType.CV_32F);
+		Mat src = new Mat(1, 3, CvType.CV_32F);
+		Mat dst = new Mat(1, 3, CvType.CV_32F);
 
 		src.put(0, 0, inputX);
-		src.put(1, 0, inputY);
-		src.put(2, 0, 0);
+		src.put(0, 1, inputY);
+		src.put(0, 2, 1);
 
 		// TODO check also the homography * src
+//		Mat newHomo = homography.col(0);
+		
 		dst = homography.mul(src);
 
 		float[] in = new float[1];
 
 		dst.get(0, 0, in);
 		float dstX = in[0];
-		dst.get(1, 0, in);
+		dst.get(0, 1, in);
 		float dstY = in[0];
-		dst.get(2, 0, in);
+		dst.get(0, 2, in);
 		float dstZ = in[0];
 
 		output.x = dstX / dstZ;

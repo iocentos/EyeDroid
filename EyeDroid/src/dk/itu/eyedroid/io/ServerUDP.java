@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.SocketException;
+import java.net.SocketTimeoutException;
+
+import android.util.Log;
 
 public class ServerUDP extends Server{
 
@@ -16,7 +19,7 @@ public class ServerUDP extends Server{
 	}
 
 	private DatagramSocket mServerSocket; 								// Server socket for new incomming
-	private static final int SERVER_SOCKET_ACCEPT_TIME_OUT = 2000;		// Receieve timeout
+	private static final int SERVER_SOCKET_ACCEPT_TIME_OUT = 1;		// Receieve timeout
 	
 	/**
 	 * Start server
@@ -34,18 +37,38 @@ public class ServerUDP extends Server{
 	 */
 	@Override
 	public int[] read(boolean block) throws IOException{
-		if(mServerSocket.getReceiveBufferSize() >= NetClientConfig.MSG_SIZE || !block){
+		
+		
+		try{
 			byte[] receiveData = new byte[NetClientConfig.MSG_SIZE];
 			DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
 			mServerSocket.receive(receivePacket);
-			
-			//Set last message client network data
 			super.mClientIPAddress = receivePacket.getAddress();
 			super.mClientPort = receivePacket.getPort();
+			Log.i(NetClientConfig.TAG ,"Server received a message from the client");
 			
 			return new int[]{Utils.toInt(receivePacket.getData(),0),Utils.toInt(receivePacket.getData(),4),Utils.toInt(receivePacket.getData(),8)};		
-		}else
+		}catch (SocketTimeoutException e){
 			return new int[]{-1,-1,-1};
+		}
+			
+			
+		
+//		
+//		
+//		if(mServerSocket.getReceiveBufferSize() >= NetClientConfig.MSG_SIZE || block){
+//			byte[] receiveData = new byte[NetClientConfig.MSG_SIZE];
+//			DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
+//			mServerSocket.receive(receivePacket);
+//			Log.i(NetClientConfig.TAG ,"Server received a message from the client");
+//			
+//			//Set last message client network data
+//			super.mClientIPAddress = receivePacket.getAddress();
+//			super.mClientPort = receivePacket.getPort();
+//			
+//			return new int[]{Utils.toInt(receivePacket.getData(),0),Utils.toInt(receivePacket.getData(),4),Utils.toInt(receivePacket.getData(),8)};		
+//		}else
+//			return new int[]{-1,-1,-1};
 	}
 
 	/**

@@ -20,8 +20,8 @@ public abstract class OutputNetProtocolController implements CalibrationCallback
 	 */
 	public OutputNetProtocolController(NETCalibrationController calibration){
 		mCalibrationController = calibration;
-		isCalibrating = new AtomicBoolean();
-		isStarted = new AtomicBoolean();
+		isCalibrating = new AtomicBoolean(false);
+		isStarted = new AtomicBoolean(false);
 	}
 	
 	/**

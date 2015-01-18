@@ -1,11 +1,13 @@
 package dk.itu.eyedroid.io.calibration;
 
 import java.io.IOException;
+import java.net.SocketTimeoutException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import org.opencv.core.Point;
 
+import android.util.Log;
 import dk.itu.eyedroid.io.NetClientConfig;
 import dk.itu.eyedroid.io.Server;
 import dk.itu.eyedroid.io.protocols.OutputNetProtocol;
@@ -20,8 +22,7 @@ public class NETCalibrationControllerGlass extends NETCalibrationController {
 	 * @param mapper
 	 *            Calibration mapper
 	 */
-	public NETCalibrationControllerGlass(Server server,
-			CalibrationMapper mapper) {
+	public NETCalibrationControllerGlass(Server server, CalibrationMapper mapper) {
 		super(server, mapper);
 	}
 
@@ -55,7 +56,11 @@ public class NETCalibrationControllerGlass extends NETCalibrationController {
 					for (int i = 0; i < NetClientConfig.NO_POINTS; i++) {
 
 						message = server.read(true);
+						while (message[0] == -1) {
+							message = server.read(true);
+						}
 						if (NetClientConfig.TO_EYEDROID_READY != message[0]) {
+							Log.i(NetClientConfig.TAG, "Mesasge is not TO_EYEDROID_READY " + message[0]);
 							error = true;
 							break;
 						}
