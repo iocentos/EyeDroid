@@ -1,4 +1,4 @@
-package dk.itu.eyedroid;
+package dk.itu.eyedroid.io.calibration;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -55,10 +55,6 @@ public class GlassCalibrationMapper extends CalibrationMapper{
 			destination.fromList(destinationPoints);
 	}
 
-	/*
-	 * After all the source and destination points have been set call this
-	 * method to create the homography.
-	 */
 	@Override
 	public void doCalibration() {
 		if (destinationPoints.size() != numberOfCalibrationPoints
@@ -73,9 +69,6 @@ public class GlassCalibrationMapper extends CalibrationMapper{
 		homography = Calib3d.findHomography(newSource, newDestination, 0, 5);
 	}
 
-	/*
-	 * Creates the calibration points and saves them in the array
-	 */
 	@Override
 	protected void computeCalibrationPoints(int n, int m) {
 		presentationScreen = new Rect(new Point(0, 0), new Point(
@@ -107,11 +100,6 @@ public class GlassCalibrationMapper extends CalibrationMapper{
 		return map(inputX, inputY, gazeErrorX, gazeErrorY);
 	}
 
-	/*
-	 * Actual mapping method. Arguments are the input coordinates taken from
-	 * server. The Absolute coordinates given by the core. Any previous errors
-	 * are also passed in order to be subtracted.
-	 */
 	private int[] map(float inputX, float inputY, double errorX, double errorY) {
 
 		Point output = new Point();
@@ -148,11 +136,6 @@ public class GlassCalibrationMapper extends CalibrationMapper{
 		return o;
 	}
 
-	/*
-	 * Calculates the error point from the center of the screen. Updates the
-	 * error values so that the next time the map method is called the errors
-	 * are subtracted.
-	 */
 	@Override
 	public void correctError(int inputX , int inputY) {
 

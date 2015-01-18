@@ -1,0 +1,60 @@
+package dk.itu.eyedroid.io.protocols;
+
+import java.io.IOException;
+
+import dk.itu.eyedroid.io.NetClientConfig;
+import dk.itu.eyedroid.io.Server;
+
+public abstract class OutputNetProtocol {
+
+	protected final OutputNetProtocolController  mController; //Message controller
+	protected final Server mServer;							// UDP server
+	public Object lock;									// Lock used to provide atomic access to sampled coordinates
+	public int X;										// Sampled X coordinate
+	public int Y;										// Sampled Y coordinate
+	
+	/**
+	 * Deafult constructor
+	 * 
+	 * @param server Server
+	 * @param server Controller
+	 */
+	public OutputNetProtocol(Server server, OutputNetProtocolController controller) {
+		mController = controller;
+		mServer = server;
+		lock = new Object();
+	}
+	
+	/**
+	 * Get X and Y sampeld values
+	 * @return X and Y coordinates
+	 */
+	protected int[] getXY(){
+		synchronized(lock){
+			return new int[]{X,Y};
+		}
+	}
+	
+	/**
+	 * Set X and Y sampeld values
+	 */
+	protected void setXY(int x, int y){
+		synchronized(lock){
+			X = x;
+			Y = y;
+		}
+	}
+	
+	/**
+	 * Send coordinates to client
+	 * @param x X-coordinate
+	 * @param y Y-coordinate
+	 * @throws IOException 
+	 */
+	protected void sendCoordinates(int x, int y) throws IOException{
+		if(mController.mUseHMGT)
+			mServer.send(NetClientConfig.TO_CLIENT_GAZE_HMGT,x,y);
+		else
+			mServer.send(NetClientConfig.TO_CLIENT_GAZE_RGT,x,y);
+	}
+}

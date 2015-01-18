@@ -1,4 +1,4 @@
-package dk.itu.eyedroid;
+package dk.itu.eyedroid.io.calibration;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -73,12 +73,29 @@ public abstract class CalibrationMapper {
 		isCalibrated = true;
 	}
 
+	/*
+	 * Actual mapping method. Arguments are the input coordinates taken from
+	 * server. The Absolute coordinates given by the core. Any previous errors
+	 * are also passed in order to be subtracted.
+	 */
 	public abstract int[] map(float inputX, float inputY);
 
+	/*
+	 * After all the source and destination points have been set call this
+	 * method will perform the calibration.
+	 */
 	protected abstract void doCalibration();
 
+	/*
+	 * Creates the calibration points and saves them in the array
+	 */
 	protected abstract void computeCalibrationPoints(int n, int m);
 
+	/*
+	 * Calculates the error point from the center of the screen. Updates the
+	 * error values so that the next time the map method is called the errors
+	 * are subtracted.
+	 */
 	public abstract void correctError(int inputX, int inputY);
 
 	public boolean isCalibrated() {

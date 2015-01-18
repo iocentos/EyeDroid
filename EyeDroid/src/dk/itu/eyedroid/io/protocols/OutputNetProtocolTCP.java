@@ -4,11 +4,10 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.nio.ByteBuffer;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import dk.itu.eyedroid.Constants;
-import dk.itu.eyedroid.NetClientConfig;
+import dk.itu.eyedroid.io.Utils;
 import dk.itu.spcl.jlpf.common.Bundle;
 import dk.itu.spcl.jlpf.io.IOProtocolWriter;
 
@@ -17,17 +16,17 @@ import dk.itu.spcl.jlpf.io.IOProtocolWriter;
  * to a connected client. Sends X and Y gaze position coordinates as result.
  */
 
-public class OutputNetTCPProtocol implements IOProtocolWriter {
+public class OutputNetProtocolTCP implements IOProtocolWriter {
 
 	private final int mPort; 					// Server port
 	private ServerSocket serverSocket; 			// Server socket for new incomming
-												// connections
+	// connections
 	private Socket mSocket; 					// Client socket
 	private OutputStream mOutput; 				// Spcket output stream
 	private AtomicBoolean isConnectionSet; 		// Client connection status
 	private boolean isWaitingForConnection;		// Server waiting for client status
 	private boolean isSocketServerClosed; 		// Server socket was intentionally closed.
-	
+
 	private static final int SERVER_SOCKET_ACCEPT_TIME_OUT = 10;
 
 	/**
@@ -35,7 +34,7 @@ public class OutputNetTCPProtocol implements IOProtocolWriter {
 	 * 
 	 * @param port Server listener port
 	 */
-	public OutputNetTCPProtocol(int port) {
+	public OutputNetProtocolTCP(int port) {
 		mPort = port;
 		isConnectionSet = new AtomicBoolean();
 		isConnectionSet.set(false);
@@ -72,7 +71,7 @@ public class OutputNetTCPProtocol implements IOProtocolWriter {
 			serverSocket.close();
 			isWaitingForConnection = false;
 			isConnectionSet.set(true);
-		
+
 		}
 		catch (IOException e) {
 			//do nothing will be handled from cleanup
@@ -93,7 +92,9 @@ public class OutputNetTCPProtocol implements IOProtocolWriter {
 
 			if (x != -1 && y != -1) {
 
-				byte[] output = generateOutput(x, y);
+				byte[] output;
+
+				output = Utils.generateOutput(0,x, y);
 
 				synchronized (mSocket) {
 					mOutput.write(output);
@@ -133,25 +134,4 @@ public class OutputNetTCPProtocol implements IOProtocolWriter {
 		}
 	}
 
-	/**
-	 * Create byte[] output containing the gaze position coordinates.
-	 * 
-	 * @param x
-	 *            X coordinate
-	 * @param y
-	 *            Y coordinate
-	 * @return Byte array.
-	 */
-	private byte[] generateOutput(int x, int y) {
-		ByteBuffer b = ByteBuffer.allocate(NetClientConfig.MSG_SIZE);
-		
-		if(NetClientConfig.USE_HMGT)
-			b.putInt(0, NetClientConfig.TO_CLIENT_GAZE_HMGT);
-		else
-			b.putInt(0, NetClientConfig.TO_CLIENT_GAZE_RGT);
-		
-		b.putInt(4, x);
-		b.putInt(8, y);
-		return b.array();
-	}
 }

@@ -39,7 +39,7 @@ import dk.itu.eyedroid.io.IOAndroidController;
 import dk.itu.eyedroid.io.protocols.InputNetStreamingProtocol;
 import dk.itu.eyedroid.io.protocols.InputStreamCamera;
 import dk.itu.eyedroid.io.protocols.InputStreamUSBCamera;
-import dk.itu.eyedroid.io.protocols.OutputNetTCPProtocol;
+import dk.itu.eyedroid.io.protocols.OutputNetProtocolTCP;
 import dk.itu.spcl.jlpf.core.Filter;
 import dk.itu.spcl.jlpf.core.FilterComposite;
 import dk.itu.spcl.jlpf.core.ProcessingCore;
@@ -131,7 +131,7 @@ public class MainFragment extends Fragment {
 			break;
 		}
 
-		OutputNetTCPProtocol outProtocol = new OutputNetTCPProtocol(5000);
+		OutputNetProtocolTCP outProtocol = new OutputNetProtocolTCP(5000);
 		IORWDefaultImpl io_rw = new IORWDefaultImpl(inProtocol, outProtocol);
 
 		return io_rw;
