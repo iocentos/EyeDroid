@@ -11,7 +11,6 @@ import dk.itu.eyedroid.filters.PreviewFilter;
 import dk.itu.eyedroid.filters.RGB2GRAYFilter;
 import dk.itu.eyedroid.filters.ThresholdFilter;
 import dk.itu.eyedroid.io.IOAndroidController;
-import dk.itu.spcl.jlpf.core.Filter;
 import dk.itu.spcl.jlpf.core.FilterComposite;
 import dk.itu.spcl.jlpf.core.ProcessingCore;
 import dk.itu.spcl.jlpf.io.IOController;

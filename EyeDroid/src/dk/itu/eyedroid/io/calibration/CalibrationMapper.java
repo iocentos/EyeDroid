@@ -1,11 +1,12 @@
 package dk.itu.eyedroid.io.calibration;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
 import org.opencv.core.Point;
 import org.opencv.core.Rect;
+
+import android.util.SparseArray;
 
 public abstract class CalibrationMapper {
 
@@ -26,7 +27,7 @@ public abstract class CalibrationMapper {
 	 * points one by one to the user for a few seconds so that the server can
 	 * sample the coordinates.
 	 */
-	protected HashMap<Integer, Point> calibPoints;
+	protected SparseArray<Point> calibPoints;
 
 	/*
 	 * The rectangle of the screen on the client.
@@ -50,8 +51,8 @@ public abstract class CalibrationMapper {
 		PRESENTATION_SCREEN_HEIGHT = presentationScreenHeight;
 		PRESENTATION_SCREEN_WIDTH = presentationScreenWidth;
 		numberOfCalibrationPoints = n * m;
-		
-		calibPoints = new HashMap<Integer, Point>();
+	
+		calibPoints = new SparseArray<Point>();
 
 		computeCalibrationPoints(n, m);
 

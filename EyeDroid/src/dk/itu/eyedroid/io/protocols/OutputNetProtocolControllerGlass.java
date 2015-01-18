@@ -4,11 +4,9 @@ import java.io.IOException;
 
 import dk.itu.eyedroid.io.NetClientConfig;
 import dk.itu.eyedroid.io.calibration.NETCalibrationController;
+import dk.itu.eyedroid.io.calibration.NETCalibrationController.CalibrationCallbacks;
 
-public class OutputNetProtocolControllerGlass extends OutputNetProtocolController{
-
-	//TODO use calibration object	
-	private Boolean isCalibrated;					// True when system is calibrated				
+public class OutputNetProtocolControllerGlass extends OutputNetProtocolController {		
 
 	/**
 	 * Default constructor
@@ -27,22 +25,16 @@ public class OutputNetProtocolControllerGlass extends OutputNetProtocolControlle
 	public void processMessage(int[] message) throws IOException{
 		switch(message[0]){
 		case NetClientConfig.TO_EYEDROID_CALIBRATE_DISPLAY_4:	//Start calibration
-			isCalibrated = false;
-			super.isStarted.set(false);
-			super.isCalibrating.set(true);
-			if(super.mCalibration.calibrate())
-				isCalibrated = false;
-			
-			super.isCalibrating.set(false);
+			super.mCalibrationController.calibrate();
 			break;
 		case NetClientConfig.TO_EYEDROID_STREAM_GAZE_HMGT_START:
-			if(isCalibrated){
+			if(super.mCalibrationController.getCalibrationMapper().isCalibrated()){
 				super.mUseHMGT = true;
 				super.isStarted.set(true);
 			}
 			break;
 		case NetClientConfig.TO_EYEDROID_STREAM_GAZE_RGT_START:
-			if(isCalibrated){
+			if(super.mCalibrationController.getCalibrationMapper().isCalibrated()){
 				super.mUseHMGT = false;
 				super.isStarted.set(true);
 			}
@@ -54,6 +46,25 @@ public class OutputNetProtocolControllerGlass extends OutputNetProtocolControlle
 		default:
 			break;
 		}
+	}
+
+	@Override
+	public void onCalibrationStarted() {
+		super.isStarted.set(false);
+		super.isCalibrating.set(true);
+		
+	}
+
+	@Override
+	public void onCalibrationFinished() {
+		super.isCalibrating.set(false);
+		
+	}
+
+	@Override
+	public void onCalibrationError() {
+		super.isStarted.set(false);
+		super.isCalibrating.set(false);
 	}
 
 }

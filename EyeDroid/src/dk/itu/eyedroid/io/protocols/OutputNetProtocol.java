@@ -4,8 +4,9 @@ import java.io.IOException;
 
 import dk.itu.eyedroid.io.NetClientConfig;
 import dk.itu.eyedroid.io.Server;
+import dk.itu.spcl.jlpf.io.IOProtocolWriter;
 
-public abstract class OutputNetProtocol {
+public abstract class OutputNetProtocol implements IOProtocolWriter{
 
 	protected final OutputNetProtocolController  mController; //Message controller
 	protected final Server mServer;							// UDP server
@@ -29,7 +30,7 @@ public abstract class OutputNetProtocol {
 	 * Get X and Y sampeld values
 	 * @return X and Y coordinates
 	 */
-	protected int[] getXY(){
+	public int[] getXY(){
 		synchronized(lock){
 			return new int[]{X,Y};
 		}

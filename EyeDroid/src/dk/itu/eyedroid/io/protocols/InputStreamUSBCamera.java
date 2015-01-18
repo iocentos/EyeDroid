@@ -6,12 +6,10 @@ import org.opencv.android.Utils;
 import org.opencv.core.Mat;
 import org.opencv.core.Rect;
 
-import dk.itu.eyedroid.Constants;
-import dk.itu.eyedroid.R;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.util.Log;
+import dk.itu.eyedroid.Constants;
 import dk.itu.spcl.jlpf.common.Bundle;
 import dk.itu.spcl.jlpf.io.IOProtocolReader;
 
@@ -73,7 +71,7 @@ public class InputStreamUSBCamera implements IOProtocolReader {
 	@Override
 	public void init() throws IOException {
 
-		Process sh = Runtime.getRuntime().exec(
+		Runtime.getRuntime().exec(
 				new String[] {
 						"su",
 						"-c",

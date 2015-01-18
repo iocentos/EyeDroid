@@ -3,18 +3,14 @@ package dk.itu.eyedroid.io.protocols;
 import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
 
-import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.CameraBridgeViewBase;
 import org.opencv.android.CameraBridgeViewBase.CvCameraViewFrame;
 import org.opencv.android.CameraBridgeViewBase.CvCameraViewListener2;
-import org.opencv.android.LoaderCallbackInterface;
-import org.opencv.android.OpenCVLoader;
 import org.opencv.android.Utils;
 import org.opencv.core.Mat;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.util.Log;
 import dk.itu.eyedroid.Constants;
 import dk.itu.eyedroid.filters.RGB2GRAYFilter;
@@ -27,7 +23,6 @@ public class InputStreamCamera implements IOProtocolReader,
 	private static final String TAG = "InputStreamCamera";
 
 	private CameraBridgeViewBase mOpenCvCameraView;
-	private Context mContext;
 
 	private int mCameraId;
 
@@ -41,7 +36,6 @@ public class InputStreamCamera implements IOProtocolReader,
 
 	public InputStreamCamera(Context context, CameraBridgeViewBase camera,
 			int camId) {
-		mContext = context;
 		mOpenCvCameraView = camera;
 		mCameraId = camId;
 		startGate = new CountDownLatch(1);

@@ -4,10 +4,11 @@ import java.io.IOException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import dk.itu.eyedroid.io.calibration.NETCalibrationController;
+import dk.itu.eyedroid.io.calibration.NETCalibrationController.CalibrationCallbacks;
 
-public abstract class OutputNetProtocolController {
+public abstract class OutputNetProtocolController implements CalibrationCallbacks {
 
-	protected NETCalibrationController mCalibration;// Calibration controller
+	protected NETCalibrationController mCalibrationController;// Calibration controller
 	protected Boolean mUseHMGT;						// HMGT or RGT mode
 	public AtomicBoolean isCalibrating;				// True when calibrating is in process
 	public AtomicBoolean isStarted;					// True when client requested coordinates
@@ -18,7 +19,7 @@ public abstract class OutputNetProtocolController {
 	 * @param calibration Calibration controller
 	 */
 	public OutputNetProtocolController(NETCalibrationController calibration){
-		mCalibration = calibration;
+		mCalibrationController = calibration;
 		isCalibrating = new AtomicBoolean();
 		isStarted = new AtomicBoolean();
 	}

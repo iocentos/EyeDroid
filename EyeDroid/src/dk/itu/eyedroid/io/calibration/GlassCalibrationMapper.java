@@ -1,9 +1,5 @@
 package dk.itu.eyedroid.io.calibration;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-
 import org.opencv.calib3d.Calib3d;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;

@@ -4,12 +4,10 @@ package dk.itu.eyedroid.demo;
 import java.io.IOException;
 
 import org.opencv.android.CameraBridgeViewBase;
+import org.opencv.core.Point;
 
-import statistics.FileStatisticsLogger;
-import statistics.Timer;
 import android.app.Activity;
 import android.app.Fragment;
-import android.graphics.Bitmap;
 import android.hardware.Camera.CameraInfo;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,34 +18,25 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import dk.itu.eyedroid.Constants;
 import dk.itu.eyedroid.EyeDroid;
 import dk.itu.eyedroid.R;
-import dk.itu.eyedroid.R.drawable;
-import dk.itu.eyedroid.R.id;
-import dk.itu.eyedroid.R.layout;
-import dk.itu.eyedroid.R.menu;
-import dk.itu.eyedroid.filters.AfterErodeDilateFilter;
-import dk.itu.eyedroid.filters.BeforeErodeDilateFilter;
-import dk.itu.eyedroid.filters.BlobDetectionFilter;
-import dk.itu.eyedroid.filters.CoordinatesFilter;
-import dk.itu.eyedroid.filters.DetectAndDrawPupilFilter;
 import dk.itu.eyedroid.filters.PreviewFilter;
-import dk.itu.eyedroid.filters.RGB2GRAYFilter;
-import dk.itu.eyedroid.filters.TestFilter;
-import dk.itu.eyedroid.filters.ThresholdFilter;
-import dk.itu.eyedroid.io.IOAndroidController;
-import dk.itu.eyedroid.io.protocols.InputNetStreamingProtocol;
+import dk.itu.eyedroid.io.Server;
+import dk.itu.eyedroid.io.ServerUDP;
+import dk.itu.eyedroid.io.calibration.CalibrationMapper;
+import dk.itu.eyedroid.io.calibration.GlassCalibrationMapper;
+import dk.itu.eyedroid.io.calibration.NETCalibrationController;
+import dk.itu.eyedroid.io.calibration.NETCalibrationControllerGlass;
 import dk.itu.eyedroid.io.protocols.InputStreamCamera;
 import dk.itu.eyedroid.io.protocols.InputStreamUSBCamera;
+import dk.itu.eyedroid.io.protocols.OutputNetProtocol;
+import dk.itu.eyedroid.io.protocols.OutputNetProtocolController;
+import dk.itu.eyedroid.io.protocols.OutputNetProtocolControllerGlass;
 import dk.itu.eyedroid.io.protocols.OutputNetProtocolTCP;
-import dk.itu.spcl.jlpf.core.Filter;
-import dk.itu.spcl.jlpf.core.FilterComposite;
-import dk.itu.spcl.jlpf.core.ProcessingCore;
-import dk.itu.spcl.jlpf.io.IOController;
+import dk.itu.eyedroid.io.protocols.OutputNetProtocolUDP;
 import dk.itu.spcl.jlpf.io.IOProtocolReader;
-import dk.itu.spcl.jlpf.io.IOProtocolWriter;
 import dk.itu.spcl.jlpf.io.IORWDefaultImpl;
-import dk.itu.spcl.jlpf.io.InputReader;
 
 public class MainFragment extends Fragment {
 
@@ -59,6 +48,9 @@ public class MainFragment extends Fragment {
 	public static final int FRONT_CAMERA = 0;
 	public static final int BACK_CAMERA = 1;
 	public static final int USB_CAMERA = 2;
+	
+	private final static int GLASS_SCREEN_WIDTH = 640;
+	private final static int GLASS_SCREEN_HEIGHT = 360;
 
 	private View mRootView;
 	private ImageView mImageView;
@@ -130,8 +122,23 @@ public class MainFragment extends Fragment {
 		default:
 			break;
 		}
+		
+		Server server = new ServerUDP(5000);
+		CalibrationMapper mapper = new GlassCalibrationMapper(2, 2, GLASS_SCREEN_HEIGHT, GLASS_SCREEN_HEIGHT);
+		NETCalibrationController calibrationController = new NETCalibrationControllerGlass(server, mapper);
+		
+		OutputNetProtocolController controller = new OutputNetProtocolControllerGlass(calibrationController);
+		
+		calibrationController.setCalibrationCallbacks(controller);
+		
+		OutputNetProtocol outProtocol = new OutputNetProtocolUDP(server, controller);
+		
+		calibrationController.setOutputProtocol(outProtocol);
+		
+		
+		
 
-		OutputNetProtocolTCP outProtocol = new OutputNetProtocolTCP(5000);
+//		OutputNetProtocolTCP outProtocol = new OutputNetProtocolTCP(5000);
 		IORWDefaultImpl io_rw = new IORWDefaultImpl(inProtocol, outProtocol);
 
 		return io_rw;

@@ -12,7 +12,7 @@ import dk.itu.spcl.jlpf.io.IOProtocolWriter;
  * to a connected client. Sends X and Y gaze position coordinates as result.
  */
 
-public class OutputNetProtocolUDP extends OutputNetProtocol implements IOProtocolWriter  {
+public class OutputNetProtocolUDP extends OutputNetProtocol   {
 
 
 	/**
