@@ -1,4 +1,4 @@
-package statistics;
+package dk.itu.eyedroid.statistics;
 
 import android.util.Log;
 import dk.itu.spcl.jlpf.core.CoreStatistics;

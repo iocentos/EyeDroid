@@ -1,6 +1,6 @@
 package dk.itu.eyedroid.filters;
 
-import statistics.Timer;
+import dk.itu.eyedroid.statistics.Timer;
 import android.content.Context;
 import android.widget.Toast;
 import dk.itu.eyedroid.demo.MainActivity;

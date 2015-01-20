@@ -1,4 +1,4 @@
-package statistics;
+package dk.itu.eyedroid.statistics;
 
 import java.io.File;
 import java.io.FileWriter;

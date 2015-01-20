@@ -12,7 +12,7 @@ import dk.itu.spcl.jlpf.io.IOProtocolReader;
 /**
  *  Network streaming protocol reader abstraction
  */
-public class InputNetStreamingProtocol implements IOProtocolReader{
+public class InputStreamNETProtocol implements IOProtocolReader{
 	
 	private String mUrl;					//Streaming URL
 	private InputStreamMJPEG mInputStream;	//Input stream instance
@@ -22,7 +22,7 @@ public class InputNetStreamingProtocol implements IOProtocolReader{
 	 * @param url Streaming URL
 	 * @throws IOException
 	 */
-	public InputNetStreamingProtocol(String url) {
+	public InputStreamNETProtocol(String url) {
 		mUrl = url;
 	}
 

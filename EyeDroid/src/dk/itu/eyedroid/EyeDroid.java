@@ -1,6 +1,6 @@
 package dk.itu.eyedroid;
 
-import statistics.FileStatisticsLogger;
+import dk.itu.eyedroid.statistics.FileStatisticsLogger;
 import android.content.Context;
 import android.widget.ImageView;
 import dk.itu.eyedroid.filters.AfterErodeDilateFilter;
