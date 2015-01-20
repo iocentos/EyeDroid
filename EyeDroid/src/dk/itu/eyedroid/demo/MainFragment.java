@@ -1,5 +1,10 @@
 package dk.itu.eyedroid.demo;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import org.opencv.android.CameraBridgeViewBase;
 
 import android.app.Activity;
@@ -17,8 +22,6 @@ import android.widget.ImageView;
 import dk.itu.eyedroid.EyeDroid;
 import dk.itu.eyedroid.R;
 import dk.itu.eyedroid.filters.PreviewFilter;
-import dk.itu.eyedroid.io.Server;
-import dk.itu.eyedroid.io.ServerUDP;
 import dk.itu.eyedroid.io.calibration.CalibrationMapper;
 import dk.itu.eyedroid.io.calibration.GlassCalibrationMapper;
 import dk.itu.eyedroid.io.calibration.NETCalibrationController;
@@ -29,6 +32,7 @@ import dk.itu.eyedroid.io.protocols.OutputNetProtocol;
 import dk.itu.eyedroid.io.protocols.OutputNetProtocolController;
 import dk.itu.eyedroid.io.protocols.OutputNetProtocolControllerGlass;
 import dk.itu.eyedroid.io.protocols.OutputNetProtocolUDP;
+import dk.itu.eyedroid.io.protocols.ServerTCP;
 import dk.itu.spcl.jlpf.io.IOProtocolReader;
 import dk.itu.spcl.jlpf.io.IORWDefaultImpl;
 
@@ -52,6 +56,8 @@ public class MainFragment extends Fragment {
 	private EyeDroid EYEDROID ; 
 
 	private PreviewFilter mPreviewFilter;
+	
+	private ServerTCP server;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
@@ -110,23 +116,35 @@ public class MainFragment extends Fragment {
 		default:
 			break;
 		}
-
-		Server server = new ServerUDP(5000);
+		
 		CalibrationMapper mapper = new GlassCalibrationMapper(2, 2, GLASS_SCREEN_WIDTH, GLASS_SCREEN_HEIGHT);
-		NETCalibrationController calibrationController = new NETCalibrationControllerGlass(server, mapper);
+
+		NETCalibrationController calibrationController = new NETCalibrationControllerGlass(mapper);
 
 		OutputNetProtocolController controller = new OutputNetProtocolControllerGlass(calibrationController);
 
+		this.server = new ServerTCP(5000, controller);
+		
+		ExecutorService executor = Executors.newSingleThreadExecutor();
+		executor.execute(server);
+
+		calibrationController.setServer(server);
+		
 		calibrationController.setCalibrationCallbacks(controller);
 
-		OutputNetProtocol outProtocol = new OutputNetProtocolUDP(server, controller);
+		OutputNetProtocol outProtocol;
+		try {
+			outProtocol = new OutputNetProtocolUDP(controller, 6000, InetAddress.getByName(""), 6000);
+			
+			calibrationController.setOutputProtocol(outProtocol);
 
-		calibrationController.setOutputProtocol(outProtocol);
-
-		//OutputNetProtocolTCP outProtocol = new OutputNetProtocolTCP(5000);
-		IORWDefaultImpl io_rw = new IORWDefaultImpl(inProtocol, outProtocol);
-
-		return io_rw;
+			//OutputNetProtocolTCP outProtocol = new OutputNetProtocolTCP(5000);
+			IORWDefaultImpl io_rw = new IORWDefaultImpl(inProtocol, outProtocol);
+			return io_rw;
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	@Override

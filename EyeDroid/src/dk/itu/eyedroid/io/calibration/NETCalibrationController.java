@@ -8,7 +8,7 @@ import dk.itu.eyedroid.io.Server;
 import dk.itu.eyedroid.io.protocols.OutputNetProtocol;
 
 public abstract class NETCalibrationController {
-	protected final Server mServer;							// UDP server
+	protected  Server mServer;							// UDP server
 	protected OutputNetProtocol mOutputProtocol;		// Protocol writter
 	protected final CalibrationMapper mCalibrationMapper;	//Calibration Mapper instance
 	protected CalibrationCallbacks mCalibrationCallbacks;
@@ -23,8 +23,7 @@ public abstract class NETCalibrationController {
 	 * Default constructor
 	 * @param server Network server
 	 */
-	public NETCalibrationController(Server server, CalibrationMapper mapper){
-		this.mServer = server;
+	public NETCalibrationController(CalibrationMapper mapper){
 		this.mCalibrationMapper = mapper;
 	}
 	
@@ -41,9 +40,17 @@ public abstract class NETCalibrationController {
 	
 	protected abstract Point getSampleFromCore();
 	
+	
+	
+	
+	public Server getServer() {
+		return mServer;
+	}
 
-	
-	
+	public void setServer(Server mServer) {
+		this.mServer = mServer;
+	}
+
 	public CalibrationCallbacks getCalibrationCallbacks() {
 		return mCalibrationCallbacks;
 	}

@@ -1,7 +1,6 @@
 package dk.itu.eyedroid.io;
 
 import java.io.IOException;
-import java.net.InetAddress;
 import java.net.SocketException;
 /**
  * Network server abstraction.
@@ -9,8 +8,6 @@ import java.net.SocketException;
 public abstract class Server {
 	
 	protected int mServerPort;					// Server port
-	protected int mClientPort = 0;				// Client port (For connectionless clients)
-	protected InetAddress mClientIPAddress;		// Client IP Address (For connectionless clients)
 	
 	/**
 	 * Default constructor
@@ -31,7 +28,7 @@ public abstract class Server {
 	 * @param block Block until a message is received
 	 * @throws IOException 
 	 */
-	public abstract int[] read(boolean block) throws IOException;
+	public abstract int[] read() throws IOException;
 	
 	/**
 	 * Send message

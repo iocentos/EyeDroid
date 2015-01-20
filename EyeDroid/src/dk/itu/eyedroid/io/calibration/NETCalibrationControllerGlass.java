@@ -1,8 +1,6 @@
 package dk.itu.eyedroid.io.calibration;
 
 import java.io.IOException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import org.opencv.core.Point;
 
@@ -16,84 +14,74 @@ public class NETCalibrationControllerGlass extends NETCalibrationController {
 	 * Default constructor
 	 * 
 	 * @param server
-	 *            Network server
 	 * @param mapper
-	 *            Calibration mapper
+	 * Calibration mapper
 	 */
-	public NETCalibrationControllerGlass(Server server, CalibrationMapper mapper) {
-		super(server, mapper);
+	public NETCalibrationControllerGlass(CalibrationMapper mapper) {
+		super(mapper);
 	}
 
 	/**
 	 * Calibration process
 	 * 
-	 * @param receivePacket
-	 *            Packet receieved from client.
+	 * @param receivePacket Packet receieved from client.
 	 * @throws IOException
 	 * @throws InterruptedException
 	 */
 
 	public void calibrate() throws IOException {
 
-		final ExecutorService exec = Executors.newSingleThreadExecutor();
-		final Server server = super.mServer;
+		int[] message;
+		boolean error = false;
 
-		exec.submit(new Runnable() {
-			@Override
-			public void run() {
-				int[] message;
-				boolean error = false;
+		if (mCalibrationCallbacks != null)
+			mCalibrationCallbacks.onCalibrationStarted();
 
-				if (mCalibrationCallbacks != null)
-					mCalibrationCallbacks.onCalibrationStarted();
+		try {
+			super. mServer.send(NetClientConfig.TO_CLIENT_CALIBRATE_DISPLAY,
+					-1, -1);
 
-				try {
-					server.send(NetClientConfig.TO_CLIENT_CALIBRATE_DISPLAY,
-							-1, -1);
+			for (int i = 0; i < NetClientConfig.NO_POINTS; i++) {
 
-					for (int i = 0; i < NetClientConfig.NO_POINTS; i++) {
-
-						message = server.read(true);
-						while (message[0] == -1) {
-							message = server.read(true);
-						}
-						if (NetClientConfig.TO_EYEDROID_READY != message[0]) {
-							Log.i(NetClientConfig.TAG, "Mesasge is not TO_EYEDROID_READY " + message[0]);
-							error = true;
-							break;
-						}
-						// get the calibration point from the mapper and send it
-						// to the cliend
-						Point clientPoint = NETCalibrationControllerGlass.this.mCalibrationMapper
-								.getCalibrationPoint(i);
-
-						server.send(
-								NetClientConfig.TO_CLIENT_CALIBRATE_DISPLAY,
-								(int) clientPoint.x, (int) clientPoint.y);
-
-						Point serverPoint = getSampleFromCore();
-
-						setUpPointsToMapper(clientPoint, serverPoint);
-					}
-
-					if (!error) {
-						server.send(
-								NetClientConfig.TO_CLIENT_CALIBRATE_DISPLAY,
-								-2, -2);
-						NETCalibrationControllerGlass.this.mCalibrationMapper
-								.calibrate();
-						if (mCalibrationCallbacks != null)
-							mCalibrationCallbacks.onCalibrationFinished();
-					} else {
-						if (mCalibrationCallbacks != null)
-							mCalibrationCallbacks.onCalibrationError();
-					}
-				} catch (IOException e) {
-					if (mCalibrationCallbacks != null)
-						mCalibrationCallbacks.onCalibrationError();
+				message = super. mServer.read();
+				while (message[0] == -1) {
+					message = super. mServer.read();
 				}
+				if (NetClientConfig.TO_EYEDROID_READY != message[0]) {
+					Log.i(NetClientConfig.TAG, "Mesasge is not TO_EYEDROID_READY " + message[0]);
+					error = true;
+					break;
+				}
+				// get the calibration point from the mapper and send it
+				// to the cliend
+				Point clientPoint = NETCalibrationControllerGlass.this.mCalibrationMapper.getCalibrationPoint(i);
+
+				super. mServer.send(
+						NetClientConfig.TO_CLIENT_CALIBRATE_DISPLAY,
+						(int) clientPoint.x, (int) clientPoint.y);
+
+				Point serverPoint = getSampleFromCore();
+
+				setUpPointsToMapper(clientPoint, serverPoint);
 			}
-		});
+
+			if (!error) {
+				super. mServer.send(
+						NetClientConfig.TO_CLIENT_CALIBRATE_DISPLAY,
+						-2, -2);
+				NETCalibrationControllerGlass.this.mCalibrationMapper
+				.calibrate();
+				if (mCalibrationCallbacks != null)
+					mCalibrationCallbacks.onCalibrationFinished();
+			} else {
+				if (mCalibrationCallbacks != null)
+					mCalibrationCallbacks.onCalibrationError();
+			}
+		} catch (IOException e) {
+			if (mCalibrationCallbacks != null)
+				mCalibrationCallbacks.onCalibrationError();
+		}
+
 	}
 
 	@Override

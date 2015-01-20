@@ -1,9 +1,13 @@
 package dk.itu.eyedroid.io.protocols;
 
 import java.io.IOException;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
 
 import dk.itu.eyedroid.Constants;
-import dk.itu.eyedroid.io.Server;
+import dk.itu.eyedroid.io.NetClientConfig;
+import dk.itu.eyedroid.io.Utils;
 import dk.itu.spcl.jlpf.common.Bundle;
 
 /**
@@ -12,26 +16,31 @@ import dk.itu.spcl.jlpf.common.Bundle;
  */
 public class OutputNetProtocolUDP extends OutputNetProtocol   {
 
+	private DatagramSocket mServerSocket; 					// Server socket for streaming coordinates
+	private final int mServerPort;							// UDP server port
+	private final InetAddress mClientIp;					// Client IP address
+	private final int mClientPort;							// Client UDP port
+
 	/**
 	 * Deafult constructor
 	 * 
-	 * @param port Server listener port
 	 * @param controller Network message controller
+	 * @param ipClientAddress Client IP address
+	 * @param ipClientAddress Server UDP port
 	 */
-	public OutputNetProtocolUDP(Server server, OutputNetProtocolController controller) {
-		super(server, controller);
+	public OutputNetProtocolUDP(OutputNetProtocolController controller, int serverPort,  InetAddress ipClientAddress, int clientPort) {
+		super(controller);
+		mServerPort = serverPort;
+		mClientIp = ipClientAddress;
+		mClientPort = clientPort;
 	}
 
 	/**
-	 * Initialize server.
+	 * 
 	 */
 	@Override
 	public void init() throws IOException {
-		try {
-			super.mServer.start();
-		} catch (IOException e) {
-			throw e;
-		}
+		mServerSocket = new DatagramSocket(mServerPort);
 	}
 
 	/**
@@ -46,12 +55,9 @@ public class OutputNetProtocolUDP extends OutputNetProtocol   {
 			int x = (Integer) bundle.get(Constants.PUPIL_COORDINATES_X);
 			int y = (Integer) bundle.get(Constants.PUPIL_COORDINATES_Y);
 
+			//Set sampled values for calibration
 			if(super.mController.isCalibrating.get()){
-				//Set sampled values for calibration
 				super.setXY(x, y);
-			}else{
-				//Process incoming message
-				super.mController.processMessage(super.mServer.read(false));
 			}
 
 			//Send coordinates if system is calibrated
@@ -59,11 +65,14 @@ public class OutputNetProtocolUDP extends OutputNetProtocol   {
 			if (x != -1 && y != -1 && super.mController.isStarted.get()){
 
 				//TODO Add mapping
-//				int[] xy = super.mController.mCalibrationController.getCalibrationMapper().map(x, y);
-//				Log.i(NetClientConfig.TAG, "Coords orig : " + x  + "," + y + "  client : " + xy[0] + "," + xy[1]);
-//				super.sendCoordinates(xy[0],xy[1]);
-				
-				super.sendCoordinates(x,y);
+				//int[] xy = super.mController.mCalibrationController.getCalibrationMapper().map(x, y);
+				//Log.i(NetClientConfig.TAG, "Coords orig : " + x  + "," + y + "  client : " + xy[0] + "," + xy[1]);
+				//super.sendCoordinates(xy[0],xy[1]);
+
+				if(super.mController.mUseHMGT)
+					sendCoordinates(NetClientConfig.TO_CLIENT_GAZE_HMGT,x,y);
+				else
+					sendCoordinates(NetClientConfig.TO_CLIENT_GAZE_RGT,x,y);
 			}
 		}
 		bundle = null;
@@ -74,7 +83,22 @@ public class OutputNetProtocolUDP extends OutputNetProtocol   {
 	 */
 	@Override
 	public void cleanup() {
-		super.mServer.stop();
+		mServerSocket.close();
+	}
+
+	/**
+	 * Send message to client
+	 *  @param Message type
+	 *  @param x X-coordinate
+	 *  @param y Y-coordinate
+	 */
+	@Override
+	protected void sendCoordinates(int message, int x, int y) throws IOException {
+		byte[] output = Utils.generateOutput(message, x, y);	
+		DatagramPacket sendPacket = new DatagramPacket(output, output.length, mClientIp, mClientPort);
+		synchronized (mServerSocket) {
+			mServerSocket.send(sendPacket);
+		}
 	}
 
 }
