@@ -1,48 +1,44 @@
 /*
  * Eye.cpp
- *
- *  Created on: Nov 2, 2014
- *      Author: centos
  */
 
 #include "Eye.h"
 
 namespace IMGP {
 
-
 pthread_mutex_t* Eye::lock = new pthread_mutex_t();
 Eye* Eye::instance = NULL;
 
 void Eye::getInstance(Eye* copy){
 	pthread_mutex_lock(lock);
-		if( instance != NULL ){
-			copy->setPupilFound(instance->isPupilFound());
-			copy->setPupilDiamerer(instance->getPupilDiameter());
-			copy->setPupil_X(instance->getPupil_X());
-			copy->setPupil_Y(instance->getPupil_Y());
-		}
+	if( instance != NULL ){
+		copy->setPupilFound(instance->isPupilFound());
+		copy->setPupilDiamerer(instance->getPupilDiameter());
+		copy->setPupil_X(instance->getPupil_X());
+		copy->setPupil_Y(instance->getPupil_Y());
+	}
 	pthread_mutex_unlock(lock);
 }
 
 void Eye::newInstance(int x, int y , int diameter){
 
 	pthread_mutex_lock(lock);
-		if( instance == NULL ){
-			instance = new Eye();
-		}
-		instance->setPupilFound(true);
-		instance->setPupil_X(x);
-		instance->setPupil_Y(y);
-		instance->setPupilDiamerer(diameter);
+	if( instance == NULL ){
+		instance = new Eye();
+	}
+	instance->setPupilFound(true);
+	instance->setPupil_X(x);
+	instance->setPupil_Y(y);
+	instance->setPupilDiamerer(diameter);
 	pthread_mutex_unlock(lock);
 }
 
 void Eye::nullInstance(){
 	pthread_mutex_lock(lock);
-		if( instance != NULL ){
-			delete instance;
-			instance = NULL;
-		}
+	if( instance != NULL ){
+		delete instance;
+		instance = NULL;
+	}
 	pthread_mutex_unlock(lock);
 
 }

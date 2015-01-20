@@ -16,54 +16,50 @@ import dk.itu.eyedroid.Constants;
 import dk.itu.eyedroid.filters.RGB2GRAYFilter;
 import dk.itu.spcl.jlpf.common.Bundle;
 import dk.itu.spcl.jlpf.io.IOProtocolReader;
+/**
+ * Read video streaming from built-in cameras
+ */
+public class InputStreamCamera implements IOProtocolReader,CvCameraViewListener2 {
 
-public class InputStreamCamera implements IOProtocolReader,
-		CvCameraViewListener2 {
-
-	private static final String TAG = "InputStreamCamera";
-
-	private CameraBridgeViewBase mOpenCvCameraView;
-
-	private int mCameraId;
-
-	private Mat rgba;
-	private Mat gray;
-
+	private static final String TAG = "InputStreamCamera";	//Log Tag
+	private CameraBridgeViewBase mOpenCvCameraView;			//OpenCV camera bridge
+	private int mCameraId;									//Camera device id.
+	private Mat rgba;										//RGBA original image		
+	private Mat gray;										//Grey scale image
 	private CountDownLatch startGate;
 	private CountDownLatch endGate;
-
 	private Bitmap mBitmap;
 
-	public InputStreamCamera(Context context, CameraBridgeViewBase camera,
-			int camId) {
+	/**
+	 * Default constructor
+	 * @param context Application context
+	 * @param camera OpenCV camera bridge
+	 * @param camId	Camera id
+	 */
+	public InputStreamCamera(Context context, CameraBridgeViewBase camera, int camId) {
 		mOpenCvCameraView = camera;
 		mCameraId = camId;
 		startGate = new CountDownLatch(1);
 		endGate = new CountDownLatch(1);
-
 	}
 
-	@Override
-	public void cleanup() {
-		Log.i(TAG, "cleaning up opencv reader");
-		mOpenCvCameraView.disableView();
-	}
-
+	/**
+	 * Init protocol reader.
+	 * Setup camera
+	 */
 	@Override
 	public void init() {
-
 		mOpenCvCameraView.setCameraIndex(mCameraId);
-
 		mOpenCvCameraView.setCvCameraViewListener(this);
-
-		mOpenCvCameraView.enableView();
-		
-		
+		mOpenCvCameraView.enableView();	
 	}
 
+	/**
+	 * Read frame from camera and produce a bundle
+	 */
 	@Override
 	public Bundle read() throws IOException {
-
+		
 		Bundle bundle = new Bundle();
 		try {
 			startGate.await();
@@ -77,10 +73,14 @@ public class InputStreamCamera implements IOProtocolReader,
 			e.printStackTrace();
 			throw new IOException();
 		}
-
 		return bundle;
 	}
 
+	/**
+	 * Set RGBA and grey scale when camera view starts
+	 * @param width Display width
+	 * @param height Display height
+	 */
 	@Override
 	public void onCameraViewStarted(int width, int height) {
 		Log.i(TAG, "started");
@@ -88,6 +88,9 @@ public class InputStreamCamera implements IOProtocolReader,
 		gray = new Mat();
 	}
 
+	/**
+	 * Release RGBA and grey scale when camera stops
+	 */
 	@Override
 	public void onCameraViewStopped() {
 		Log.i(TAG, "stopped");
@@ -96,6 +99,11 @@ public class InputStreamCamera implements IOProtocolReader,
 
 	}
 
+	/**
+	 * Executed when a frame is receieved
+	 * @param inputFrame Frame from camera
+	 * @return mat Frame mat object
+	 */
 	@Override
 	public Mat onCameraFrame(CvCameraViewFrame inputFrame) {
 		Log.i(TAG, "got frame");
@@ -104,15 +112,12 @@ public class InputStreamCamera implements IOProtocolReader,
 		gray = inputFrame.gray();
 
 		try {
-			mBitmap = Bitmap.createBitmap(rgba.cols(), rgba.rows(),
-					Bitmap.Config.ARGB_8888);
+			mBitmap = Bitmap.createBitmap(rgba.cols(), rgba.rows(), Bitmap.Config.ARGB_8888);
 			
 			Bitmap temp = Bitmap.createScaledBitmap(mBitmap, 640, 480, false);
 			Log.i(RGB2GRAYFilter.TAG, "W :" + temp.getWidth() + " H : " + temp.getHeight());
 			
-			mBitmap = temp;
-			
-			
+			mBitmap = temp;		
 			Utils.matToBitmap(rgba, mBitmap);
 		} catch (Exception ex) {
 			System.out.println(ex.getMessage());
@@ -129,4 +134,12 @@ public class InputStreamCamera implements IOProtocolReader,
 		return null;
 	}
 
+	/**
+	 * Cleanup reader
+	 */
+	@Override
+	public void cleanup() {
+		Log.i(TAG, "cleaning up opencv reader");
+		mOpenCvCameraView.disableView();
+	}
 }

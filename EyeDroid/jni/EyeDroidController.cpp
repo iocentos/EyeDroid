@@ -1,8 +1,5 @@
 /*
  * EyeDroidController.cpp
- *
- *  Created on: Nov 4, 2014
- *      Author: centos
  */
 
 
@@ -15,7 +12,7 @@
  * Signature: (JJ)J
  */
 JNIEXPORT jlong JNICALL Java_dk_itu_eyedroid_filters_RGB2GRAYFilter_rgb2gray
-  (JNIEnv *, jclass, jlong inputFrame , jlong outputFrame){
+(JNIEnv *, jclass, jlong inputFrame , jlong outputFrame){
 
 	cv::Mat* inputMat = ((cv::Mat*)inputFrame);
 	cv::Mat* outputMat = ((cv::Mat*)outputFrame);
@@ -41,7 +38,7 @@ JNIEXPORT jlong JNICALL Java_dk_itu_eyedroid_filters_RGB2GRAYFilter_rgb2gray
  * Signature: (J)V
  */
 JNIEXPORT void JNICALL Java_dk_itu_eyedroid_filters_BeforeErodeDilateFilter_beforeErodeDilate
-  (JNIEnv *, jclass, jlong frame){
+(JNIEnv *, jclass, jlong frame){
 
 	cv::Mat* inputMat = (cv::Mat*)frame;
 	IMGP::EyeDroid::erodeDilate(*inputMat , *inputMat ,IMGP::Config::ErodeDilate::BEFORE_THRESHOLD_ERODE,
@@ -55,7 +52,7 @@ JNIEXPORT void JNICALL Java_dk_itu_eyedroid_filters_BeforeErodeDilateFilter_befo
  * Signature: (J)V
  */
 JNIEXPORT void JNICALL Java_dk_itu_eyedroid_filters_ThresholdFilter_thresholdFrame
-  (JNIEnv *, jclass, jlong inputFrame ){
+(JNIEnv *, jclass, jlong inputFrame ){
 
 	cv::Mat* inputMat = (cv::Mat*)inputFrame;
 	IMGP::EyeDroid::thresholdImage(*inputMat , *inputMat);
@@ -68,7 +65,7 @@ JNIEXPORT void JNICALL Java_dk_itu_eyedroid_filters_ThresholdFilter_thresholdFra
  * Signature: (J)V
  */
 JNIEXPORT void JNICALL Java_dk_itu_eyedroid_filters_AfterErodeDilateFilter_afterErodeDilate
-  (JNIEnv *, jclass, jlong frame){
+(JNIEnv *, jclass, jlong frame){
 
 	cv::Mat* inputMat = (cv::Mat*)frame;
 	IMGP::EyeDroid::erodeDilate(*inputMat , *inputMat ,IMGP::Config::ErodeDilate::AFTER_THRESHOLD_ERODE,
@@ -83,7 +80,7 @@ JNIEXPORT void JNICALL Java_dk_itu_eyedroid_filters_AfterErodeDilateFilter_after
  * Signature: (J)J
  */
 JNIEXPORT jlong JNICALL Java_dk_itu_eyedroid_filters_BlobDetectionFilter_blobDetection
-  (JNIEnv *, jclass, jlong frame){
+(JNIEnv *, jclass, jlong frame){
 
 	cv::Mat* inputMat = (cv::Mat*)frame;
 	std::vector<cv::Vec3f> circles =  IMGP::EyeDroid::detectBlobs(*inputMat);
@@ -101,7 +98,7 @@ JNIEXPORT jlong JNICALL Java_dk_itu_eyedroid_filters_BlobDetectionFilter_blobDet
  * Signature: (JJJJ)V
  */
 JNIEXPORT void JNICALL Java_dk_itu_eyedroid_filters_DetectAndDrawPupilFilter_detectPupilAndDraw
-  (JNIEnv *, jclass, jlong originalFrame , jlong processedFrame , jlong pupilRoi, jlong detectedCircles ){
+(JNIEnv *, jclass, jlong originalFrame , jlong processedFrame , jlong pupilRoi, jlong detectedCircles ){
 
 	cv::Mat* inputMat = (cv::Mat*)originalFrame;
 	cv::Mat* outputMat = (cv::Mat*)processedFrame;
@@ -115,7 +112,7 @@ JNIEXPORT void JNICALL Java_dk_itu_eyedroid_filters_DetectAndDrawPupilFilter_det
 
 	delete pupilRoiRect;
 	delete circles;
-  }
+}
 
 
 
@@ -127,7 +124,7 @@ JNIEXPORT void JNICALL Java_dk_itu_eyedroid_filters_DetectAndDrawPupilFilter_det
  * Signature: ()I
  */
 JNIEXPORT jint JNICALL Java_dk_itu_eyedroid_filters_CoordinatesFilter_getCoordinates_1X
-  (JNIEnv *, jclass){
+(JNIEnv *, jclass){
 
 	IMGP::Eye* tempEye = new IMGP::Eye();
 	IMGP::Eye::getInstance(tempEye);
@@ -146,7 +143,7 @@ JNIEXPORT jint JNICALL Java_dk_itu_eyedroid_filters_CoordinatesFilter_getCoordin
  * Signature: ()I
  */
 JNIEXPORT jint JNICALL Java_dk_itu_eyedroid_filters_CoordinatesFilter_getCoordinates_1Y
-  (JNIEnv *, jclass){
+(JNIEnv *, jclass){
 
 	IMGP::Eye* tempEye = new IMGP::Eye();
 	IMGP::Eye::getInstance(tempEye);

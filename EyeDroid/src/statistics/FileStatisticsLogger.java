@@ -25,16 +25,16 @@ import dk.itu.spcl.jlpf.core.ProcessingCore;
 public class FileStatisticsLogger implements ProcessingCore.StatisticsCallback {
 
 	private String mFileName;
-	
-	public static final String FILE_NAME = "/Skata";
-	
-	public static final String TAG = "Statistics";
-	
-    public static final String STATISTICS_FULL_PATH = 
+	public static final String FILE_NAME = "/statistics";	//File prefix	
+	public static final String TAG = "Statistics";			//Log TAG
+    public static final String STATISTICS_FULL_PATH = 		//File system path
     		Environment.getExternalStorageDirectory().getAbsolutePath().concat(FILE_NAME);
-    
-    private final boolean mFileExists;
+    private final boolean mFileExists;						//Flag
 
+    /**
+     * Default constructor. Creates a new statistics file
+     * @param fileName File name to create
+     */
 	public FileStatisticsLogger(String fileName) {
 		this.mFileName = fileName;
 		mFileExists = createFile();
@@ -44,6 +44,10 @@ public class FileStatisticsLogger implements ProcessingCore.StatisticsCallback {
 			Log.i(TAG , "Could not create file");
 	}
 
+	/**
+	 * Create new file
+	 * @return Is file created?
+	 */
 	public boolean createFile() {
 		File file = new File(mFileName);
 		try {
@@ -63,6 +67,9 @@ public class FileStatisticsLogger implements ProcessingCore.StatisticsCallback {
 		}
 	}
 
+	/**
+	 * Update statistics log file
+	 */
 	@Override
 	public void onStatisticsUpdates(CoreStatistics statistics) {
 		if (mFileExists) {
@@ -97,10 +104,7 @@ public class FileStatisticsLogger implements ProcessingCore.StatisticsCallback {
 				writer.println();
 				writer.println();
 				writer.close();
-			} catch (IOException e) {
-				if (writer != null)
-					writer.close();
-			}// end of catch
+			} catch (IOException e) {}
 
 		}// end of if
 	}

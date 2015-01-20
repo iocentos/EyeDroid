@@ -7,7 +7,6 @@ import dk.itu.spcl.jlpf.io.IOController;
  * Abstracts reading and writing common thread functionality.
  * If an excpetion is thrown during the initialization of either reader or writer, IO controller is stopped.
  */
-
 public abstract class IORunner extends Thread{
 
 	private final int MAX_TRIALS = 3;	//Maximum number of allowed attempts to initialize the RW protocols

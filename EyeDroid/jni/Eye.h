@@ -1,8 +1,5 @@
 /*
  * Eye.h
- *
- *  Created on: Nov 2, 2014
- *      Author: centos
  */
 
 #include <pthread.h>

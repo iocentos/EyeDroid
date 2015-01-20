@@ -3,20 +3,25 @@ package dk.itu.eyedroid.io;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.SocketException;
-
+/**
+ * Network server abstraction.
+ */
 public abstract class Server {
 	
 	protected int mServerPort;					// Server port
-	protected int mClientPort = 0;					// Client port
-	protected InetAddress mClientIPAddress;		// Client IP Address
+	protected int mClientPort = 0;				// Client port (For connectionless clients)
+	protected InetAddress mClientIPAddress;		// Client IP Address (For connectionless clients)
 	
+	/**
+	 * Default constructor
+	 * @param port Server port
+	 */
 	public Server(int port){
 		mServerPort = port;
 	}
 	
 	/**
 	 * Start server
-	 * @param port
 	 * @throws SocketException
 	 */
 	public abstract void start() throws SocketException;

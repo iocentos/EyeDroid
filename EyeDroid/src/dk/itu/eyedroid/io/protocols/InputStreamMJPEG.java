@@ -16,7 +16,10 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
-public class MjpegInputStream extends DataInputStream {
+/**
+ *  Read MJPEG video format from stream.
+ */
+public class InputStreamMJPEG extends DataInputStream {
 	private final byte[] SOI_MARKER = { (byte) 0xFF, (byte) 0xD8 };
 	private final byte[] EOF_MARKER = { (byte) 0xFF, (byte) 0xD9 };
 	private final String CONTENT_LENGTH = "Content-Length";
@@ -24,12 +27,25 @@ public class MjpegInputStream extends DataInputStream {
 	private final static int FRAME_MAX_LENGTH = 40000 + HEADER_MAX_LENGTH;
 	private int mContentLength = -1;
 
-	public static MjpegInputStream read(String url) {
+	/**
+	 * Default constructor
+	 * @param in Input stream
+	 */
+	public InputStreamMJPEG(InputStream in) {
+		super(new BufferedInputStream(in, FRAME_MAX_LENGTH));
+	}
+	
+	/**
+	 * Read streaming
+	 * @param url Streaming URL
+	 * @return
+	 */
+	public static InputStreamMJPEG read(String url) {
 		HttpResponse res;
 		DefaultHttpClient httpclient = new DefaultHttpClient();
 		try {
 			res = httpclient.execute(new HttpGet(URI.create(url)));
-			return new MjpegInputStream(res.getEntity().getContent());
+			return new InputStreamMJPEG(res.getEntity().getContent());
 		} catch (ClientProtocolException e) {
 		} catch (IOException e) {
 		} finally {
@@ -37,10 +53,26 @@ public class MjpegInputStream extends DataInputStream {
 		return null;
 	}
 
-	public MjpegInputStream(InputStream in) {
-		super(new BufferedInputStream(in, FRAME_MAX_LENGTH));
+	/**
+	 * Get start of streaming sequence
+	 * @param in Input stream
+	 * @param sequence Sequence
+	 * @return Start of sequence
+	 * @throws IOException
+	 */
+	private int getStartOfSequence(DataInputStream in, byte[] sequence)
+			throws IOException {
+		int end = getEndOfSequence(in, sequence);
+		return (end < 0) ? (-1) : (end - sequence.length);
 	}
 
+	/**
+	 * Get end of sequence
+	 * @param in Input stream
+	 * @param sequence Sequence
+	 * @return End of sequence
+	 * @throws IOException
+	 */
 	private int getEndOfSequence(DataInputStream in, byte[] sequence)
 			throws IOException {
 		int seqIndex = 0;
@@ -57,12 +89,13 @@ public class MjpegInputStream extends DataInputStream {
 		return -1;
 	}
 
-	private int getStartOfSequence(DataInputStream in, byte[] sequence)
-			throws IOException {
-		int end = getEndOfSequence(in, sequence);
-		return (end < 0) ? (-1) : (end - sequence.length);
-	}
-
+	/**
+	 * Parse condent lenght
+	 * @param headerBytes Header content
+	 * @return Header lenght
+	 * @throws IOException
+	 * @throws NumberFormatException
+	 */
 	private int parseContentLength(byte[] headerBytes) throws IOException,
 			NumberFormatException {
 		ByteArrayInputStream headerIn = new ByteArrayInputStream(headerBytes);
@@ -71,6 +104,11 @@ public class MjpegInputStream extends DataInputStream {
 		return Integer.parseInt(props.getProperty(CONTENT_LENGTH));
 	}
 
+	/**
+	 * Read frame
+	 * @return Frame
+	 * @throws IOException
+	 */
 	public Bitmap readMjpegFrame() throws IOException {
 		mark(FRAME_MAX_LENGTH);
 		int headerLen = getStartOfSequence(this, SOI_MARKER);

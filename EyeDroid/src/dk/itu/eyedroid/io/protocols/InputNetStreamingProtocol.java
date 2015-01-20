@@ -9,35 +9,38 @@ import android.graphics.Bitmap;
 import dk.itu.eyedroid.Constants;
 import dk.itu.spcl.jlpf.common.Bundle;
 import dk.itu.spcl.jlpf.io.IOProtocolReader;
-
+/**
+ *  Network streaming protocol reader abstraction
+ */
 public class InputNetStreamingProtocol implements IOProtocolReader{
 	
-
+	private String mUrl;					//Streaming URL
+	private InputStreamMJPEG mInputStream;	//Input stream instance
 	
-	private String mUrl;
-	private MjpegInputStream mInputStream;
-	
+	/**
+	 * Default constructor
+	 * @param url Streaming URL
+	 * @throws IOException
+	 */
 	public InputNetStreamingProtocol(String url) {
 		mUrl = url;
 	}
 
-	@Override
-	public void cleanup() {
-		try {
-			mInputStream.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
+	/**
+	 * Initialize streaming input
+	 */
 	@Override
 	public void init() throws IOException{
-		mInputStream = MjpegInputStream.read(mUrl);
+		mInputStream = InputStreamMJPEG.read(mUrl);
 		if( mInputStream == null ){
 			throw new IOException();
 		}
 	}
 
+	/**
+	 * Read streaming from input
+	 * @throws IOException
+	 */
 	@Override
 	public Bundle read() throws IOException{
 		Bundle bundle = new Bundle();
@@ -50,5 +53,17 @@ public class InputNetStreamingProtocol implements IOProtocolReader{
 		bundle.put(Constants.SOURCE_BITMAP, bitmap);
 		
 		return bundle;
+	}
+
+	/**
+	 * Clenup streaming input
+	 */
+	@Override
+	public void cleanup() {
+		try {
+			mInputStream.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }

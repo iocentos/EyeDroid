@@ -1,26 +1,27 @@
-EyeDroid: Gaze tracking component for Android
+EyeDroid: Android eye tracking system
 ========
 
 <img src="https://raw.githubusercontent.com/centosGit/EyeDroid/develop/Pictures/EyeDroid_logo.png" height="150" width="150"/>
 
-Background
+
+Introduction
 ---------
 
-Gaze-based interaction techniques are among the most interesting touchless interaction techniques for mobile and wearable systems. 
-However, most of the existing technologies for gaze-tracking require a remote computer to process the gaze data and gaze 
-interaction with a user interface. Designing and developing an unobtrusive and mobile gaze tracker could be a valuable technology 
-for users of mobile and wearable devices.
+EyeDroid is a mobile Android platform eye tracking system designed to be used with a head mounted camera. EyeDroid receives video streaming from the user’s eye as input, process it and sends the resulting 2-axis coordinates to a networked client. Unlike other eye tracking systems which use a stationary processing server, EyeDroid performs all its processing workload in a mobile device and sends the resulting coordinates to a network client. For this reason, EyeDroid supports mobility when used along wearable and mobile devices.
 
-Description
+Dependencies
 ---------
 
-Develop a monocular camera-based gaze tracking system on Android which receives image of the eye from a usb or wireless camera 
-and calculates the gaze point in a 2D surface. The gaze information can be sent to other mobile or wearable devices in real-time 
-through bluetooth or WIFI network.
+Java 1.7
+Android SDK API 20
+Android NDK r10b
+Android Support Library v4
+OpenCV Library 2.4.9
+[JLPF 1.0](https://github.com/centosGit/JLPF)
 
-Technology
+Build
 ---------
 
-Android, OpenCV
+To build, open solution file in compliant [Eclipse](https://eclipse.org/) version and build.
 
 [IT University of Copenhagen](www.itu.dk/en)

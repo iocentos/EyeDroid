@@ -1,12 +1,8 @@
 /*
  * Config.cpp
- *
- *  Created on: Nov 18, 2014
- *      Author: centos
  */
 
 #include "Config.h"
-
 
 /*
  * Default EyeDroid image processing methods configuration.

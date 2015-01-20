@@ -1,5 +1,6 @@
 package dk.itu.eyedroid.settings;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
@@ -37,21 +38,25 @@ import dk.itu.eyedroid.R;
  */
 public class SettingsActivity extends Activity {
 
-	public static final String TAG = "Settings";
+	public static final String TAG = "Settings";		//Logging TAG
 
+	/**
+	 * Set application settings
+	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.activity_settings);
-
 		ListView list = (ListView) this.findViewById(R.id.settings_root_layout);
 		list.setAdapter(new CustomAdapter(this, 1));
 	}
 
+	/**
+	 * Settings adapter
+	 */
 	public class CustomAdapter extends ArrayAdapter<String> {
 
 		private Context mContext;
-
 		public CustomAdapter(Context context, int resource) {
 			super(context, resource);
 			mContext = context;
@@ -62,35 +67,27 @@ public class SettingsActivity extends Activity {
 			return 18;
 		}
 
+		@SuppressLint("ViewHolder")
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 
-			convertView = LayoutInflater.from(mContext).inflate(
-					R.layout.settings_list_item, parent, false);
+			convertView = LayoutInflater.from(mContext).inflate(R.layout.settings_list_item, parent, false);
 			Holder holder = new Holder();
-			holder.title = (TextView) convertView
-					.findViewById(R.id.settings_list_item_title);
-			holder.current = (TextView) convertView
-					.findViewById(R.id.settings_list_item_current_value);
-			holder.lower = (TextView) convertView
-					.findViewById(R.id.settings_list_item_lower_limit);
-			holder.upper = (TextView) convertView
-					.findViewById(R.id.settings_list_item_upper_limit);
-			holder.seekBar = (SeekBar) convertView
-					.findViewById(R.id.settings_seekbar);
-
+			holder.title = (TextView) convertView.findViewById(R.id.settings_list_item_title);
+			holder.current = (TextView) convertView.findViewById(R.id.settings_list_item_current_value);
+			holder.lower = (TextView) convertView.findViewById(R.id.settings_list_item_lower_limit);
+			holder.upper = (TextView) convertView.findViewById(R.id.settings_list_item_upper_limit);
+			holder.seekBar = (SeekBar) convertView.findViewById(R.id.settings_seekbar);
 			holder.key = position;
 
 			switch (position) {
 			case Config.BEFORE_THRESHOLD_ERODE:
 				setUpListItem(holder, "Before thres erode",
 						Config.getConfigValue(position), 0, 16);
-
 				break;
 			case Config.BEFORE_THRESHOLD_DILATE:
 				setUpListItem(holder, "Before thres dilate",
 						Config.getConfigValue(position), 0, 16);
-
 				break;
 			case Config.AFTER_THRESHOLD_ERODE:
 				setUpListItem(holder, "After thres erode",
@@ -107,77 +104,58 @@ public class SettingsActivity extends Activity {
 			case Config.ROI_CONSTANT_Y:
 				setUpListItem(holder, "Constant roi Y",
 						Config.getConfigValue(position), 0, 300);
-
 				break;
 			case Config.ROI_CONSTANT_X:
 				setUpListItem(holder, "Constant roi X",
 						Config.getConfigValue(position), 0, 300);
-
 				break;
 			case Config.ROI_CONSTANT_W:
 				setUpListItem(holder, "Constant roi W",
 						Config.getConfigValue(position), 0, 600);
-
 				break;
-
 			case Config.ROI_CONSTANT_H:
 				setUpListItem(holder, "Constant roi H",
 						Config.getConfigValue(position), 0, 600);
-
 				break;
-
 			case Config.ROI_PUPIL_FOUND_W:
 				setUpListItem(holder, "Pupil found roi W",
 						Config.getConfigValue(position), 0, 500);
-
 				break;
 			case Config.ROI_PUPIL_FOUND_H:
 				setUpListItem(holder, "Pupil found roi H",
 						Config.getConfigValue(position), 0, 500);
-
 				break;
 			case Config.THRESHOLD_LOWER_LIMIT:
 				setUpListItem(holder, "Threshold limit",
 						Config.getConfigValue(position), 0, 255);
-
 				break;
 			case Config.MIN_NEIGHBOR_DISTANCE_FACTOR:
 				setUpListItem(holder, "Min neighbor dist factor",
 						Config.getConfigValue(position), 0, 8);
-
 				break;
-
 			case Config.MIN_BLOB_SIZE:
 				setUpListItem(holder, "Min blob size",
 						Config.getConfigValue(position), 0, 200);
-
 				break;
 			case Config.MAX_BLOB_SIZE:
 				setUpListItem(holder, "Max blob size",
 						Config.getConfigValue(position), 0, 200);
-
 				break;
 			case Config.UPPER_THRESHOLD:
 				setUpListItem(holder, "Upper threshold",
 						Config.getConfigValue(position), 0, 300);
-
 				break;
 			case Config.THRESHOLD_CENTER:
 				setUpListItem(holder, "Threshold center",
 						Config.getConfigValue(position), 0, 250);
-
 				break;
-
 			case Config.SCALE_FACTOR:
 				setUpListItem(holder, "Scale factor",
 						Config.getConfigValue(position), 0, 8);
-
 				break;
-
 			default:
 				break;
 			}
-
 			return convertView;
 		}
 
@@ -202,31 +180,26 @@ public class SettingsActivity extends Activity {
 
 			holder.seekBar.setMax(max);
 			holder.seekBar.setProgress(defaultValue);
-			holder.seekBar
-					.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
+			holder.seekBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
 
-						@Override
-						public void onStopTrackingTouch(SeekBar seekBar) {
-							// TODO Auto-generated method stub
+				@Override
+				public void onStopTrackingTouch(SeekBar seekBar) {
+					//Do nothing...
+				}
 
-						}
+				@Override
+				public void onStartTrackingTouch(SeekBar seekBar) {
+					// Do nothing...
+				}
 
-						@Override
-						public void onStartTrackingTouch(SeekBar seekBar) {
-							// TODO Auto-generated method stub
-
-						}
-
-						@Override
-						public void onProgressChanged(SeekBar seekBar,
-								int progress, boolean fromUser) {
-							Log.i(TAG, message + " values " + progress);
-							holder.current.setText(String.valueOf(progress));
-							Config.setConfigValue(key, progress);
-
-						}
-					});
+				@Override
+				public void onProgressChanged(SeekBar seekBar,
+						int progress, boolean fromUser) {
+					Log.i(TAG, message + " values " + progress);
+					holder.current.setText(String.valueOf(progress));
+					Config.setConfigValue(key, progress);
+				}
+			});
 		}
-
 	}
 }

@@ -1,10 +1,13 @@
 package dk.itu.eyedroid.io;
 
 import java.nio.ByteBuffer;
-
+/**
+ * General purpose functionality. 
+ */
 public class Utils {
 	/**
-	 * Create byte[] output containing the gaze position coordinates.
+	 * Create byte[] output containing the gaze position coordinates
+	 * and a message.
 	 * 
 	 * @param Message to client
 	 * @param x X coordinate

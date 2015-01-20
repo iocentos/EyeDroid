@@ -1,7 +1,6 @@
 package dk.itu.eyedroid.io.calibration;
 
 import java.io.IOException;
-import java.net.SocketTimeoutException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -10,7 +9,6 @@ import org.opencv.core.Point;
 import android.util.Log;
 import dk.itu.eyedroid.io.NetClientConfig;
 import dk.itu.eyedroid.io.Server;
-import dk.itu.eyedroid.io.protocols.OutputNetProtocol;
 
 public class NETCalibrationControllerGlass extends NETCalibrationController {
 

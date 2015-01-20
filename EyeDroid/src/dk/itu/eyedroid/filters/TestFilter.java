@@ -6,7 +6,9 @@ import android.widget.Toast;
 import dk.itu.eyedroid.demo.MainActivity;
 import dk.itu.spcl.jlpf.common.Bundle;
 import dk.itu.spcl.jlpf.core.Filter;
-
+/**
+ * Testing porpose filter. Not used by EyeDroid processing algorithm
+ */
 public class TestFilter extends Filter {
 
 	private int counter = 0;
@@ -26,12 +28,9 @@ public class TestFilter extends Filter {
 					Toast.makeText(mContext, "Done", Toast.LENGTH_LONG).show();
 				}
 			});
-
 		}
 		
-		arg0 = null;
-		
+		arg0 = null;	
 		return null;
 	}
-
 }

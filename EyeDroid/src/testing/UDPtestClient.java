@@ -1,4 +1,4 @@
-package dk.itu.eyedroid.demo;
+package testing;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -10,7 +10,7 @@ import java.net.UnknownHostException;
 import dk.itu.eyedroid.io.NetClientConfig;
 import dk.itu.eyedroid.io.Utils;
 
-public class TestClient {
+public class UDPtestClient {
 
 	public static void main(String args[]) {
 
@@ -31,17 +31,13 @@ public class TestClient {
 			
 			System.out.println(receiveData);
 			
+			socket.close();
 		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (SocketException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 	}
-
 }

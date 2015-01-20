@@ -5,24 +5,20 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import dk.itu.eyedroid.Constants;
-import dk.itu.eyedroid.R;
 import dk.itu.eyedroid.demo.MainActivity;
 import dk.itu.spcl.jlpf.common.Bundle;
 import dk.itu.spcl.jlpf.core.Filter;
-
+/**
+ * Show preview. Draws a point over the original streamed video
+ */
 public class PreviewFilter extends Filter {
 
 	private Context mContext;
-
 	private AtomicBoolean mIsPreviewShown;
-
 	private ImageView mImageView;
-
 	private boolean mLogoFlag = false;
 
 	public PreviewFilter(Context context, ImageView imageView) {
@@ -56,7 +52,6 @@ public class PreviewFilter extends Filter {
 				});
 			}
 		}
-
 		return arg0;
 	}
 

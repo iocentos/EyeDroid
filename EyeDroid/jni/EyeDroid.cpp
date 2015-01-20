@@ -1,8 +1,5 @@
 /*
  * EyeDroid.cpp
- *
- *  Created on: Nov 2, 2014
- *      Author: centos
  */
 
 #include "EyeDroid.h"
@@ -18,13 +15,13 @@ cv::Rect EyeDroid::getPupilRoi(cv::Mat& input, bool useDiameter) {
 	Eye::getInstance(tempEye);
 
 	if (tempEye->isPupilFound()) {
-//	if( false ){
+		//	if( false ){
 		int W = 0;
 		int H = 0;
 		if (useDiameter) {
 			W = (tempEye->getPupilDiameter() > 0) ?
 					(int) tempEye->getPupilDiameter()
-							* Config::PupilROI::DIAMETER_FACTOR :
+					* Config::PupilROI::DIAMETER_FACTOR :
 					Config::PupilROI::ROI_PUPIL_FOUND_W;
 
 			H = Config::PupilROI::ROI_PUPIL_FOUND_H;
@@ -34,11 +31,11 @@ cv::Rect EyeDroid::getPupilRoi(cv::Mat& input, bool useDiameter) {
 		}
 
 		if (tempEye->getPupil_X() - (W / 2) > 0
-						&& tempEye->getPupil_Y() - (H / 2) > 0
-						&& tempEye->getPupil_X() + (W + 200 - (W / 2)) < input.cols
-						&& tempEye->getPupil_Y() + (H + 150 - (H / 2)) < input.rows) {
-					pupilROI = new cv::Rect(tempEye->getPupil_X() - (W / 2),
-							tempEye->getPupil_Y() - (H / 2), W + 200, H + 150);
+				&& tempEye->getPupil_Y() - (H / 2) > 0
+				&& tempEye->getPupil_X() + (W + 200 - (W / 2)) < input.cols
+				&& tempEye->getPupil_Y() + (H + 150 - (H / 2)) < input.rows) {
+			pupilROI = new cv::Rect(tempEye->getPupil_X() - (W / 2),
+					tempEye->getPupil_Y() - (H / 2), W + 200, H + 150);
 		} else {
 			pupilROI = new cv::Rect(Config::PupilROI::ROI_CONSTANT_X,
 					Config::PupilROI::ROI_CONSTANT_Y,
@@ -89,8 +86,8 @@ std::vector<cv::Vec3f> EyeDroid::detectBlobs(cv::Mat& output) {
 			Config::BlobDetection::MIN_BLOB_SIZE,
 			Config::BlobDetection::MAX_BLOB_SIZE);
 
-//	HoughCircles(output, circles, CV_HOUGH_GRADIENT, 2, output.rows/8, 200, 100,
-//			0, 0);
+	//	HoughCircles(output, circles, CV_HOUGH_GRADIENT, 2, output.rows/8, 200, 100,
+	//			0, 0);
 	return circles;
 }
 
@@ -115,7 +112,7 @@ void EyeDroid::detectPupil(cv::Mat& input, std::vector<cv::Vec3f> circles) {
 
 			double dist = sqrt(
 					pow(center.x - input.cols / 2, 2)
-							+ pow(center.y - input.rows / 2, 2));
+					+ pow(center.y - input.rows / 2, 2));
 
 			if (dist < minDist) {
 				minDist = dist;

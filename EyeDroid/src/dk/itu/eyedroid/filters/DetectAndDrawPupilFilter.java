@@ -9,13 +9,15 @@ import android.util.Log;
 import dk.itu.eyedroid.Constants;
 import dk.itu.spcl.jlpf.common.Bundle;
 import dk.itu.spcl.jlpf.core.Filter;
-
+/**
+ * Algorithm step: 8
+ * Detect pupil and draw it on preview
+ */
 public class DetectAndDrawPupilFilter extends Filter{
 
 	@Override
 	protected Bundle execute(Bundle arg0) {
-
-		
+	
 		Mat rgba = (Mat) arg0.get(Constants.SOURCE_MAT_RGB);
 		Mat gray = (Mat) arg0.get(Constants.SOURCE_MAT_GRAY);
 		long pupilRoiRect = (Long) arg0.get(Constants.PUPIL_ROI_RECT);
@@ -36,5 +38,4 @@ public class DetectAndDrawPupilFilter extends Filter{
 	}
 	
 	public static native void detectPupilAndDraw(long originalFrame , long processedFrame , long pupilRoi , long detectedCircles );
-
 }

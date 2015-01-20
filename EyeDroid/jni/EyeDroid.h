@@ -1,8 +1,5 @@
 /*
  * EyeDroid.h
- *
- *  Created on: Nov 2, 2014
- *      Author: centos
  */
 
 #include "Eye.h"

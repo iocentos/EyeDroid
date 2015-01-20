@@ -1,10 +1,6 @@
-
 package dk.itu.eyedroid.demo;
 
-import java.io.IOException;
-
 import org.opencv.android.CameraBridgeViewBase;
-import org.opencv.core.Point;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -18,7 +14,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import dk.itu.eyedroid.Constants;
 import dk.itu.eyedroid.EyeDroid;
 import dk.itu.eyedroid.R;
 import dk.itu.eyedroid.filters.PreviewFilter;
@@ -33,7 +28,6 @@ import dk.itu.eyedroid.io.protocols.InputStreamUSBCamera;
 import dk.itu.eyedroid.io.protocols.OutputNetProtocol;
 import dk.itu.eyedroid.io.protocols.OutputNetProtocolController;
 import dk.itu.eyedroid.io.protocols.OutputNetProtocolControllerGlass;
-import dk.itu.eyedroid.io.protocols.OutputNetProtocolTCP;
 import dk.itu.eyedroid.io.protocols.OutputNetProtocolUDP;
 import dk.itu.spcl.jlpf.io.IOProtocolReader;
 import dk.itu.spcl.jlpf.io.IORWDefaultImpl;
@@ -48,25 +42,21 @@ public class MainFragment extends Fragment {
 	public static final int FRONT_CAMERA = 0;
 	public static final int BACK_CAMERA = 1;
 	public static final int USB_CAMERA = 2;
-	
+
 	private final static int GLASS_SCREEN_WIDTH = 640;
 	private final static int GLASS_SCREEN_HEIGHT = 360;
 
 	private View mRootView;
 	private ImageView mImageView;
-	
+
 	private EyeDroid EYEDROID ; 
 
 	private PreviewFilter mPreviewFilter;
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-
-		mRootView = inflater.inflate(R.layout.streaming_layout, container,
-				false);
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
+		mRootView = inflater.inflate(R.layout.streaming_layout, container,false);
 		mImageView = (ImageView) mRootView.findViewById(R.id.mjpeg_view);
-		
 		EYEDROID = new EyeDroid(getActivity());
 		return mRootView;
 	}
@@ -93,7 +83,6 @@ public class MainFragment extends Fragment {
 				mPreviewFilter.enablePreview();
 				item.setIcon(getResources().getDrawable(R.drawable.stop_btn));
 			}
-
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
@@ -102,8 +91,7 @@ public class MainFragment extends Fragment {
 	public IORWDefaultImpl createProtocols() {
 
 		int whichCamera = this.getArguments().getInt(CAMERA_OPTION);
-		CameraBridgeViewBase camera = (CameraBridgeViewBase) mRootView
-				.findViewById(R.id.opencv_camera_view);
+		CameraBridgeViewBase camera = (CameraBridgeViewBase) mRootView.findViewById(R.id.opencv_camera_view);
 
 		IOProtocolReader inProtocol = null;
 
@@ -122,23 +110,20 @@ public class MainFragment extends Fragment {
 		default:
 			break;
 		}
-		
-		Server server = new ServerUDP(5000);
-		CalibrationMapper mapper = new GlassCalibrationMapper(2, 2, GLASS_SCREEN_HEIGHT, GLASS_SCREEN_HEIGHT);
-		NETCalibrationController calibrationController = new NETCalibrationControllerGlass(server, mapper);
-		
-		OutputNetProtocolController controller = new OutputNetProtocolControllerGlass(calibrationController);
-		
-		calibrationController.setCalibrationCallbacks(controller);
-		
-		OutputNetProtocol outProtocol = new OutputNetProtocolUDP(server, controller);
-		
-		calibrationController.setOutputProtocol(outProtocol);
-		
-		
-		
 
-//		OutputNetProtocolTCP outProtocol = new OutputNetProtocolTCP(5000);
+		Server server = new ServerUDP(5000);
+		CalibrationMapper mapper = new GlassCalibrationMapper(2, 2, GLASS_SCREEN_WIDTH, GLASS_SCREEN_HEIGHT);
+		NETCalibrationController calibrationController = new NETCalibrationControllerGlass(server, mapper);
+
+		OutputNetProtocolController controller = new OutputNetProtocolControllerGlass(calibrationController);
+
+		calibrationController.setCalibrationCallbacks(controller);
+
+		OutputNetProtocol outProtocol = new OutputNetProtocolUDP(server, controller);
+
+		calibrationController.setOutputProtocol(outProtocol);
+
+		//OutputNetProtocolTCP outProtocol = new OutputNetProtocolTCP(5000);
 		IORWDefaultImpl io_rw = new IORWDefaultImpl(inProtocol, outProtocol);
 
 		return io_rw;

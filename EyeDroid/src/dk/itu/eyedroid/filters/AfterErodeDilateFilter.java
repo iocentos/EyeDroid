@@ -6,7 +6,14 @@ import android.util.Log;
 import dk.itu.eyedroid.Constants;
 import dk.itu.spcl.jlpf.common.Bundle;
 import dk.itu.spcl.jlpf.core.Filter;
-
+/**
+ *  Algorithm step: 4
+ *  Edore (3 times) and dilation (2 times) is done in case the thresholding
+ *  step detected other dark blobs in the image except the pupil. By using 
+ *  erode in the output image any small dark blobs are shrinked until they 
+ *  disappeared. Dilation was used to bring the pupil blob back to its original 
+ *  size. This step was necessary in order to remove blob outliers.
+ */
 public class AfterErodeDilateFilter extends Filter{
 
 	@Override
@@ -19,7 +26,6 @@ public class AfterErodeDilateFilter extends Filter{
 		
 		afterErodeDilate(gray.getNativeObjAddr());
 		
-		
 		Bundle newBundle = new Bundle();
 		newBundle.put(Constants.SOURCE_MAT_RGB, rgba);
 		newBundle.put(Constants.SOURCE_MAT_GRAY, gray);
@@ -30,5 +36,4 @@ public class AfterErodeDilateFilter extends Filter{
 	}
 	
 	public static native void afterErodeDilate(long frame);
-
 }

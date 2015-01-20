@@ -14,24 +14,22 @@ import dk.itu.spcl.jlpf.io.IOProtocolWriter;
 /**
  * Generic TCP/IP output protocol implementation. Used to send processed bundle results
  * to a connected client. Sends X and Y gaze position coordinates as result.
+ * TODO. Implement using a protocoll controller and calibration
  */
-
 public class OutputNetProtocolTCP implements IOProtocolWriter {
 
 	private final int mPort; 					// Server port
 	private ServerSocket serverSocket; 			// Server socket for new incomming
-	// connections
 	private Socket mSocket; 					// Client socket
 	private OutputStream mOutput; 				// Spcket output stream
 	private AtomicBoolean isConnectionSet; 		// Client connection status
 	private boolean isWaitingForConnection;		// Server waiting for client status
 	private boolean isSocketServerClosed; 		// Server socket was intentionally closed.
 
-	private static final int SERVER_SOCKET_ACCEPT_TIME_OUT = 10;
+	private static final int SERVER_SOCKET_ACCEPT_TIME_OUT = 10;	//Accept client timeout
 
 	/**
 	 * Deafult constructor
-	 * 
 	 * @param port Server listener port
 	 */
 	public OutputNetProtocolTCP(int port) {
@@ -71,12 +69,8 @@ public class OutputNetProtocolTCP implements IOProtocolWriter {
 			serverSocket.close();
 			isWaitingForConnection = false;
 			isConnectionSet.set(true);
-
 		}
-		catch (IOException e) {
-			//do nothing will be handled from cleanup
-		}
-
+		catch (IOException e) {}
 	}
 
 	/**
@@ -93,7 +87,6 @@ public class OutputNetProtocolTCP implements IOProtocolWriter {
 			if (x != -1 && y != -1) {
 
 				byte[] output;
-
 				output = Utils.generateOutput(0,x, y);
 
 				synchronized (mSocket) {
@@ -105,7 +98,6 @@ public class OutputNetProtocolTCP implements IOProtocolWriter {
 			init();
 			acceptClient();
 		}
-
 		bundle = null;
 	}
 
@@ -133,5 +125,4 @@ public class OutputNetProtocolTCP implements IOProtocolWriter {
 			e.printStackTrace();
 		}
 	}
-
 }

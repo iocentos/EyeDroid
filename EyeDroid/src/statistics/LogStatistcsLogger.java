@@ -12,12 +12,16 @@ import dk.itu.spcl.jlpf.core.ProcessingCore;
  *in the standard android logger with the tag Statistics.
  *
  *It is enabled as follows with 5000 being the interval for the statistics thread
- *		core.enableStatistics(new LogStatisticsLogger(), 5000);
+ *core.enableStatistics(new LogStatisticsLogger(), 5000);
  */
 public class LogStatistcsLogger implements ProcessingCore.StatisticsCallback {
 
-	public static final String TAG = "Statistics";
+	public static final String TAG = "Statistics";	//Log Tag
 
+	/**
+	 * Update statisctics log
+	 * @param arg0 JLPF CoreStatistics 
+	 */
 	@Override
 	public void onStatisticsUpdates(CoreStatistics arg0) {
 		StringBuilder builder = new StringBuilder();
@@ -52,5 +56,4 @@ public class LogStatistcsLogger implements ProcessingCore.StatisticsCallback {
 		Log.i(TAG, builder.toString());
 		Log.i(TAG, builder.toString());
 	}
-
 }

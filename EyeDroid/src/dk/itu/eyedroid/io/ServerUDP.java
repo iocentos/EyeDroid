@@ -7,22 +7,25 @@ import java.net.SocketException;
 import java.net.SocketTimeoutException;
 
 import android.util.Log;
-
+/**
+ * UDP Server implementation.
+ * Used along the protocol writter.
+ */
 public class ServerUDP extends Server{
 
+	private DatagramSocket mServerSocket; 							// Server socket for new incomming
+	private static final int SERVER_SOCKET_ACCEPT_TIME_OUT = 1;		// Receieve timeout
+	
 	/**
 	 * Default constructor
-	 * @param port Server port
+	 * @param port UDP server port
 	 */
 	public ServerUDP(int port) {
 		super(port);
 	}
-
-	private DatagramSocket mServerSocket; 								// Server socket for new incomming
-	private static final int SERVER_SOCKET_ACCEPT_TIME_OUT = 1;		// Receieve timeout
 	
 	/**
-	 * Start server
+	 * Start UDP server
 	 */
 	@Override
 	public void start() throws SocketException {
@@ -38,7 +41,6 @@ public class ServerUDP extends Server{
 	@Override
 	public int[] read(boolean block) throws IOException{
 		
-		
 		try{
 			byte[] receiveData = new byte[NetClientConfig.MSG_SIZE];
 			DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
@@ -51,11 +53,10 @@ public class ServerUDP extends Server{
 		}catch (SocketTimeoutException e){
 			return new int[]{-1,-1,-1};
 		}
-			
-			
+				
+		//TODO Blocking/No blocking optimization.
+		//Bug: This block always blocks.
 		
-//		
-//		
 //		if(mServerSocket.getReceiveBufferSize() >= NetClientConfig.MSG_SIZE || block){
 //			byte[] receiveData = new byte[NetClientConfig.MSG_SIZE];
 //			DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
@@ -69,6 +70,7 @@ public class ServerUDP extends Server{
 //			return new int[]{Utils.toInt(receivePacket.getData(),0),Utils.toInt(receivePacket.getData(),4),Utils.toInt(receivePacket.getData(),8)};		
 //		}else
 //			return new int[]{-1,-1,-1};
+		
 	}
 
 	/**

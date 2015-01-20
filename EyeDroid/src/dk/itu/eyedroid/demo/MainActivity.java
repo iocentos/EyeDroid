@@ -1,31 +1,20 @@
-
-
 package dk.itu.eyedroid.demo;
 
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
 
-import dk.itu.eyedroid.R;
-import dk.itu.eyedroid.R.id;
-import dk.itu.eyedroid.R.layout;
-import dk.itu.eyedroid.R.menu;
-import dk.itu.eyedroid.R.string;
-import dk.itu.eyedroid.demo.NavigationDrawerFragment.NavigationDrawerCallbacks;
-import dk.itu.eyedroid.settings.SettingsActivity;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
-import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Toast;
+import dk.itu.eyedroid.R;
+import dk.itu.eyedroid.settings.SettingsActivity;
 
 public class MainActivity extends Activity implements
 		NavigationDrawerFragment.NavigationDrawerCallbacks {
@@ -184,7 +173,5 @@ public class MainActivity extends Activity implements
 		}
 		return super.onOptionsItemSelected(item);
 	}
-
-	
 
 }
