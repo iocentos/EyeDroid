@@ -1,6 +1,6 @@
 package dk.itu.eyedroid;
 
-import dk.itu.eyedroid.statistics.FileStatisticsLogger;
+import dk.itu.eyedroid.statistics.LoggerFileStatistics;
 import android.content.Context;
 import android.widget.ImageView;
 import dk.itu.eyedroid.filters.AfterErodeDilateFilter;
@@ -128,7 +128,7 @@ public class EyeDroid {
 		core.start(NUM_OF_THREADS);
 
 		if(ENABLE_STATISTICS)
-			core.enableStatistics(new FileStatisticsLogger(FileStatisticsLogger.STATISTICS_FULL_PATH), 5000);
+			core.enableStatistics(new LoggerFileStatistics(LoggerFileStatistics.STATISTICS_FULL_PATH), 5000);
 		
 		ioController.start();
 	}

@@ -23,7 +23,7 @@ import dk.itu.eyedroid.EyeDroid;
 import dk.itu.eyedroid.R;
 import dk.itu.eyedroid.filters.PreviewFilter;
 import dk.itu.eyedroid.io.calibration.CalibrationMapper;
-import dk.itu.eyedroid.io.calibration.GlassCalibrationMapper;
+import dk.itu.eyedroid.io.calibration.CalibrationMapperGlass;
 import dk.itu.eyedroid.io.calibration.NETCalibrationController;
 import dk.itu.eyedroid.io.calibration.NETCalibrationControllerGlass;
 import dk.itu.eyedroid.io.protocols.InputStreamCamera;
@@ -117,7 +117,7 @@ public class MainFragment extends Fragment {
 			break;
 		}
 		
-		CalibrationMapper mapper = new GlassCalibrationMapper(2, 2, GLASS_SCREEN_WIDTH, GLASS_SCREEN_HEIGHT);
+		CalibrationMapper mapper = new CalibrationMapperGlass(2, 2, GLASS_SCREEN_WIDTH, GLASS_SCREEN_HEIGHT);
 
 		NETCalibrationController calibrationController = new NETCalibrationControllerGlass(mapper);
 

@@ -6,7 +6,6 @@ import org.opencv.core.Point;
 
 import android.util.Log;
 import dk.itu.eyedroid.io.NetClientConfig;
-import dk.itu.eyedroid.io.Server;
 
 public class NETCalibrationControllerGlass extends NETCalibrationController {
 

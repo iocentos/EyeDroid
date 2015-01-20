@@ -14,7 +14,7 @@ import dk.itu.spcl.jlpf.core.ProcessingCore;
  *It is enabled as follows with 5000 being the interval for the statistics thread
  *core.enableStatistics(new LogStatisticsLogger(), 5000);
  */
-public class LogStatistcsLogger implements ProcessingCore.StatisticsCallback {
+public class LoggerLogStatistcs implements ProcessingCore.StatisticsCallback {
 
 	public static final String TAG = "Statistics";	//Log Tag
 

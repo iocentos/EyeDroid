@@ -1,4 +1,4 @@
-package dk.itu.eyedroid.io.calibration;
+package testing;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -10,7 +10,7 @@ import java.net.UnknownHostException;
 import dk.itu.eyedroid.io.NetClientConfig;
 import dk.itu.eyedroid.io.Utils;
 
-public class TestClient {
+public class UDPtestClient2 {
 
 	public static void main(String args[]) {
 

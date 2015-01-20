@@ -13,7 +13,7 @@ import dk.itu.eyedroid.io.NetClientConfig;
 /*
  * The class supposes that is working with a matrix of NxN calibration points.
  */
-public class GlassCalibrationMapper extends CalibrationMapper{
+public class CalibrationMapperGlass extends CalibrationMapper{
 
 	/*
 	 * Source rectangle of points. These points match the four points in the
@@ -33,7 +33,7 @@ public class GlassCalibrationMapper extends CalibrationMapper{
 
 	private double gazeErrorY;
 
-	public GlassCalibrationMapper(int n, int m, int presentationScreenWidth,
+	public CalibrationMapperGlass(int n, int m, int presentationScreenWidth,
 			int presentationScreenHeight) {
 		super(n , m , presentationScreenWidth , presentationScreenHeight);
 		source = new MatOfPoint2f();

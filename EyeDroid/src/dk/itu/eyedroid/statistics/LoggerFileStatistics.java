@@ -19,10 +19,10 @@ import dk.itu.spcl.jlpf.core.ProcessingCore;
  *in an external file that can be reviewed later.
  *
  *It is enabled as follows with 5000 being the interval for the statistics thread
- *		core.enableStatistics(new FileStatisticsLogger(
- *		FileStatisticsLogger.STATISTICS_FULL_PATH), 5000);
+ *		core.enableStatistics(new LoggerFileStatistics(
+ *		LoggerFileStatistics.STATISTICS_FULL_PATH), 5000);
  */
-public class FileStatisticsLogger implements ProcessingCore.StatisticsCallback {
+public class LoggerFileStatistics implements ProcessingCore.StatisticsCallback {
 
 	private String mFileName;
 	public static final String FILE_NAME = "/statistics";	//File prefix	
@@ -35,7 +35,7 @@ public class FileStatisticsLogger implements ProcessingCore.StatisticsCallback {
      * Default constructor. Creates a new statistics file
      * @param fileName File name to create
      */
-	public FileStatisticsLogger(String fileName) {
+	public LoggerFileStatistics(String fileName) {
 		this.mFileName = fileName;
 		mFileExists = createFile();
 		if( mFileExists)
