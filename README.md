@@ -12,12 +12,12 @@ EyeDroid is a mobile Android platform eye tracking system designed to be used wi
 Dependencies
 ---------
 
-Java 1.7
-Android SDK API 20
-Android NDK r10b
-Android Support Library v4
-OpenCV Library 2.4.9
-[JLPF 1.0](https://github.com/centosGit/JLPF)
+Java 1.7 <br/>
+Android SDK API 20 <br/>
+Android NDK r10b <br/>
+Android Support Library v4 <br/>
+OpenCV Library 2.4.9 <br/>
+[JLPF 1.0](https://github.com/centosGit/JLPF) <br/>
 
 Build
 ---------
