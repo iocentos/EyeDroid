@@ -40,7 +40,8 @@ public class NETCalibrationControllerGlass extends NETCalibrationController {
 			super. mServer.send(NetClientConfig.TO_CLIENT_CALIBRATE_DISPLAY,
 					-1, -1);
 
-			for (int i = 0; i < NetClientConfig.NO_POINTS; i++) {
+			int counter = 0;
+			while( counter < NetClientConfig.NO_POINTS){
 
 				message = super. mServer.read();
 				while (message[0] == -1) {
@@ -48,12 +49,11 @@ public class NETCalibrationControllerGlass extends NETCalibrationController {
 				}
 				if (NetClientConfig.TO_EYEDROID_READY != message[0]) {
 					Log.i(NetClientConfig.TAG, "Mesasge is not TO_EYEDROID_READY " + message[0]);
-					error = true;
-					break;
+					continue;
 				}
 				// get the calibration point from the mapper and send it
 				// to the cliend
-				Point clientPoint = NETCalibrationControllerGlass.this.mCalibrationMapper.getCalibrationPoint(i);
+				Point clientPoint = NETCalibrationControllerGlass.this.mCalibrationMapper.getCalibrationPoint(counter);
 
 				super. mServer.send(
 						NetClientConfig.TO_CLIENT_CALIBRATE_DISPLAY,
@@ -62,6 +62,8 @@ public class NETCalibrationControllerGlass extends NETCalibrationController {
 				Point serverPoint = getSampleFromCore();
 
 				setUpPointsToMapper(clientPoint, serverPoint);
+				
+				counter++;
 			}
 
 			if (!error) {
