@@ -5,6 +5,7 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 
+import android.util.Log;
 import dk.itu.eyedroid.Constants;
 import dk.itu.eyedroid.io.NetClientConfig;
 import dk.itu.eyedroid.io.Utils;
@@ -65,14 +66,13 @@ public class OutputNetProtocolUDP extends OutputNetProtocol   {
 			if (x != -1 && y != -1 && super.mController.isStarted.get()){
 
 				//TODO Add mapping
-				//int[] xy = super.mController.mCalibrationController.getCalibrationMapper().map(x, y);
-				//Log.i(NetClientConfig.TAG, "Coords orig : " + x  + "," + y + "  client : " + xy[0] + "," + xy[1]);
-				//super.sendCoordinates(xy[0],xy[1]);
+				int[] xy = super.mController.mCalibrationController.getCalibrationMapper().map(x, y);
+				Log.i(NetClientConfig.TAG, "Coords orig : " + x  + "," + y + "  client : " + xy[0] + "," + xy[1]);
 
 				if(super.mController.mUseHMGT)
-					sendCoordinates(NetClientConfig.TO_CLIENT_GAZE_HMGT,x,y);
+					sendCoordinates(NetClientConfig.TO_CLIENT_GAZE_HMGT,xy[0],xy[1]);
 				else
-					sendCoordinates(NetClientConfig.TO_CLIENT_GAZE_RGT,x,y);
+					sendCoordinates(NetClientConfig.TO_CLIENT_GAZE_RGT,xy[0],xy[1]);
 			}
 		}
 		bundle = null;

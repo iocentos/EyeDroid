@@ -13,7 +13,7 @@ import dk.itu.eyedroid.io.NetClientConfig;
 /*
  * The class supposes that is working with a matrix of NxN calibration points.
  */
-public class CalibrationMapperGlass extends CalibrationMapper{
+public class CalibrationMapperGlass extends CalibrationMapper {
 
 	/*
 	 * Source rectangle of points. These points match the four points in the
@@ -35,7 +35,7 @@ public class CalibrationMapperGlass extends CalibrationMapper{
 
 	public CalibrationMapperGlass(int n, int m, int presentationScreenWidth,
 			int presentationScreenHeight) {
-		super(n , m , presentationScreenWidth , presentationScreenHeight);
+		super(n, m, presentationScreenWidth, presentationScreenHeight);
 		source = new MatOfPoint2f();
 		destination = new MatOfPoint2f();
 	}
@@ -64,11 +64,13 @@ public class CalibrationMapperGlass extends CalibrationMapper{
 
 		MatOfPoint2f newSource = new MatOfPoint2f(source);
 		MatOfPoint2f newDestination = new MatOfPoint2f(destination);
-		
+
 		homography = Calib3d.findHomography(newSource, newDestination, 0, 5);
-		
-		if(homography != null){
-			Log.i(NetClientConfig.TAG, "Homography is not null" + homography.rows() + " " + homography.cols());
+
+		if (homography != null) {
+			Log.i(NetClientConfig.TAG,
+					"Homography is not null" + homography.rows() + " "
+							+ homography.cols());
 		}
 	}
 
@@ -105,44 +107,95 @@ public class CalibrationMapperGlass extends CalibrationMapper{
 
 	private int[] map(float inputX, float inputY, double errorX, double errorY) {
 
-		Point output = new Point();
-		Mat src = new Mat(1, 3, CvType.CV_32F);
-		Mat dst = new Mat(1, 3, CvType.CV_32F);
+		float[][] src = new float[3][1];
+		float[][] dst;
 
-		src.put(0, 0, inputX);
-		src.put(0, 1, inputY);
-		src.put(0, 2, 1);
+		src[0][0] = inputX;
+		src[1][0] = inputY;
+		src[2][0] = 1;
 
-		// TODO check also the homography * src
-//		Mat newHomo = homography.col(0);
+		float[][] homo = new float[3][3];
+		for (int i = 0; i < 3; i++)
+			for (int j = 0; j < 3; j++)
+				homo[i][j] = (float) homography.get(i, j)[0];
+
+		dst = multiply(homo, src);
 		
-		dst = homography.mul(src);
-
-		float[] in = new float[1];
-
-		dst.get(0, 0, in);
-		float dstX = in[0];
-		dst.get(0, 1, in);
-		float dstY = in[0];
-		dst.get(0, 2, in);
-		float dstZ = in[0];
-
-		output.x = dstX / dstZ;
-		output.y = dstY / dstZ;
+		Point output = new Point();
+		output.x = (int)(dst[0][0] / dst[2][0]);
+		output.y = (int)(dst[1][0] / dst[2][0]);
 
 		output.x -= errorX;
 		output.y -= errorY;
-		
+
 		int[] o = new int[2];
-		
+
 		o[0] = (int) output.x;
 		o[1] = (int) output.y;
-
+		
 		return o;
 	}
 
+	public static float[][] multiply(float[][] m1, float[][] m2) {
+		int m1rows = m1.length;
+		int m1cols = m1[0].length;
+		int m2rows = m2.length;
+		int m2cols = m2[0].length;
+		if (m1cols != m2rows) {
+			throw new IllegalArgumentException("matrices don't match: "
+					+ m1cols + " != " + m2rows);
+		}
+		float[][] result = new float[m1rows][m2cols];
+		for (int i = 0; i < m1rows; i++) {
+			for (int j = 0; j < m2cols; j++) {
+				for (int k = 0; k < m1cols; k++) {
+					result[i][j] += m1[i][k] * m2[k][j];
+				}
+			}
+		}
+		return result;
+	}
+//
+//	private int[] map(float inputX, float inputY, double errorX, double errorY) {
+//
+//		Point output = new Point();
+//		Mat src = new Mat(3, 1, CvType.CV_32F);
+//		Mat dst = new Mat(3, 1, CvType.CV_32F);
+//
+//		src.put(0, 0, inputX);
+//		src.put(1, 0, inputY);
+//		src.put(2, 0, 1);
+//
+//		// TODO check also the homography * src
+//		// Mat newHomo = homography.col(0);
+//
+//		dst = homography.mul(src);
+//
+//		float[] in = new float[1];
+//
+//		dst.get(0, 0, in);
+//		float dstX = in[0];
+//		dst.get(0, 1, in);
+//		float dstY = in[0];
+//		dst.get(0, 2, in);
+//		float dstZ = in[0];
+//
+//		output.x = dstX / dstZ;
+//		output.y = dstY / dstZ;
+//
+//		output.x -= errorX;
+//		output.y -= errorY;
+//
+//		int[] o = new int[2];
+//
+//		o[0] = (int) output.x;
+//		o[1] = (int) output.y;
+//
+//		return o;
+//	}
+
 	@Override
-	public void correctError(int inputX , int inputY) {
+	public void correctError(int inputX, int inputY) {
 
 		int[] error = map((float) inputX, (float) inputY, 320, 180);
 

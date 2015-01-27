@@ -134,7 +134,7 @@ public class MainFragment extends Fragment {
 
 		OutputNetProtocol outProtocol;
 		try {
-			outProtocol = new OutputNetProtocolUDP(controller, 6000, InetAddress.getByName(""), 6000);
+			outProtocol = new OutputNetProtocolUDP(controller, 6000, InetAddress.getByName("192.168.150.5"), 6000);
 			
 			calibrationController.setOutputProtocol(outProtocol);
 

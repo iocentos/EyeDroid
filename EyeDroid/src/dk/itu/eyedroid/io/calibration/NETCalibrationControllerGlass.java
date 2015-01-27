@@ -14,7 +14,7 @@ public class NETCalibrationControllerGlass extends NETCalibrationController {
 	 * 
 	 * @param server
 	 * @param mapper
-	 * Calibration mapper
+	 *            Calibration mapper
 	 */
 	public NETCalibrationControllerGlass(CalibrationMapper mapper) {
 		super(mapper);
@@ -23,7 +23,8 @@ public class NETCalibrationControllerGlass extends NETCalibrationController {
 	/**
 	 * Calibration process
 	 * 
-	 * @param receivePacket Packet receieved from client.
+	 * @param receivePacket
+	 *            Packet receieved from client.
 	 * @throws IOException
 	 * @throws InterruptedException
 	 */
@@ -37,41 +38,41 @@ public class NETCalibrationControllerGlass extends NETCalibrationController {
 			mCalibrationCallbacks.onCalibrationStarted();
 
 		try {
-			super. mServer.send(NetClientConfig.TO_CLIENT_CALIBRATE_DISPLAY,
-					-1, -1);
+			super.mServer.send(NetClientConfig.TO_CLIENT_CALIBRATE_DISPLAY, -1,
+					-1);
 
 			int counter = 0;
-			while( counter < NetClientConfig.NO_POINTS){
+			while (counter < NetClientConfig.NO_POINTS) {
 
-				message = super. mServer.read();
+				message = super.mServer.read();
 				while (message[0] == -1) {
-					message = super. mServer.read();
+					message = super.mServer.read();
 				}
 				if (NetClientConfig.TO_EYEDROID_READY != message[0]) {
-					Log.i(NetClientConfig.TAG, "Mesasge is not TO_EYEDROID_READY " + message[0]);
+					Log.i(NetClientConfig.TAG,
+							"Mesasge is not TO_EYEDROID_READY " + message[0]);
 					continue;
 				}
 				// get the calibration point from the mapper and send it
 				// to the cliend
-				Point clientPoint = NETCalibrationControllerGlass.this.mCalibrationMapper.getCalibrationPoint(counter);
+				Point clientPoint = NETCalibrationControllerGlass.this.mCalibrationMapper
+						.getCalibrationPoint(counter);
 
-				super. mServer.send(
-						NetClientConfig.TO_CLIENT_CALIBRATE_DISPLAY,
+				super.mServer.send(NetClientConfig.TO_CLIENT_CALIBRATE_DISPLAY,
 						(int) clientPoint.x, (int) clientPoint.y);
 
 				Point serverPoint = getSampleFromCore();
 
 				setUpPointsToMapper(clientPoint, serverPoint);
-				
+
 				counter++;
 			}
 
 			if (!error) {
-				super. mServer.send(
-						NetClientConfig.TO_CLIENT_CALIBRATE_DISPLAY,
+				super.mServer.send(NetClientConfig.TO_CLIENT_CALIBRATE_DISPLAY,
 						-2, -2);
 				NETCalibrationControllerGlass.this.mCalibrationMapper
-				.calibrate();
+						.calibrate();
 				if (mCalibrationCallbacks != null)
 					mCalibrationCallbacks.onCalibrationFinished();
 			} else {
