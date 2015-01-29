@@ -37,6 +37,7 @@ public:
 		volatile static int ROI_CONSTANT_H;
 		volatile static int ROI_PUPIL_FOUND_W;
 		volatile static int ROI_PUPIL_FOUND_H;
+		volatile static bool DYNAMIC_ROI_ENABLED;
 	};
 
 	class Thresshold{

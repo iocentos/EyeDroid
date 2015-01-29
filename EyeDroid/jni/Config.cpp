@@ -20,6 +20,7 @@ volatile int Config::PupilROI::ROI_CONSTANT_W = 400;
 volatile int Config::PupilROI::ROI_CONSTANT_H = 350;
 volatile int Config::PupilROI::ROI_PUPIL_FOUND_W = 80;
 volatile int Config::PupilROI::ROI_PUPIL_FOUND_H = 80;
+volatile bool Config::PupilROI::DYNAMIC_ROI_ENABLED = false;
 
 volatile int Config::Thresshold::LOWER_LIMIT = 70;
 

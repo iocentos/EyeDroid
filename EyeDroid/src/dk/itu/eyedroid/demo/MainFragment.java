@@ -119,7 +119,8 @@ public class MainFragment extends Fragment {
 		
 		CalibrationMapper mapper = new CalibrationMapperGlass(2, 2, GLASS_SCREEN_WIDTH, GLASS_SCREEN_HEIGHT);
 
-		NETCalibrationController calibrationController = new NETCalibrationControllerGlass(mapper);
+		NETCalibrationController calibrationController = new NETCalibrationControllerGlass(mapper,
+				this.getActivity());
 
 		OutputNetProtocolController controller = new OutputNetProtocolControllerGlass(calibrationController);
 
@@ -132,13 +133,13 @@ public class MainFragment extends Fragment {
 		
 		calibrationController.setCalibrationCallbacks(controller);
 
+		//TODO check how to do the dynamic IP of the client
 		OutputNetProtocol outProtocol;
 		try {
-			outProtocol = new OutputNetProtocolUDP(controller, 6000, InetAddress.getByName("192.168.150.5"), 6000);
+			outProtocol = new OutputNetProtocolUDP(controller, 6000, InetAddress.getByName("192.168.150.4"), 6000);
 			
 			calibrationController.setOutputProtocol(outProtocol);
 
-			//OutputNetProtocolTCP outProtocol = new OutputNetProtocolTCP(5000);
 			IORWDefaultImpl io_rw = new IORWDefaultImpl(inProtocol, outProtocol);
 			return io_rw;
 		} catch (UnknownHostException e) {

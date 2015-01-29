@@ -14,8 +14,7 @@ cv::Rect EyeDroid::getPupilRoi(cv::Mat& input, bool useDiameter) {
 	Eye* tempEye = new Eye();
 	Eye::getInstance(tempEye);
 
-	if (tempEye->isPupilFound()) {
-		//	if( false ){
+	if (tempEye->isPupilFound() && Config::PupilROI::DYNAMIC_ROI_ENABLED) {
 		int W = 0;
 		int H = 0;
 		if (useDiameter) {
@@ -72,22 +71,62 @@ void EyeDroid::thresholdImage(cv::Mat& input, cv::Mat& output) {
 			CV_THRESH_BINARY);
 
 }
+//
+//std::vector<cv::Vec3f> EyeDroid::detectBlobs(cv::Mat& output) {
+//
+//	std::vector<cv::Vec3f> circles;
+//
+//	// Apply the Hough Transform to find the circles
+//	HoughCircles(output, circles, CV_HOUGH_GRADIENT,
+//			Config::BlobDetection::SCALE_FACTOR,
+//			output.rows / Config::BlobDetection::MIN_NEIGHBOR_DISTANCE_FACTOR,
+//			Config::BlobDetection::UPPER_THRESHOLD,
+//			Config::BlobDetection::THRESHOLD_CENTER,
+//			Config::BlobDetection::MIN_BLOB_SIZE,
+//			Config::BlobDetection::MAX_BLOB_SIZE);
+//
+//	//	HoughCircles(output, circles, CV_HOUGH_GRADIENT, 2, output.rows/8, 200, 100,
+//	//			0, 0);
+//	return circles;
+//}
+
 
 std::vector<cv::Vec3f> EyeDroid::detectBlobs(cv::Mat& output) {
 
+
+	cv::SimpleBlobDetector::Params params;
+	params.minDistBetweenBlobs = 40.0f;
+	params.filterByInertia = false;
+	params.filterByConvexity = false;
+	params.minConvexity = 1;
+	params.maxConvexity = 10000;
+	params.filterByColor = 0;
+	params.filterByCircularity = false;
+	params.filterByArea = true;
+	params.minArea = 2000.0f;
+	params.maxArea = 20000.0f;
+
 	std::vector<cv::Vec3f> circles;
 
-	// Apply the Hough Transform to find the circles
-	HoughCircles(output, circles, CV_HOUGH_GRADIENT,
-			Config::BlobDetection::SCALE_FACTOR,
-			output.rows / Config::BlobDetection::MIN_NEIGHBOR_DISTANCE_FACTOR,
-			Config::BlobDetection::UPPER_THRESHOLD,
-			Config::BlobDetection::THRESHOLD_CENTER,
-			Config::BlobDetection::MIN_BLOB_SIZE,
-			Config::BlobDetection::MAX_BLOB_SIZE);
+	cv::SimpleBlobDetector blob_detector(params);
 
-	//	HoughCircles(output, circles, CV_HOUGH_GRADIENT, 2, output.rows/8, 200, 100,
-	//			0, 0);
+	// detect!
+	std::vector<cv::KeyPoint> keypoints;
+	blob_detector.detect(output, keypoints);
+
+
+	cv::Vec3f* array = new cv::Vec3f[keypoints.size()];
+
+	for (int i=0; i<keypoints.size(); i++){
+
+		cv::Vec3f p;
+		p[0] = keypoints[i].pt.x;
+		p[1] = keypoints[i].pt.y;
+		p[2] = 30;
+		array[i] = p;
+	}
+
+	circles.insert(circles.begin() , array , array + keypoints.size());
 	return circles;
 }
 

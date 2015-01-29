@@ -4,10 +4,15 @@ import java.io.IOException;
 
 import org.opencv.core.Point;
 
+import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
+import dk.itu.eyedroid.demo.MainActivity;
 import dk.itu.eyedroid.io.NetClientConfig;
 
 public class NETCalibrationControllerGlass extends NETCalibrationController {
+
+	private Context context;
 
 	/**
 	 * Default constructor
@@ -16,8 +21,10 @@ public class NETCalibrationControllerGlass extends NETCalibrationController {
 	 * @param mapper
 	 *            Calibration mapper
 	 */
-	public NETCalibrationControllerGlass(CalibrationMapper mapper) {
+	public NETCalibrationControllerGlass(CalibrationMapper mapper,
+			Context context) {
 		super(mapper);
+		this.context = context;
 	}
 
 	/**
@@ -61,7 +68,7 @@ public class NETCalibrationControllerGlass extends NETCalibrationController {
 				super.mServer.send(NetClientConfig.TO_CLIENT_CALIBRATE_DISPLAY,
 						(int) clientPoint.x, (int) clientPoint.y);
 
-				Point serverPoint = getSampleFromCore();
+				final Point serverPoint = getSampleFromCore();
 
 				setUpPointsToMapper(clientPoint, serverPoint);
 
@@ -91,9 +98,16 @@ public class NETCalibrationControllerGlass extends NETCalibrationController {
 
 		int[] xy;
 		int sumX = 0, sumY = 0;
+		
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 
 		for (int j = 0; j < NetClientConfig.NO_SAMPLES; j++) {
-			Thread.currentThread();
+//			Thread.currentThread();
 			try {
 				Thread.sleep(NetClientConfig.WAIT_TO_SAMPLE);
 				if (mOutputProtocol != null) {
