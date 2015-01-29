@@ -6,13 +6,9 @@ import org.opencv.core.Point;
 
 import android.content.Context;
 import android.util.Log;
-import android.widget.Toast;
-import dk.itu.eyedroid.demo.MainActivity;
 import dk.itu.eyedroid.io.NetClientConfig;
 
 public class NETCalibrationControllerGlass extends NETCalibrationController {
-
-	private Context context;
 
 	/**
 	 * Default constructor
@@ -21,10 +17,8 @@ public class NETCalibrationControllerGlass extends NETCalibrationController {
 	 * @param mapper
 	 *            Calibration mapper
 	 */
-	public NETCalibrationControllerGlass(CalibrationMapper mapper,
-			Context context) {
+	public NETCalibrationControllerGlass(CalibrationMapper mapper, Context context) {
 		super(mapper);
-		this.context = context;
 	}
 
 	/**

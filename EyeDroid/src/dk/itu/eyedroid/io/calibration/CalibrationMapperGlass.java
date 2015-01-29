@@ -6,7 +6,6 @@ import org.opencv.core.MatOfPoint2f;
 import org.opencv.core.Point;
 import org.opencv.core.Rect;
 
-import android.content.Context;
 import android.util.Log;
 
 /*
@@ -32,8 +31,7 @@ public class CalibrationMapperGlass extends CalibrationMapper {
 
 	private double gazeErrorY;
 
-	public CalibrationMapperGlass(int n, int m, int presentationScreenWidth,
-			int presentationScreenHeight){
+	public CalibrationMapperGlass(int n, int m, int presentationScreenWidth, int presentationScreenHeight){
 		super(n, m, presentationScreenWidth, presentationScreenHeight);
 		source = new MatOfPoint2f();
 		destination = new MatOfPoint2f();
@@ -67,16 +65,14 @@ public class CalibrationMapperGlass extends CalibrationMapper {
 		Log.i("EyeNet", "Performing calibration");
 
 		homography = Calib3d.findHomography(newSource, newDestination, 0, 3);
-
 	}
 
 	@Override
-	protected void computeCalibrationPoints(int n, int m) {
-		presentationScreen = new Rect(new Point(0, 0), new Point(
-				PRESENTATION_SCREEN_WIDTH, PRESENTATION_SCREEN_HEIGHT));
+	protected void computeCalibrationPoints(int n, int m) { 
+		
+		presentationScreen = new Rect(new Point(0, 0), new Point(PRESENTATION_SCREEN_WIDTH, PRESENTATION_SCREEN_HEIGHT));
 
 		int offset = 100;
-
 		int count = 0;
 
 		for (int i = 0; i < n; i++)
@@ -86,7 +82,6 @@ public class CalibrationMapperGlass extends CalibrationMapper {
 								+ offset,
 						((presentationScreen.height - 2 * offset) / (n - 1))
 								* i + offset));
-
 				count++;
 			}
 	}
@@ -94,7 +89,6 @@ public class CalibrationMapperGlass extends CalibrationMapper {
 	@Override
 	public int[] map(float inputX, float inputY) {
 		 return map(inputX, inputY, gazeErrorX, gazeErrorY);
-
 	}
 
 	private int[] map(float inputX, float inputY, double errorX, double errorY) {
@@ -111,7 +105,6 @@ public class CalibrationMapperGlass extends CalibrationMapper {
 		for (int i = 0; i < 3; i++)
 			for (int j = 0; j < 3; j++) {
 				homo[i][j] = (float) homography.get(i, j)[0];
-				// Log.i("Skata", "yoyo  " + homo[i][j]);
 			}
 
 		dst = multiply(homo, src);
@@ -128,8 +121,6 @@ public class CalibrationMapperGlass extends CalibrationMapper {
 		o[0] = (int) output.x;
 		o[1] = (int) output.y;
 
-		Log.i("Skata", "Client coords : " + o[0] + " " + o[1]);
-
 		return o;
 	}
 
@@ -138,10 +129,11 @@ public class CalibrationMapperGlass extends CalibrationMapper {
 		int m1cols = m1[0].length;
 		int m2rows = m2.length;
 		int m2cols = m2[0].length;
+		
 		if (m1cols != m2rows) {
-			throw new IllegalArgumentException("matrices don't match: "
-					+ m1cols + " != " + m2rows);
+			throw new IllegalArgumentException("matrices don't match: " + m1cols + " != " + m2rows);
 		}
+		
 		float[][] result = new float[m1rows][m2cols];
 		for (int i = 0; i < m1rows; i++) {
 			for (int j = 0; j < m2cols; j++) {
@@ -153,12 +145,9 @@ public class CalibrationMapperGlass extends CalibrationMapper {
 		return result;
 	}
 
-
 	@Override
 	public void correctError(int inputX, int inputY) {
-
 		int[] error = map((float) inputX, (float) inputY, 320, 180);
-
 		gazeErrorX = error[0];
 		gazeErrorY = error[1];
 

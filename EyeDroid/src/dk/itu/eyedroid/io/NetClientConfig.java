@@ -12,7 +12,7 @@ public class NetClientConfig {
 	
 	public static final int NO_POINTS = 4;					//Number of points to calibrate
 	public static final int WAIT_TO_SAMPLE = 50;			//Time to wait for the next sample during 1 point calibration
-	public static final int NO_SAMPLES = 120;					//Number of point calibration samples
+	public static final int NO_SAMPLES = 120;				//Number of point calibration samples
 	public final static int MSG_SIZE = 12; 					//byteArray[12]
 	
 	//Client app to EyeDroid

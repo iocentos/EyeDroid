@@ -17,7 +17,7 @@ import dk.itu.eyedroid.R;
 import dk.itu.eyedroid.settings.SettingsActivity;
 
 public class MainActivity extends Activity implements
-		NavigationDrawerFragment.NavigationDrawerCallbacks {
+NavigationDrawerFragment.NavigationDrawerCallbacks {
 
 	/**
 	 * Fragment managing the behaviors, interactions and presentation of the
@@ -48,8 +48,7 @@ public class MainActivity extends Activity implements
 		mTitle = getTitle();
 
 		// Set up the drawer.
-		mNavigationDrawerFragment.setUp(R.id.navigation_drawer,
-				(DrawerLayout) findViewById(R.id.drawer_layout));
+		mNavigationDrawerFragment.setUp(R.id.navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout));
 
 		mLoaderCallbacks = new BaseLoaderCallback(this) {
 
@@ -87,17 +86,13 @@ public class MainActivity extends Activity implements
 				}
 			}
 		};
-		
-		
-		OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_2_4_9, this,
-				mLoaderCallbacks);
+
+		OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_2_4_9, this, mLoaderCallbacks);
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
-//		OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_2_4_9, this,
-//				mLoaderCallbacks);
 	}
 
 	@Override
@@ -122,8 +117,7 @@ public class MainActivity extends Activity implements
 		Fragment frag = new MainFragment();
 		frag.setArguments(bundle);
 
-		this.getFragmentManager().beginTransaction()
-				.replace(R.id.container, frag).commit();
+		this.getFragmentManager().beginTransaction().replace(R.id.container, frag).commit();
 	}
 
 	public void onSectionAttached(int number) {
@@ -173,5 +167,4 @@ public class MainActivity extends Activity implements
 		}
 		return super.onOptionsItemSelected(item);
 	}
-
 }

@@ -60,7 +60,6 @@ public abstract class CalibrationMapper {
 
 	}
 
-
 	public void addSourcePoint(Point point) {
 		sourcePoints.add(point);
 	}
@@ -110,5 +109,4 @@ public abstract class CalibrationMapper {
 	public Point getCalibrationPoint(int index) {
 		return calibPoints.get(index);
 	}
-
 }

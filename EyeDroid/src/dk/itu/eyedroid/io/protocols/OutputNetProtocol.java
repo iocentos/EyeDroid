@@ -8,7 +8,7 @@ import dk.itu.spcl.jlpf.io.IOProtocolWriter;
  */
 public abstract class OutputNetProtocol implements IOProtocolWriter{
 
-	protected final OutputNetProtocolController  mController; 	//Message controlle
+	protected final OutputNetProtocolController  mController; 	// Message controlle
 	public Object lock;											// Lock used to provide atomic access to sampled coordinates
 	public int X;												// Sampled X coordinate
 	public int Y;												// Sampled Y coordinate

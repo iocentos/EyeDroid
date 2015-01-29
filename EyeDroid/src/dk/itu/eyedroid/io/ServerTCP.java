@@ -1,4 +1,4 @@
-package dk.itu.eyedroid.io.protocols;
+package dk.itu.eyedroid.io;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -7,9 +7,7 @@ import java.net.SocketException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import android.util.Log;
-import dk.itu.eyedroid.io.NetClientConfig;
-import dk.itu.eyedroid.io.Server;
-import dk.itu.eyedroid.io.Utils;
+import dk.itu.eyedroid.io.protocols.OutputNetProtocolController;
 
 public class ServerTCP extends Server implements Runnable {
 

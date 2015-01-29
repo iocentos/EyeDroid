@@ -22,6 +22,7 @@ import android.widget.ImageView;
 import dk.itu.eyedroid.EyeDroid;
 import dk.itu.eyedroid.R;
 import dk.itu.eyedroid.filters.PreviewFilter;
+import dk.itu.eyedroid.io.ServerTCP;
 import dk.itu.eyedroid.io.calibration.CalibrationMapper;
 import dk.itu.eyedroid.io.calibration.CalibrationMapperGlass;
 import dk.itu.eyedroid.io.calibration.NETCalibrationController;
@@ -32,7 +33,6 @@ import dk.itu.eyedroid.io.protocols.OutputNetProtocol;
 import dk.itu.eyedroid.io.protocols.OutputNetProtocolController;
 import dk.itu.eyedroid.io.protocols.OutputNetProtocolControllerGlass;
 import dk.itu.eyedroid.io.protocols.OutputNetProtocolUDP;
-import dk.itu.eyedroid.io.protocols.ServerTCP;
 import dk.itu.spcl.jlpf.io.IOProtocolReader;
 import dk.itu.spcl.jlpf.io.IORWDefaultImpl;
 

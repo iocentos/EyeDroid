@@ -8,8 +8,8 @@ import dk.itu.eyedroid.io.Server;
 import dk.itu.eyedroid.io.protocols.OutputNetProtocol;
 
 public abstract class NETCalibrationController {
-	protected  Server mServer;							// UDP server
-	protected OutputNetProtocol mOutputProtocol;		// Protocol writter
+	protected  Server mServer;								// UDP server
+	protected OutputNetProtocol mOutputProtocol;			// Protocol writter
 	protected final CalibrationMapper mCalibrationMapper;	//Calibration Mapper instance
 	protected CalibrationCallbacks mCalibrationCallbacks;
 
@@ -39,9 +39,6 @@ public abstract class NETCalibrationController {
 	public abstract void calibrate() throws IOException;
 	
 	protected abstract Point getSampleFromCore();
-	
-	
-	
 	
 	public Server getServer() {
 		return mServer;

@@ -4,8 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/darker_gray"
-    android:layout_margin="5dp"
-     >
+    android:layout_margin="5dp">
 
     <TextView
         android:id="@+id/settings_list_item_title"
@@ -13,7 +12,7 @@
         android:layout_height="@dimen/settings_text_views_height"
         android:layout_alignParentTop="true"
         android:gravity="center"
-        android:text="erode"
+        android:text="@string/erode"
         android:textStyle="bold" />
 
     <LinearLayout
@@ -28,9 +27,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:layout_marginStart="5dp"
             android:layout_marginLeft="5dp"
-            android:gravity="left"
-            android:text="0"/>
+            android:gravity="start"
+            android:text="@string/zero"/>
 
         <TextView
             android:id="@+id/settings_list_item_current_value"
@@ -40,16 +40,17 @@
             android:gravity="center"
             android:textSize="15sp"
             android:textStyle="bold"
-            android:text="20" />
+            android:text="@string/twenty" />
 
         <TextView
             android:id="@+id/settings_list_item_upper_limit"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:layout_marginEnd="5dp"
             android:layout_marginRight="5dp"
-            android:gravity="right"
-            android:text="200" />
+            android:gravity="end"
+            android:text="@string/two_hundred" />
     </LinearLayout>
 
     <SeekBar

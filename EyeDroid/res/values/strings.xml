@@ -10,4 +10,15 @@
     <string name="action_example">Example action</string>
     <string name="action_settings">Settings</string>
 
+    <!-- Settings list -->
+
+    <string name="erode">erode</string>
+    <string name="two_hundred">200</string>
+    <string name="twenty">20</string>
+    <string name="zero">0</string>
+
+    <!-- Image descriptions -->
+
+    <string name="mjpeg_view">mjpeg_view</string>
+
 </resources>

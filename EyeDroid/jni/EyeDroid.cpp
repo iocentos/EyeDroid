@@ -4,7 +4,6 @@
 
 #include "EyeDroid.h"
 
-
 namespace IMGP {
 
 

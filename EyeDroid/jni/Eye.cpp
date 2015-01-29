@@ -40,9 +40,7 @@ void Eye::nullInstance(){
 		instance = NULL;
 	}
 	pthread_mutex_unlock(lock);
-
 }
-
 
 Eye::Eye() {
 	pupilFound = false;

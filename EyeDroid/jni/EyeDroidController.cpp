@@ -114,10 +114,6 @@ JNIEXPORT void JNICALL Java_dk_itu_eyedroid_filters_DetectAndDrawPupilFilter_det
 	delete circles;
 }
 
-
-
-
-
 /*
  * Class:     dk_itu_eyedroid_filters_CoordinatesFilter
  * Method:    getCoordinates_X
