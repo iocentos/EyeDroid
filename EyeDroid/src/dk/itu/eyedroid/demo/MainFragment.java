@@ -1,7 +1,5 @@
 package dk.itu.eyedroid.demo;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -56,6 +54,8 @@ public class MainFragment extends Fragment {
 	private PreviewFilter mPreviewFilter;
 
 	private ServerTCP server;
+	
+	private ExecutorService executor;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -129,8 +129,8 @@ public class MainFragment extends Fragment {
 
 		this.server = new ServerTCP(GlassConfig.TCP_SERVER_PORT, controller);
 
-		ExecutorService executor = Executors.newSingleThreadExecutor();
-		executor.execute(server);
+		this.executor = Executors.newSingleThreadExecutor();
+		this.executor.execute(server);
 
 		calibrationController.setServer(server);
 
@@ -160,5 +160,7 @@ public class MainFragment extends Fragment {
 		super.onPause();
 		Log.i(TAG, "OnPause");
 		EYEDROID.stop();
+		server.stop();
+		this.executor.shutdown();
 	}
 }

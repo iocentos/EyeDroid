@@ -77,6 +77,7 @@ public class ServerTCP extends Server implements Runnable {
 	@Override
 	public void stop() {	
 		shouldKeepRunning.set(false);
+		cleanUp();
 	}
 	
 	private void cleanUp(){
@@ -122,7 +123,6 @@ public class ServerTCP extends Server implements Runnable {
 				}
 			}
 		}
-		cleanUp();
 	}
 
 	public void acceptClient() {
