@@ -10,7 +10,7 @@ import android.util.SparseArray;
 
 public abstract class CalibrationMapper {
 
-	private boolean isCalibrated;
+	protected boolean isCalibrated;
 
 	/*
 	 * Width of the client screen. In this case is the Google Glass screen
@@ -109,4 +109,6 @@ public abstract class CalibrationMapper {
 	public Point getCalibrationPoint(int index) {
 		return calibPoints.get(index);
 	}
+	
+	public abstract void clean();
 }

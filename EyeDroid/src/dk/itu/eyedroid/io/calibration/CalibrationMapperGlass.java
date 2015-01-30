@@ -1,5 +1,7 @@
 package dk.itu.eyedroid.io.calibration;
 
+import java.util.LinkedList;
+
 import org.opencv.calib3d.Calib3d;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint2f;
@@ -151,5 +153,15 @@ public class CalibrationMapperGlass extends CalibrationMapper {
 		gazeErrorX = error[0];
 		gazeErrorY = error[1];
 
+	}
+
+	@Override
+	public void clean() {
+		this.isCalibrated = false;
+		this.sourcePoints = new LinkedList<>();
+		this.destinationPoints = new LinkedList<>();
+		this.source = new MatOfPoint2f();
+		this.destination = new MatOfPoint2f();
+		this.homography = null;
 	}
 }

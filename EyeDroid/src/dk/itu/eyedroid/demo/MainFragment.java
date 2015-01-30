@@ -136,7 +136,7 @@ public class MainFragment extends Fragment {
 		//TODO check how to do the dynamic IP of the client
 		OutputNetProtocol outProtocol;
 		try {
-			outProtocol = new OutputNetProtocolUDP(controller, 6000, InetAddress.getByName("192.168.150.4"), 6000);
+			outProtocol = new OutputNetProtocolUDP(controller, 6000, InetAddress.getByName("192.168.150.5"), 6000);
 			
 			calibrationController.setOutputProtocol(outProtocol);
 

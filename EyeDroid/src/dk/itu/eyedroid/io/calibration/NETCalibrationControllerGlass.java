@@ -37,6 +37,8 @@ public class NETCalibrationControllerGlass extends NETCalibrationController {
 
 		if (mCalibrationCallbacks != null)
 			mCalibrationCallbacks.onCalibrationStarted();
+		
+		this.mCalibrationMapper.clean();
 
 		try {
 			super.mServer.send(NetClientConfig.TO_CLIENT_CALIBRATE_DISPLAY, -1,
