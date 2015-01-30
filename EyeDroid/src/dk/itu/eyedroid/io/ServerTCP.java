@@ -46,9 +46,9 @@ public class ServerTCP extends Server implements Runnable {
 	@Override
 	public int[] read() throws IOException {
 		if( isConnected.get() && shouldKeepRunning.get() ){
-			byte[] receiveData = new byte[NetClientConfig.MSG_SIZE];
+			byte[] receiveData = new byte[GlassConfig.MSG_SIZE];
 			
-			clientSocket.getInputStream().read(receiveData, 0, NetClientConfig.MSG_SIZE);
+			clientSocket.getInputStream().read(receiveData, 0, GlassConfig.MSG_SIZE);
 
 			return new int[]{Utils.toInt(receiveData,0),Utils.toInt(receiveData,4),Utils.toInt(receiveData,8)};
 		}
@@ -90,10 +90,10 @@ public class ServerTCP extends Server implements Runnable {
 		try {
 			start();
 		} catch (SocketException e) {
-			Log.i(NetClientConfig.TAG, "TCP Server port is taken");
+			Log.i(GlassConfig.TAG, "TCP Server port is taken");
 		}
 		
-		Log.i(NetClientConfig.TAG, "TCP Server thread is now running");
+		Log.i(GlassConfig.TAG, "TCP Server thread is now running");
 		
 		while(shouldKeepRunning.get()){
 			
@@ -105,7 +105,7 @@ public class ServerTCP extends Server implements Runnable {
 			} catch (IOException e) {
 				//Notify coordinate sender to stop
 				try {
-					protocolController.processMessage(new int[]{NetClientConfig.TO_EYEDROID_STREAM_GAZE_HMGT_STOP,-1,-1});
+					protocolController.processMessage(new int[]{GlassConfig.TO_EYEDROID_STREAM_GAZE_HMGT_STOP,-1,-1});
 					clientSocket.close();
 				} catch (IOException e1) {}
 				finally{
@@ -120,7 +120,7 @@ public class ServerTCP extends Server implements Runnable {
 		try {
 			clientSocket = serverSocket.accept();
 			isConnected.set(true);
-			Log.i(NetClientConfig.TAG, "TCP Server accepted a client");
+			Log.i(GlassConfig.TAG, "TCP Server accepted a client");
 
 		} catch (IOException e) {
 			isConnected.set(false);

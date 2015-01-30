@@ -3,7 +3,7 @@ package dk.itu.eyedroid.io.protocols;
 import java.io.IOException;
 
 import android.util.Log;
-import dk.itu.eyedroid.io.NetClientConfig;
+import dk.itu.eyedroid.io.GlassConfig;
 import dk.itu.eyedroid.io.calibration.NETCalibrationController;
 /**
  * Handle network communication messages from Glass client
@@ -29,14 +29,14 @@ public class OutputNetProtocolControllerGlass extends OutputNetProtocolControlle
 		switch (message[0]) {
 		
 		// Start calibration
-		case NetClientConfig.TO_EYEDROID_CALIBRATE_DISPLAY_4:
-			Log.i(NetClientConfig.TAG, "Server received TO_EYEDROID_CALIBRATE_DISPLAY_4");
+		case GlassConfig.TO_EYEDROID_CALIBRATE_DISPLAY_4:
+			Log.i(GlassConfig.TAG, "Server received TO_EYEDROID_CALIBRATE_DISPLAY_4");
 			super.mCalibrationController.calibrate();
 			break;
 			
 		// Start sending coordinates to client (HMGT mapping)
-		case NetClientConfig.TO_EYEDROID_STREAM_GAZE_HMGT_START:
-			Log.i(NetClientConfig.TAG,"Server received TO_EYEDROID_STREAM_GAZE_HMGT_START");
+		case GlassConfig.TO_EYEDROID_STREAM_GAZE_HMGT_START:
+			Log.i(GlassConfig.TAG,"Server received TO_EYEDROID_STREAM_GAZE_HMGT_START");
 			if (super.mCalibrationController.getCalibrationMapper().isCalibrated()) {
 				super.mUseHMGT = true;
 				super.isStarted.set(true);
@@ -44,8 +44,8 @@ public class OutputNetProtocolControllerGlass extends OutputNetProtocolControlle
 			break;
 		
 		// Start sending coordinates to client (RGT mapping)
-		case NetClientConfig.TO_EYEDROID_STREAM_GAZE_RGT_START:
-			Log.i(NetClientConfig.TAG, "Server received TO_EYEDROID_STREAM_GAZE_RGT_START");
+		case GlassConfig.TO_EYEDROID_STREAM_GAZE_RGT_START:
+			Log.i(GlassConfig.TAG, "Server received TO_EYEDROID_STREAM_GAZE_RGT_START");
 			if (super.mCalibrationController.getCalibrationMapper().isCalibrated()) {
 				super.mUseHMGT = false;
 				super.isStarted.set(true);
@@ -53,9 +53,9 @@ public class OutputNetProtocolControllerGlass extends OutputNetProtocolControlle
 			break;
 			
 		// Stop sending coordinates to client
-		case NetClientConfig.TO_EYEDROID_STREAM_GAZE_HMGT_STOP:
-		case NetClientConfig.TO_EYEDROID_STREAM_GAZE_RGT_STOP:
-			Log.i(NetClientConfig.TAG, "Server received TO_EYEDROID_STREAM_GAZE_STOP");
+		case GlassConfig.TO_EYEDROID_STREAM_GAZE_HMGT_STOP:
+		case GlassConfig.TO_EYEDROID_STREAM_GAZE_RGT_STOP:
+			Log.i(GlassConfig.TAG, "Server received TO_EYEDROID_STREAM_GAZE_STOP");
 			super.isStarted.set(false);
 			break;
 			
@@ -69,7 +69,7 @@ public class OutputNetProtocolControllerGlass extends OutputNetProtocolControlle
 	 */
 	@Override
 	public void onCalibrationStarted() {
-		Log.i(NetClientConfig.TAG, "Calibration callbacks. On start");
+		Log.i(GlassConfig.TAG, "Calibration callbacks. On start");
 		super.isStarted.set(false);
 		super.isCalibrating.set(true);
 	}
@@ -79,7 +79,7 @@ public class OutputNetProtocolControllerGlass extends OutputNetProtocolControlle
 	 */
 	@Override
 	public void onCalibrationFinished() {
-		Log.i(NetClientConfig.TAG, "Calibration callbacks. On stop");
+		Log.i(GlassConfig.TAG, "Calibration callbacks. On stop");
 		super.isCalibrating.set(false);
 
 	}
@@ -89,7 +89,7 @@ public class OutputNetProtocolControllerGlass extends OutputNetProtocolControlle
 	 */
 	@Override
 	public void onCalibrationError() {
-		Log.i(NetClientConfig.TAG, "Calibration callbacks. On error");
+		Log.i(GlassConfig.TAG, "Calibration callbacks. On error");
 		super.isStarted.set(false);
 		super.isCalibrating.set(false);
 	}

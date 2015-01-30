@@ -15,7 +15,7 @@ public class Utils {
 	 * @return Byte array.
 	 */
 	public static byte[] generateOutput(int message, int x, int y) {
-		ByteBuffer b = ByteBuffer.allocate(NetClientConfig.MSG_SIZE);
+		ByteBuffer b = ByteBuffer.allocate(GlassConfig.MSG_SIZE);
 		b.putInt(0,message);
 		b.putInt(4, x);
 		b.putInt(8, y);

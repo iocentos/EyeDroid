@@ -11,16 +11,9 @@ import android.util.SparseArray;
 public abstract class CalibrationMapper {
 
 	protected boolean isCalibrated;
-
-	/*
-	 * Width of the client screen. In this case is the Google Glass screen
-	 */
-	protected final int PRESENTATION_SCREEN_WIDTH;// = 640;
-
-	/*
-	 * Height of the client screen. In this case is the Google Glass screen
-	 */
-	protected final int PRESENTATION_SCREEN_HEIGHT; // = 360;
+	
+	protected int presentationScreenHeight;
+	protected int presentationScreenWidth;
 
 	/*
 	 * Calibration points sent to the client. The client should present these
@@ -48,8 +41,8 @@ public abstract class CalibrationMapper {
 
 	public CalibrationMapper(int n, int m, int presentationScreenWidth,
 			int presentationScreenHeight) {
-		PRESENTATION_SCREEN_HEIGHT = presentationScreenHeight;
-		PRESENTATION_SCREEN_WIDTH = presentationScreenWidth;
+		this.presentationScreenHeight = presentationScreenHeight;
+		this.presentationScreenWidth = presentationScreenWidth;
 		numberOfCalibrationPoints = n * m;
 	
 		calibPoints = new SparseArray<Point>();

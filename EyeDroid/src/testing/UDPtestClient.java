@@ -7,7 +7,7 @@ import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 
-import dk.itu.eyedroid.io.NetClientConfig;
+import dk.itu.eyedroid.io.GlassConfig;
 import dk.itu.eyedroid.io.Utils;
 
 public class UDPtestClient {
@@ -22,7 +22,7 @@ public class UDPtestClient {
 			byte[] sendData = new byte[12];
 			byte[] receiveData = new byte[12];
 			
-			sendData = Utils.generateOutput(NetClientConfig.TO_EYEDROID_CALIBRATE_DISPLAY_4, 0, 0);
+			sendData = Utils.generateOutput(GlassConfig.TO_EYEDROID_CALIBRATE_DISPLAY_4, 0, 0);
 			
 			socket.send(new DatagramPacket(sendData, sendData.length));
 			

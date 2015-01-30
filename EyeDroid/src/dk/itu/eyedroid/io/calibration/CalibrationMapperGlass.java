@@ -72,7 +72,7 @@ public class CalibrationMapperGlass extends CalibrationMapper {
 	@Override
 	protected void computeCalibrationPoints(int n, int m) { 
 		
-		presentationScreen = new Rect(new Point(0, 0), new Point(PRESENTATION_SCREEN_WIDTH, PRESENTATION_SCREEN_HEIGHT));
+		presentationScreen = new Rect(new Point(0, 0), new Point(this.presentationScreenWidth, this.presentationScreenHeight));
 
 		int offset = 100;
 		int count = 0;

@@ -7,7 +7,7 @@ import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 
-import dk.itu.eyedroid.io.NetClientConfig;
+import dk.itu.eyedroid.io.GlassConfig;
 import dk.itu.eyedroid.io.Utils;
 
 public class UDPtestClient2 {
@@ -27,7 +27,7 @@ public class UDPtestClient2 {
 			byte[] receiveData = new byte[12];
 
 			sendData = Utils.generateOutput(
-					NetClientConfig.TO_EYEDROID_CALIBRATE_DISPLAY_4, 0, 0);
+					GlassConfig.TO_EYEDROID_CALIBRATE_DISPLAY_4, 0, 0);
 			System.out.println("sending message to server");
 			
 			InetAddress address = InetAddress.getByName("192.168.150.5");
@@ -46,7 +46,7 @@ public class UDPtestClient2 {
 			sendReady(socket);
 
 			sendData = Utils.generateOutput(
-					NetClientConfig.TO_EYEDROID_STREAM_GAZE_HMGT_START, 0, 0);
+					GlassConfig.TO_EYEDROID_STREAM_GAZE_HMGT_START, 0, 0);
 			
 			socket.send(new DatagramPacket(sendData, sendData.length,
 					address , 5000));
@@ -62,7 +62,7 @@ public class UDPtestClient2 {
 			}
 
 			sendData = Utils.generateOutput(
-					NetClientConfig.TO_EYEDROID_STREAM_GAZE_HMGT_STOP, 0, 0);
+					GlassConfig.TO_EYEDROID_STREAM_GAZE_HMGT_STOP, 0, 0);
 			
 			socket.send(new DatagramPacket(sendData, sendData.length,
 					address , 5000));
@@ -92,7 +92,7 @@ public class UDPtestClient2 {
 
 			for( int i = 0 ; i < 4 ; i++ ){
 				sendData = Utils.generateOutput(
-					NetClientConfig.TO_EYEDROID_READY, 0, 0);
+					GlassConfig.TO_EYEDROID_READY, 0, 0);
 
 				System.out.println("Sending " + i + " TO_EYEDROID_READY");
 

@@ -22,6 +22,7 @@ import android.widget.ImageView;
 import dk.itu.eyedroid.EyeDroid;
 import dk.itu.eyedroid.R;
 import dk.itu.eyedroid.filters.PreviewFilter;
+import dk.itu.eyedroid.io.GlassConfig;
 import dk.itu.eyedroid.io.ServerTCP;
 import dk.itu.eyedroid.io.calibration.CalibrationMapper;
 import dk.itu.eyedroid.io.calibration.CalibrationMapperGlass;
@@ -47,8 +48,6 @@ public class MainFragment extends Fragment {
 	public static final int BACK_CAMERA = 1;
 	public static final int USB_CAMERA = 2;
 
-	private final static int GLASS_SCREEN_WIDTH = 640;
-	private final static int GLASS_SCREEN_HEIGHT = 360;
 
 	private View mRootView;
 	private ImageView mImageView;
@@ -117,14 +116,14 @@ public class MainFragment extends Fragment {
 			break;
 		}
 		
-		CalibrationMapper mapper = new CalibrationMapperGlass(2, 2, GLASS_SCREEN_WIDTH, GLASS_SCREEN_HEIGHT);
+		CalibrationMapper mapper = new CalibrationMapperGlass(2, 2, GlassConfig.GLASS_SCREEN_WIDTH, GlassConfig.GLASS_SCREEN_HEIGHT);
 
 		NETCalibrationController calibrationController = new NETCalibrationControllerGlass(mapper,
 				this.getActivity());
 
 		OutputNetProtocolController controller = new OutputNetProtocolControllerGlass(calibrationController);
 
-		this.server = new ServerTCP(5000, controller);
+		this.server = new ServerTCP(GlassConfig.TCP_SERVER_PORT, controller);
 		
 		ExecutorService executor = Executors.newSingleThreadExecutor();
 		executor.execute(server);
@@ -133,10 +132,10 @@ public class MainFragment extends Fragment {
 		
 		calibrationController.setCalibrationCallbacks(controller);
 
-		//TODO check how to do the dynamic IP of the client
 		OutputNetProtocol outProtocol;
 		try {
-			outProtocol = new OutputNetProtocolUDP(controller, 6000, InetAddress.getByName("192.168.150.5"), 6000);
+			outProtocol = new OutputNetProtocolUDP(controller, GlassConfig.GAZE_STREAMING_UDP_PORT,
+					InetAddress.getByName("192.168.150.5"), GlassConfig.GAZE_STREAMING_UDP_PORT);
 			
 			calibrationController.setOutputProtocol(outProtocol);
 

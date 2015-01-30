@@ -6,9 +6,17 @@ package dk.itu.eyedroid.io;
  * 
  * TCPtestClient client: https://github.com/dmardanbeigi/GlassGaze
  */
-public class NetClientConfig {
+public class GlassConfig {
 	
 	public static final String TAG = "EyeNet";
+	
+
+	public static final int GAZE_STREAMING_UDP_PORT = 6000;
+	public static final int  TCP_SERVER_PORT = 5000;
+	
+	public final static int GLASS_SCREEN_WIDTH = 640;
+	public final static int GLASS_SCREEN_HEIGHT = 360;
+	
 	
 	public static final int NO_POINTS = 4;					//Number of points to calibrate
 	public static final int WAIT_TO_SAMPLE = 50;			//Time to wait for the next sample during 1 point calibration
@@ -30,5 +38,7 @@ public class NetClientConfig {
 	public static final int TO_CLIENT_CALIBRATE_DISPLAY = 2004;				//Start calibration on client
 	public static final int TO_CLIENT_GAZE_RGT = 2002;						//Send coordinates (RGT mapping)
 	public static final int TO_CLIENT_GAZE_HMGT = 2003;						//Send coordinates (HMGT mapping)
+	
+	
 	
 }
