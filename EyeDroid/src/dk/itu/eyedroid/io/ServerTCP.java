@@ -1,6 +1,8 @@
 package dk.itu.eyedroid.io;
 
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
@@ -10,6 +12,11 @@ import android.util.Log;
 import dk.itu.eyedroid.io.protocols.OutputNetProtocolController;
 
 public class ServerTCP extends Server implements Runnable {
+	
+	
+	public interface NetworkCallbacks{
+		public void onClientConnected(InetAddress clientIP);
+	}
 
 	public AtomicBoolean isRunning;
 	private ServerSocket serverSocket;
@@ -17,6 +24,8 @@ public class ServerTCP extends Server implements Runnable {
 	public AtomicBoolean isConnected;
 
 	public AtomicBoolean shouldKeepRunning;
+	
+	private NetworkCallbacks mCallbacks;
 	
 	private OutputNetProtocolController protocolController;
 
@@ -121,6 +130,11 @@ public class ServerTCP extends Server implements Runnable {
 			clientSocket = serverSocket.accept();
 			isConnected.set(true);
 			Log.i(GlassConfig.TAG, "TCP Server accepted a client");
+			
+			if( mCallbacks != null ){
+				mCallbacks.onClientConnected(((InetSocketAddress)clientSocket.getRemoteSocketAddress()).getAddress());
+				
+			}
 
 		} catch (IOException e) {
 			isConnected.set(false);
@@ -133,4 +147,16 @@ public class ServerTCP extends Server implements Runnable {
 		}
 
 	}
+
+	public NetworkCallbacks getCallbacks() {
+		return mCallbacks;
+	}
+
+	public void setCallbacks(NetworkCallbacks mCallbacks) {
+		this.mCallbacks = mCallbacks;
+	}
+	
+	
+	
+	
 }

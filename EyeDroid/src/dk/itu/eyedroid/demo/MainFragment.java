@@ -48,19 +48,20 @@ public class MainFragment extends Fragment {
 	public static final int BACK_CAMERA = 1;
 	public static final int USB_CAMERA = 2;
 
-
 	private View mRootView;
 	private ImageView mImageView;
 
-	private EyeDroid EYEDROID ; 
+	private EyeDroid EYEDROID;
 
 	private PreviewFilter mPreviewFilter;
-	
+
 	private ServerTCP server;
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
-		mRootView = inflater.inflate(R.layout.streaming_layout, container,false);
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		mRootView = inflater.inflate(R.layout.streaming_layout, container,
+				false);
 		mImageView = (ImageView) mRootView.findViewById(R.id.mjpeg_view);
 		EYEDROID = new EyeDroid(getActivity());
 		return mRootView;
@@ -96,7 +97,8 @@ public class MainFragment extends Fragment {
 	public IORWDefaultImpl createProtocols() {
 
 		int whichCamera = this.getArguments().getInt(CAMERA_OPTION);
-		CameraBridgeViewBase camera = (CameraBridgeViewBase) mRootView.findViewById(R.id.opencv_camera_view);
+		CameraBridgeViewBase camera = (CameraBridgeViewBase) mRootView
+				.findViewById(R.id.opencv_camera_view);
 
 		IOProtocolReader inProtocol = null;
 
@@ -115,36 +117,32 @@ public class MainFragment extends Fragment {
 		default:
 			break;
 		}
-		
-		CalibrationMapper mapper = new CalibrationMapperGlass(2, 2, GlassConfig.GLASS_SCREEN_WIDTH, GlassConfig.GLASS_SCREEN_HEIGHT);
 
-		NETCalibrationController calibrationController = new NETCalibrationControllerGlass(mapper,
-				this.getActivity());
+		CalibrationMapper mapper = new CalibrationMapperGlass(2, 2,
+				GlassConfig.GLASS_SCREEN_WIDTH, GlassConfig.GLASS_SCREEN_HEIGHT);
 
-		OutputNetProtocolController controller = new OutputNetProtocolControllerGlass(calibrationController);
+		NETCalibrationController calibrationController = new NETCalibrationControllerGlass(
+				mapper, this.getActivity());
+
+		OutputNetProtocolController controller = new OutputNetProtocolControllerGlass(
+				calibrationController);
 
 		this.server = new ServerTCP(GlassConfig.TCP_SERVER_PORT, controller);
-		
+
 		ExecutorService executor = Executors.newSingleThreadExecutor();
 		executor.execute(server);
 
 		calibrationController.setServer(server);
-		
+
 		calibrationController.setCalibrationCallbacks(controller);
 
-		OutputNetProtocol outProtocol;
-		try {
-			outProtocol = new OutputNetProtocolUDP(controller, GlassConfig.GAZE_STREAMING_UDP_PORT,
-					InetAddress.getByName("192.168.150.5"), GlassConfig.GAZE_STREAMING_UDP_PORT);
-			
-			calibrationController.setOutputProtocol(outProtocol);
+		OutputNetProtocol outProtocol = new OutputNetProtocolUDP(controller);
+		this.server.setCallbacks((OutputNetProtocolUDP) outProtocol);
 
-			IORWDefaultImpl io_rw = new IORWDefaultImpl(inProtocol, outProtocol);
-			return io_rw;
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-		}
-		return null;
+		calibrationController.setOutputProtocol(outProtocol);
+
+		IORWDefaultImpl io_rw = new IORWDefaultImpl(inProtocol, outProtocol);
+		return io_rw;
 	}
 
 	@Override
@@ -152,7 +150,7 @@ public class MainFragment extends Fragment {
 		super.onResume();
 		Log.i(TAG, "OnResume");
 		IORWDefaultImpl io = createProtocols();
-		EYEDROID.setIOProtocols(io , io);
+		EYEDROID.setIOProtocols(io, io);
 		mPreviewFilter = EYEDROID.addAndGetPreview(mImageView);
 		EYEDROID.start();
 	}
