@@ -1,14 +1,26 @@
 package dk.itu.eyedroid.io.experiment;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 import org.opencv.core.Point;
 
+import android.os.Environment;
 import android.util.Log;
 import dk.itu.eyedroid.io.GlassConfig;
 import dk.itu.eyedroid.io.calibration.CalibrationMapper;
 
 public class NETExperimentControllerGlass extends NETExperimentController {
+
+	public static final String TAG = "Experiment";			//Log TAG
+	public static final String FILE_NAME_PREFIX = "/exp_";	//File prefix	
 
 	/**
 	 * Default constructor
@@ -25,7 +37,7 @@ public class NETExperimentControllerGlass extends NETExperimentController {
 	 */
 	public void experiment() throws IOException {
 
-		Point[] sourcePoints = GlassConfig.EXPERIMENT_POINTS;
+		Point[] destinationPoints = GlassConfig.EXPERIMENT_POINTS;
 		Point[] sampledPoints = new Point[GlassConfig.EXPERIMENT_POINTS.length];
 		Point[] sampledMappedPoints = new Point[GlassConfig.EXPERIMENT_POINTS.length];
 
@@ -60,7 +72,7 @@ public class NETExperimentControllerGlass extends NETExperimentController {
 				}
 
 				//Get the experiment point and send it to the client
-				Point clientPoint = sourcePoints[counter];
+				Point clientPoint = destinationPoints[counter];
 				super.mServer.send(GlassConfig.TO_CLIENT_EXPERIMENT, (int) clientPoint.x, (int) clientPoint.y);
 
 				//Sample point from core
@@ -77,7 +89,7 @@ public class NETExperimentControllerGlass extends NETExperimentController {
 			if (!error) {
 				super.mServer.send(GlassConfig.TO_CLIENT_EXPERIMENT_STOP, -1, -1);
 
-				saveExperimentFile(sourcePoints, sampledPoints, sampledMappedPoints);
+				saveExperimentFile(createExperimentOutput(destinationPoints, sampledPoints, sampledMappedPoints));
 
 				if (super.mExperimentCallbacks != null)
 					super.mExperimentCallbacks.onExperimentFinished();
@@ -118,8 +130,70 @@ public class NETExperimentControllerGlass extends NETExperimentController {
 		}
 		return new Point(sumX / GlassConfig.NO_SAMPLES, sumY / GlassConfig.NO_SAMPLES);
 	}
-	
-	private void saveExperimentFile(Point[] sourcePoints, Point[] sampledPoints, Point[] sampledMappedPoints){
-		//TODO implement
+
+	private String createExperimentOutput(Point[] destinationPoints, Point[] sampledPoints, Point[] sampledMappedPoints){
+
+		String content = "Point no.\t\tDestination\t\tSample\t\tMapped sample\t\t|Destination-Mapped sample|\n";
+
+		for (int i = 0; i < destinationPoints.length; i++) {
+			content += String.format("%d \t\t (%2f, %2f) \t\t  (%2f, %2f) \t\t  (%2f, %2f) \t\t  (%2f, %2f)\n",
+					i,
+					destinationPoints[i].x, destinationPoints[i].y,
+					sampledPoints[i].x, sampledPoints[i].y,
+					sampledMappedPoints[i].x, sampledMappedPoints[i].y,
+					Math.abs(destinationPoints[i].x - sampledMappedPoints[i].x),
+					Math.abs(destinationPoints[i].y - sampledMappedPoints[i].y)
+					);
+		}
+		return content;
+	}
+
+	private void saveExperimentFile(String content){
+
+		String fileName = Environment.getExternalStorageDirectory().getAbsolutePath().concat(FILE_NAME_PREFIX);
+
+		//Add date time to file name		
+		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.getDefault());
+		Date date = new Date();
+		fileName = fileName.concat(dateFormat.format(date));
+
+		if(createFile(fileName)){
+			Log.i(TAG , "Experiment file was created successully");
+			writeExperimentToFile(fileName, content);
+		}else
+			Log.i(TAG , "Experiment file not created");
+	}
+
+	/**
+	 * Create new file
+	 * @return Is file created?
+	 */
+	private boolean createFile(String fileName) {
+		File file = new File(fileName);
+		try {
+			if (!file.exists())
+				file.createNewFile();
+			else{
+				file.delete();
+				file.createNewFile();
+			}
+
+			if (file.exists())
+				return true;
+			else
+				return false;
+		} catch (IOException e) {
+			return false;
+		}
+	}
+
+	private void writeExperimentToFile(String fileName, String content) {
+		PrintWriter writer = null;
+		try {
+			File file = new File(fileName);
+			writer = new PrintWriter(new BufferedWriter(new FileWriter(file, true)));
+			writer.print(content);
+			writer.close();
+		} catch (IOException e) {}
 	}
 }
