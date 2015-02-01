@@ -147,6 +147,5 @@ public class OutputNetProtocolControllerGlass extends
 	public void onExperimentError() {
 		Log.i(GlassConfig.TAG, "Experiment callbacks. On error");
 		super.isExperimentRunning.set(false);
-		super.isExperimentRunning.set(false);
 	}
 }

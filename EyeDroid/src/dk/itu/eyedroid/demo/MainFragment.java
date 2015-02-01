@@ -142,6 +142,7 @@ public class MainFragment extends Fragment {
 
 		OutputNetProtocol outProtocol = new OutputNetProtocolUDP(controller);
 		this.server.setCallbacks((OutputNetProtocolUDP) outProtocol);
+		experimentController.setOutputProtocol(outProtocol);
 
 		calibrationController.setOutputProtocol(outProtocol);
 
