@@ -135,6 +135,7 @@ public class MainFragment extends Fragment {
 		this.executor.execute(server);
 
 		calibrationController.setServer(server);
+		experimentController.setServer(server);
 
 		calibrationController.setCalibrationCallbacks(controller);
 		experimentController.setExperimentCallbacks(controller);
