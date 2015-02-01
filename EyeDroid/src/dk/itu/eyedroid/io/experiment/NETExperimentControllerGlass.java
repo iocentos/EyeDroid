@@ -153,10 +153,11 @@ public class NETExperimentControllerGlass extends NETExperimentController {
 		String fileName = Environment.getExternalStorageDirectory().getAbsolutePath().concat(FILE_NAME_PREFIX);
 
 		//Add date time to file name		
-		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.getDefault());
+		DateFormat dateFormat = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss", Locale.getDefault());
 		Date date = new Date();
 		fileName = fileName.concat(dateFormat.format(date));
 
+		Log.i(TAG, fileName);
 		if(createFile(fileName)){
 			Log.i(TAG , "Experiment file was created successully");
 			writeExperimentToFile(fileName, content);
