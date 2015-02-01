@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import org.opencv.core.Point;
 
-import android.content.Context;
 import android.util.Log;
 import dk.itu.eyedroid.io.GlassConfig;
 
@@ -17,17 +16,13 @@ public class NETCalibrationControllerGlass extends NETCalibrationController {
 	 * @param mapper
 	 *            Calibration mapper
 	 */
-	public NETCalibrationControllerGlass(CalibrationMapper mapper, Context context) {
+	public NETCalibrationControllerGlass(CalibrationMapper mapper) {
 		super(mapper);
 	}
 
 	/**
 	 * Calibration process
-	 * 
-	 * @param receivePacket
-	 *            Packet receieved from client.
 	 * @throws IOException
-	 * @throws InterruptedException
 	 */
 
 	public void calibrate() throws IOException {
@@ -37,17 +32,15 @@ public class NETCalibrationControllerGlass extends NETCalibrationController {
 
 		if (mCalibrationCallbacks != null)
 			mCalibrationCallbacks.onCalibrationStarted();
-		
+
 		this.mCalibrationMapper.clean();
 
 		try {
-			super.mServer.send(GlassConfig.TO_CLIENT_CALIBRATE_DISPLAY, -1,
-					-1);
-			
+			super.mServer.send(GlassConfig.TO_CLIENT_CALIBRATE_DISPLAY, -1, -1);
+
 			try {
 				Thread.sleep(2000);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
@@ -82,7 +75,7 @@ public class NETCalibrationControllerGlass extends NETCalibrationController {
 				super.mServer.send(GlassConfig.TO_CLIENT_CALIBRATE_DISPLAY,
 						-2, -2);
 				NETCalibrationControllerGlass.this.mCalibrationMapper
-						.calibrate();
+				.calibrate();
 				if (mCalibrationCallbacks != null)
 					mCalibrationCallbacks.onCalibrationFinished();
 			} else {
@@ -101,16 +94,15 @@ public class NETCalibrationControllerGlass extends NETCalibrationController {
 
 		int[] xy;
 		int sumX = 0, sumY = 0;
-		
+
 		try {
 			Thread.sleep(1000);
 		} catch (InterruptedException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 
 		for (int j = 0; j < GlassConfig.NO_SAMPLES; j++) {
-//			Thread.currentThread();
+			//Thread.currentThread();
 			try {
 				Thread.sleep(GlassConfig.WAIT_TO_SAMPLE);
 				if (mOutputProtocol != null) {

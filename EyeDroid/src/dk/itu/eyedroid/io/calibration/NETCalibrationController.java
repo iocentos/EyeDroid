@@ -21,7 +21,7 @@ public abstract class NETCalibrationController {
 	
 	/**
 	 * Default constructor
-	 * @param server Network server
+	 * @param mapper Calibration mapper
 	 */
 	public NETCalibrationController(CalibrationMapper mapper){
 		this.mCalibrationMapper = mapper;
@@ -33,7 +33,6 @@ public abstract class NETCalibrationController {
 
 	/**
 	 * Main calibration method
-	 * @param receivePacket Calibration message received by the server
 	 * @throws IOException
 	 */
 	public abstract void calibrate() throws IOException;

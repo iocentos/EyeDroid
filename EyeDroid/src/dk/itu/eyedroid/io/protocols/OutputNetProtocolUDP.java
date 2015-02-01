@@ -55,8 +55,9 @@ public class OutputNetProtocolUDP extends OutputNetProtocol implements
 			int x = (Integer) bundle.get(Constants.PUPIL_COORDINATES_X);
 			int y = (Integer) bundle.get(Constants.PUPIL_COORDINATES_Y);
 
-			// Set sampled values for calibration
-			if (super.mController.isCalibrating.get() && x != -1 && y != -1) {
+			// Set sampled values for calibration or experiment
+			if ((super.mController.isCalibrating.get() || super.mController.isExperimentRunning.get()) 
+					&& x != -1 && y != -1) {
 				super.setXY(x, y);
 			}
 

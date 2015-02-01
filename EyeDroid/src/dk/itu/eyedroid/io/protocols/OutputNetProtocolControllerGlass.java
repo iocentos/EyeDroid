@@ -5,6 +5,7 @@ import java.io.IOException;
 import android.util.Log;
 import dk.itu.eyedroid.io.GlassConfig;
 import dk.itu.eyedroid.io.calibration.NETCalibrationController;
+import dk.itu.eyedroid.io.experiment.NETExperimentController;
 /**
  * Handle network communication messages from Glass client
  * TCPtestClient client: https://github.com/dmardanbeigi/GlassGaze
@@ -16,8 +17,8 @@ public class OutputNetProtocolControllerGlass extends OutputNetProtocolControlle
 	 * @param server Server
 	 * @param calibration Calibration controller
 	 */
-	public OutputNetProtocolControllerGlass(NETCalibrationController calibration) {
-		super(calibration);
+	public OutputNetProtocolControllerGlass(NETCalibrationController calibration, NETExperimentController experiment) {
+		super(calibration, experiment);
 	}
 
 	/**
@@ -59,11 +60,19 @@ public class OutputNetProtocolControllerGlass extends OutputNetProtocolControlle
 			super.isStarted.set(false);
 			break;
 			
+		// Client requests to start experiment
+		case GlassConfig.TO_EYEDROID_EXPERIMENT_START:
+			Log.i(GlassConfig.TAG, "Server received TO_EYEDROID_EXPERIMENT_START");
+			super.mExperimentController.experiment();
+			break;
+			
 		default:
 			break;
 		}
 	}
-
+	
+	/************Calibration callbacks********/
+	
 	/**
 	 * Calibration started callback.
 	 */
@@ -92,5 +101,36 @@ public class OutputNetProtocolControllerGlass extends OutputNetProtocolControlle
 		Log.i(GlassConfig.TAG, "Calibration callbacks. On error");
 		super.isStarted.set(false);
 		super.isCalibrating.set(false);
+	}
+	
+	/************Experiment callbacks********/
+
+	/**
+	 * Experiment started callback.
+	 */
+	@Override
+	public void onExperimentStarted() {
+		Log.i(GlassConfig.TAG, "Experiment callbacks. On start");
+		super.isStarted.set(false);
+		super.isExperimentRunning.set(true);
+	}
+
+	/**
+	 * Experiment finished callback.
+	 */
+	@Override
+	public void onExperimentFinished() {
+		Log.i(GlassConfig.TAG, "Experiment callbacks. On stop");
+		super.isExperimentRunning.set(false);
+	}
+
+	/**
+	 * Experiment error callback.
+	 */
+	@Override
+	public void onExperimentError() {
+		Log.i(GlassConfig.TAG, "Experiment callbacks. On error");
+		super.isExperimentRunning.set(false);
+		super.isExperimentRunning.set(false);
 	}
 }

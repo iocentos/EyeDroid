@@ -26,6 +26,8 @@ import dk.itu.eyedroid.io.calibration.CalibrationMapper;
 import dk.itu.eyedroid.io.calibration.CalibrationMapperGlass;
 import dk.itu.eyedroid.io.calibration.NETCalibrationController;
 import dk.itu.eyedroid.io.calibration.NETCalibrationControllerGlass;
+import dk.itu.eyedroid.io.experiment.NETExperimentController;
+import dk.itu.eyedroid.io.experiment.NETExperimentControllerGlass;
 import dk.itu.eyedroid.io.protocols.InputStreamCamera;
 import dk.itu.eyedroid.io.protocols.InputStreamUSBCamera;
 import dk.itu.eyedroid.io.protocols.OutputNetProtocol;
@@ -97,8 +99,7 @@ public class MainFragment extends Fragment {
 	public IORWDefaultImpl createProtocols() {
 
 		int whichCamera = this.getArguments().getInt(CAMERA_OPTION);
-		CameraBridgeViewBase camera = (CameraBridgeViewBase) mRootView
-				.findViewById(R.id.opencv_camera_view);
+		CameraBridgeViewBase camera = (CameraBridgeViewBase) mRootView.findViewById(R.id.opencv_camera_view);
 
 		IOProtocolReader inProtocol = null;
 
@@ -118,14 +119,15 @@ public class MainFragment extends Fragment {
 			break;
 		}
 
-		CalibrationMapper mapper = new CalibrationMapperGlass(2, 2,
-				GlassConfig.GLASS_SCREEN_WIDTH, GlassConfig.GLASS_SCREEN_HEIGHT);
+		CalibrationMapper mapper = 
+				new CalibrationMapperGlass(2, 2,GlassConfig.GLASS_SCREEN_WIDTH, GlassConfig.GLASS_SCREEN_HEIGHT);
 
-		NETCalibrationController calibrationController = new NETCalibrationControllerGlass(
-				mapper, this.getActivity());
+		NETCalibrationController calibrationController = new NETCalibrationControllerGlass(mapper);
+		
+		NETExperimentController experimentController = new NETExperimentControllerGlass(mapper);
 
-		OutputNetProtocolController controller = new OutputNetProtocolControllerGlass(
-				calibrationController);
+		OutputNetProtocolController controller = 
+				new OutputNetProtocolControllerGlass(calibrationController, experimentController);
 
 		this.server = new ServerTCP(GlassConfig.TCP_SERVER_PORT, controller);
 
@@ -135,6 +137,7 @@ public class MainFragment extends Fragment {
 		calibrationController.setServer(server);
 
 		calibrationController.setCalibrationCallbacks(controller);
+		experimentController.setExperimentCallbacks(controller);
 
 		OutputNetProtocol outProtocol = new OutputNetProtocolUDP(controller);
 		this.server.setCallbacks((OutputNetProtocolUDP) outProtocol);
