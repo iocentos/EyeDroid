@@ -9,7 +9,6 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.hardware.Camera.CameraInfo;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -37,27 +36,32 @@ import dk.itu.eyedroid.io.protocols.OutputNetProtocolUDP;
 import dk.itu.spcl.jlpf.io.IOProtocolReader;
 import dk.itu.spcl.jlpf.io.IORWDefaultImpl;
 
+/**
+ * Demo created to be used with a Haytham Google Glass application demo. Client
+ * application connects to EyeDroid, calibrates and conducts an experiment where
+ * a set of points are shown randomly and sampled. This experiment was conducted
+ * to evaluate the system accuracy. Additionaly, it can be used along the other
+ * Haytham project glass applications, such as showing the gaze point on the
+ * glass display.
+ */
 public class MainFragment extends Fragment {
 
-	final String URL = "http://217.197.157.7:7070/axis-cgi/mjpg/video.cgi?resolution=320x240";
-
-	public static final String TAG = "TestFragment";
-
+	public static final String TAG = "MainFragment";
 	public static final String CAMERA_OPTION = "camera_option";
-	public static final int FRONT_CAMERA = 0;
-	public static final int BACK_CAMERA = 1;
-	public static final int USB_CAMERA = 2;
+	public static final int FRONT_CAMERA = 0; // Device front camera id.
+	public static final int BACK_CAMERA = 1; // Device back camera id.
+	public static final int USB_CAMERA = 2; // External usb plugged camera id.
 
-	private View mRootView;
-	private ImageView mImageView;
-
-	private EyeDroid EYEDROID;
-
-	private PreviewFilter mPreviewFilter;
-
-	private ServerTCP server;
-	
-	private ExecutorService executor;
+	private EyeDroid EYEDROID; // Core component
+	private View mRootView; // Fragment root view
+	private ImageView mImageView; // View used to show the input video + the
+									// resulting coordinates on screen.
+	private PreviewFilter mPreviewFilter; // Last filter in the architecture.
+											// Used to draw a circle in the
+											// pupil.
+	private ServerTCP server; // TCP server used to handle the connection
+								// hand-shake protocol
+	private ExecutorService executor; // Executor used to run the TCP server.
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -65,6 +69,8 @@ public class MainFragment extends Fragment {
 		mRootView = inflater.inflate(R.layout.streaming_layout, container,
 				false);
 		mImageView = (ImageView) mRootView.findViewById(R.id.mjpeg_view);
+
+		// Create EyeDroid.
 		EYEDROID = new EyeDroid(getActivity());
 		return mRootView;
 	}
@@ -84,6 +90,7 @@ public class MainFragment extends Fragment {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == R.id.preview) {
+			// Disable preview on screen by clicking start/stop button.
 			if (mPreviewFilter.isEnabled()) {
 				mPreviewFilter.disablePreview();
 				item.setIcon(getResources().getDrawable(R.drawable.start_btn));
@@ -98,8 +105,11 @@ public class MainFragment extends Fragment {
 
 	public IORWDefaultImpl createProtocols() {
 
+		// Setup EyeDroid input protocol.
+
 		int whichCamera = this.getArguments().getInt(CAMERA_OPTION);
-		CameraBridgeViewBase camera = (CameraBridgeViewBase) mRootView.findViewById(R.id.opencv_camera_view);
+		CameraBridgeViewBase camera = (CameraBridgeViewBase) mRootView
+				.findViewById(R.id.opencv_camera_view);
 
 		IOProtocolReader inProtocol = null;
 
@@ -119,33 +129,44 @@ public class MainFragment extends Fragment {
 			break;
 		}
 
-		CalibrationMapper mapper = 
-				new CalibrationMapperGlass(2, 2,GlassConfig.GLASS_SCREEN_WIDTH, GlassConfig.GLASS_SCREEN_HEIGHT);
+		// Create a calibration mapper. Used to map the resultin coordinates
+		// into the client display using and homography.
+		CalibrationMapper mapper = new CalibrationMapperGlass(2, 2,
+				GlassConfig.GLASS_SCREEN_WIDTH, GlassConfig.GLASS_SCREEN_HEIGHT);
 
-		NETCalibrationController calibrationController = new NETCalibrationControllerGlass(mapper);
-		
-		NETExperimentController experimentController = new NETExperimentControllerGlass(mapper);
+		// Create a calibration controller. Used to coordinate the calibration
+		// process
+		NETCalibrationController calibrationController = new NETCalibrationControllerGlass(
+				mapper);
 
-		OutputNetProtocolController controller = 
-				new OutputNetProtocolControllerGlass(calibrationController, experimentController);
+		// Used to coordinate communication between EyeDroid and the Glass
+		// client during the execution
+		// of the experiment.
+		NETExperimentController experimentController = new NETExperimentControllerGlass(
+				mapper);
 
+		// Setup output protocol. Used to coordinate messages from EyeDroid and
+		// client
+		OutputNetProtocolController controller = new OutputNetProtocolControllerGlass(
+				calibrationController, experimentController);
+
+		// Create TCP server and run it
 		this.server = new ServerTCP(GlassConfig.TCP_SERVER_PORT, controller);
-
 		this.executor = Executors.newSingleThreadExecutor();
 		this.executor.execute(server);
 
 		calibrationController.setServer(server);
 		experimentController.setServer(server);
-
 		calibrationController.setCalibrationCallbacks(controller);
 		experimentController.setExperimentCallbacks(controller);
 
+		// Create a UDP protocol. Used to sent coordinates
 		OutputNetProtocol outProtocol = new OutputNetProtocolUDP(controller);
 		this.server.setCallbacks((OutputNetProtocolUDP) outProtocol);
 		experimentController.setOutputProtocol(outProtocol);
-
 		calibrationController.setOutputProtocol(outProtocol);
 
+		// Setup input and output to the core
 		IORWDefaultImpl io_rw = new IORWDefaultImpl(inProtocol, outProtocol);
 		return io_rw;
 	}
@@ -153,7 +174,6 @@ public class MainFragment extends Fragment {
 	@Override
 	public void onResume() {
 		super.onResume();
-		Log.i(TAG, "OnResume");
 		IORWDefaultImpl io = createProtocols();
 		EYEDROID.setIOProtocols(io, io);
 		mPreviewFilter = EYEDROID.addAndGetPreview(mImageView);
@@ -163,7 +183,6 @@ public class MainFragment extends Fragment {
 	@Override
 	public void onPause() {
 		super.onPause();
-		Log.i(TAG, "OnPause");
 		EYEDROID.stop();
 		server.stop();
 		this.executor.shutdown();

@@ -8,38 +8,40 @@ import dk.itu.eyedroid.io.Server;
 import dk.itu.eyedroid.io.calibration.CalibrationMapper;
 import dk.itu.eyedroid.io.protocols.OutputNetProtocol;
 
+/**
+ * Controller for experiment used to evaluate the accuracy of the system.
+ */
 public abstract class NETExperimentController {
-	protected  Server mServer;								// UDP server
-	protected OutputNetProtocol mOutputProtocol;			// Protocol writter
-	protected ExperimentCallbacks mExperimentCallbacks;		// Experiment callbacks
-	protected final CalibrationMapper mCalibrationMapper;	// Calibration Mapper instance
+	protected Server mServer; // UDP server
+	protected OutputNetProtocol mOutputProtocol; // Protocol writter
+	protected ExperimentCallbacks mExperimentCallbacks; // Experiment callbacks
+	protected final CalibrationMapper mCalibrationMapper; // Calibration Mapper
+															// instance
 
-	public interface ExperimentCallbacks{
-		public void  onExperimentStarted();
+	public interface ExperimentCallbacks {
+		public void onExperimentStarted();
+
 		public void onExperimentFinished();
+
 		public void onExperimentError();
 	}
 
 	/**
 	 * Default constructor
-	 * @param mapper Calibration mapper
+	 * 
+	 * @param mapper
+	 *            Calibration mapper
 	 */
-	public NETExperimentController(CalibrationMapper mapper){
+	public NETExperimentController(CalibrationMapper mapper) {
 		this.mCalibrationMapper = mapper;
 	}
-	
-	public CalibrationMapper getCalibrationMapper(){
+
+	// ***Getters/Setters*****
+
+	public CalibrationMapper getCalibrationMapper() {
 		return mCalibrationMapper;
 	}
-	
-	/**
-	 * Main experiment method
-	 * @throws IOException
-	 */
-	public abstract void experiment() throws IOException;
-	
-	protected abstract Point getSampleFromCore();
-	
+
 	public Server getServer() {
 		return mServer;
 	}
@@ -63,5 +65,18 @@ public abstract class NETExperimentController {
 	public void setOutputProtocol(OutputNetProtocol mOutputProtocol) {
 		this.mOutputProtocol = mOutputProtocol;
 	}
-}
 
+	/**
+	 * Main experiment method
+	 * 
+	 * @throws IOException
+	 */
+	public abstract void experiment() throws IOException;
+
+	/**
+	 * Get current coordinates sample from the core
+	 * 
+	 * @return Sampled coordinates
+	 */
+	protected abstract Point getSampleFromCore();
+}

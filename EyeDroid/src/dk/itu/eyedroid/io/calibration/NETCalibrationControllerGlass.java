@@ -22,6 +22,7 @@ public class NETCalibrationControllerGlass extends NETCalibrationController {
 
 	/**
 	 * Calibration process
+	 * 
 	 * @throws IOException
 	 */
 
@@ -36,14 +37,17 @@ public class NETCalibrationControllerGlass extends NETCalibrationController {
 		this.mCalibrationMapper.clean();
 
 		try {
+			// Notify calibration started
 			super.mServer.send(GlassConfig.TO_CLIENT_CALIBRATE_DISPLAY, -1, -1);
 
+			// Wait for client...
 			try {
 				Thread.sleep(2000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 
+			// Do calibration
 			int counter = 0;
 			while (counter < GlassConfig.NO_POINTS) {
 
@@ -51,31 +55,32 @@ public class NETCalibrationControllerGlass extends NETCalibrationController {
 				while (message[0] == -1) {
 					message = super.mServer.read();
 				}
+
+				// Wait for client ready message
 				if (GlassConfig.TO_EYEDROID_READY != message[0]) {
-					Log.i(GlassConfig.TAG,
-							"Mesasge is not TO_EYEDROID_READY " + message[0]);
+					Log.i(GlassConfig.TAG, "Mesasge is not TO_EYEDROID_READY "
+							+ message[0]);
 					continue;
 				}
-				// get the calibration point from the mapper and send it
-				// to the cliend
+				// Get the calibration point from the mapper and send it to the
+				// cliend
 				Point clientPoint = NETCalibrationControllerGlass.this.mCalibrationMapper
 						.getCalibrationPoint(counter);
-
 				super.mServer.send(GlassConfig.TO_CLIENT_CALIBRATE_DISPLAY,
 						(int) clientPoint.x, (int) clientPoint.y);
 
+				// Sample coordinates from core
 				final Point serverPoint = getSampleFromCore();
-
 				setUpPointsToMapper(clientPoint, serverPoint);
 
 				counter++;
 			}
 
 			if (!error) {
-				super.mServer.send(GlassConfig.TO_CLIENT_CALIBRATE_DISPLAY,
-						-2, -2);
+				super.mServer.send(GlassConfig.TO_CLIENT_CALIBRATE_DISPLAY, -2,
+						-2);
 				NETCalibrationControllerGlass.this.mCalibrationMapper
-				.calibrate();
+						.calibrate();
 				if (mCalibrationCallbacks != null)
 					mCalibrationCallbacks.onCalibrationFinished();
 			} else {
@@ -86,7 +91,6 @@ public class NETCalibrationControllerGlass extends NETCalibrationController {
 			if (mCalibrationCallbacks != null)
 				mCalibrationCallbacks.onCalibrationError();
 		}
-
 	}
 
 	@Override
@@ -102,7 +106,7 @@ public class NETCalibrationControllerGlass extends NETCalibrationController {
 		}
 
 		for (int j = 0; j < GlassConfig.NO_SAMPLES; j++) {
-			//Thread.currentThread();
+			// Thread.currentThread();
 			try {
 				Thread.sleep(GlassConfig.WAIT_TO_SAMPLE);
 				if (mOutputProtocol != null) {
@@ -112,7 +116,6 @@ public class NETCalibrationControllerGlass extends NETCalibrationController {
 				}
 			} catch (InterruptedException e) {
 			}
-
 		}
 		return new Point(sumX / GlassConfig.NO_SAMPLES, sumY
 				/ GlassConfig.NO_SAMPLES);

@@ -14,6 +14,7 @@ import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 import dk.itu.eyedroid.R;
+
 /*
  * The class provides a screen with sliders for all the configuration
  * parameters of the image processing methods. This can be used in order
@@ -38,7 +39,7 @@ import dk.itu.eyedroid.R;
  */
 public class SettingsActivity extends Activity {
 
-	public static final String TAG = "Settings";		//Logging TAG
+	public static final String TAG = "Settings"; // Logging TAG
 
 	/**
 	 * Set application settings
@@ -57,6 +58,7 @@ public class SettingsActivity extends Activity {
 	public class CustomAdapter extends ArrayAdapter<String> {
 
 		private Context mContext;
+
 		public CustomAdapter(Context context, int resource) {
 			super(context, resource);
 			mContext = context;
@@ -71,13 +73,19 @@ public class SettingsActivity extends Activity {
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 
-			convertView = LayoutInflater.from(mContext).inflate(R.layout.settings_list_item, parent, false);
+			convertView = LayoutInflater.from(mContext).inflate(
+					R.layout.settings_list_item, parent, false);
 			Holder holder = new Holder();
-			holder.title = (TextView) convertView.findViewById(R.id.settings_list_item_title);
-			holder.current = (TextView) convertView.findViewById(R.id.settings_list_item_current_value);
-			holder.lower = (TextView) convertView.findViewById(R.id.settings_list_item_lower_limit);
-			holder.upper = (TextView) convertView.findViewById(R.id.settings_list_item_upper_limit);
-			holder.seekBar = (SeekBar) convertView.findViewById(R.id.settings_seekbar);
+			holder.title = (TextView) convertView
+					.findViewById(R.id.settings_list_item_title);
+			holder.current = (TextView) convertView
+					.findViewById(R.id.settings_list_item_current_value);
+			holder.lower = (TextView) convertView
+					.findViewById(R.id.settings_list_item_lower_limit);
+			holder.upper = (TextView) convertView
+					.findViewById(R.id.settings_list_item_upper_limit);
+			holder.seekBar = (SeekBar) convertView
+					.findViewById(R.id.settings_seekbar);
 			holder.key = position;
 
 			switch (position) {
@@ -180,26 +188,27 @@ public class SettingsActivity extends Activity {
 
 			holder.seekBar.setMax(max);
 			holder.seekBar.setProgress(defaultValue);
-			holder.seekBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
+			holder.seekBar
+					.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
 
-				@Override
-				public void onStopTrackingTouch(SeekBar seekBar) {
-					//Do nothing...
-				}
+						@Override
+						public void onStopTrackingTouch(SeekBar seekBar) {
+							// Do nothing...
+						}
 
-				@Override
-				public void onStartTrackingTouch(SeekBar seekBar) {
-					// Do nothing...
-				}
+						@Override
+						public void onStartTrackingTouch(SeekBar seekBar) {
+							// Do nothing...
+						}
 
-				@Override
-				public void onProgressChanged(SeekBar seekBar,
-						int progress, boolean fromUser) {
-					Log.i(TAG, message + " values " + progress);
-					holder.current.setText(String.valueOf(progress));
-					Config.setConfigValue(key, progress);
-				}
-			});
+						@Override
+						public void onProgressChanged(SeekBar seekBar,
+								int progress, boolean fromUser) {
+							Log.i(TAG, message + " values " + progress);
+							holder.current.setText(String.valueOf(progress));
+							Config.setConfigValue(key, progress);
+						}
+					});
 		}
 	}
 }

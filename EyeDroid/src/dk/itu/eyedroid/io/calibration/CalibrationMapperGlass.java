@@ -20,20 +20,17 @@ public class CalibrationMapperGlass extends CalibrationMapper {
 	 * source image taken at the server.
 	 */
 	private MatOfPoint2f source;
-
 	/*
 	 * Destination rectangle of points. These points match the four points in
 	 * the client screen on the Glass
 	 */
 	private MatOfPoint2f destination;
-
 	private Mat homography;
-
 	private double gazeErrorX;
-
 	private double gazeErrorY;
 
-	public CalibrationMapperGlass(int n, int m, int presentationScreenWidth, int presentationScreenHeight){
+	public CalibrationMapperGlass(int n, int m, int presentationScreenWidth,
+			int presentationScreenHeight) {
 		super(n, m, presentationScreenWidth, presentationScreenHeight);
 		source = new MatOfPoint2f();
 		destination = new MatOfPoint2f();
@@ -70,9 +67,10 @@ public class CalibrationMapperGlass extends CalibrationMapper {
 	}
 
 	@Override
-	protected void computeCalibrationPoints(int n, int m) { 
-		
-		presentationScreen = new Rect(new Point(0, 0), new Point(this.presentationScreenWidth, this.presentationScreenHeight));
+	protected void computeCalibrationPoints(int n, int m) {
+
+		presentationScreen = new Rect(new Point(0, 0), new Point(
+				this.presentationScreenWidth, this.presentationScreenHeight));
 
 		int offset = 100;
 		int count = 0;
@@ -90,11 +88,10 @@ public class CalibrationMapperGlass extends CalibrationMapper {
 
 	@Override
 	public int[] map(float inputX, float inputY) {
-		 return map(inputX, inputY, gazeErrorX, gazeErrorY);
+		return map(inputX, inputY, gazeErrorX, gazeErrorY);
 	}
 
 	private int[] map(float inputX, float inputY, double errorX, double errorY) {
-		Log.i("EyeNet", "Requesting for mapping x and y");
 
 		float[][] src = new float[3][1];
 		float[][] dst;
@@ -131,11 +128,12 @@ public class CalibrationMapperGlass extends CalibrationMapper {
 		int m1cols = m1[0].length;
 		int m2rows = m2.length;
 		int m2cols = m2[0].length;
-		
+
 		if (m1cols != m2rows) {
-			throw new IllegalArgumentException("matrices don't match: " + m1cols + " != " + m2rows);
+			throw new IllegalArgumentException("matrices don't match: "
+					+ m1cols + " != " + m2rows);
 		}
-		
+
 		float[][] result = new float[m1rows][m2cols];
 		for (int i = 0; i < m1rows; i++) {
 			for (int j = 0; j < m2cols; j++) {

@@ -8,37 +8,38 @@ import dk.itu.eyedroid.io.Server;
 import dk.itu.eyedroid.io.protocols.OutputNetProtocol;
 
 public abstract class NETCalibrationController {
-	protected  Server mServer;								// UDP server
-	protected OutputNetProtocol mOutputProtocol;			// Protocol writter
-	protected final CalibrationMapper mCalibrationMapper;	//Calibration Mapper instance
-	protected CalibrationCallbacks mCalibrationCallbacks;
+	protected Server mServer; // UDP server
+	protected OutputNetProtocol mOutputProtocol; // Protocol writter
+	protected final CalibrationMapper mCalibrationMapper; // Calibration Mapper
+															// instance
+	protected CalibrationCallbacks mCalibrationCallbacks; // Calibration process
+															// callbacks
 
-	public interface CalibrationCallbacks{
-		public void  onCalibrationStarted();
+	// Calibration process callbacks
+	public interface CalibrationCallbacks {
+		public void onCalibrationStarted();
+
 		public void onCalibrationFinished();
+
 		public void onCalibrationError();
 	}
-	
+
 	/**
 	 * Default constructor
-	 * @param mapper Calibration mapper
+	 * 
+	 * @param mapper
+	 *            Calibration mapper
 	 */
-	public NETCalibrationController(CalibrationMapper mapper){
+	public NETCalibrationController(CalibrationMapper mapper) {
 		this.mCalibrationMapper = mapper;
 	}
-	
-	public CalibrationMapper getCalibrationMapper(){
+
+	/** Getters and setters **/
+
+	public CalibrationMapper getCalibrationMapper() {
 		return mCalibrationMapper;
 	}
 
-	/**
-	 * Main calibration method
-	 * @throws IOException
-	 */
-	public abstract void calibrate() throws IOException;
-	
-	protected abstract Point getSampleFromCore();
-	
 	public Server getServer() {
 		return mServer;
 	}
@@ -51,7 +52,8 @@ public abstract class NETCalibrationController {
 		return mCalibrationCallbacks;
 	}
 
-	public void setCalibrationCallbacks(CalibrationCallbacks mCalibrationCallbacks) {
+	public void setCalibrationCallbacks(
+			CalibrationCallbacks mCalibrationCallbacks) {
 		this.mCalibrationCallbacks = mCalibrationCallbacks;
 	}
 
@@ -63,8 +65,24 @@ public abstract class NETCalibrationController {
 		this.mOutputProtocol = mOutputProtocol;
 	}
 
-	protected void setUpPointsToMapper(Point clientPoint , Point serverPoint){
+	protected void setUpPointsToMapper(Point clientPoint, Point serverPoint) {
 		mCalibrationMapper.addDestinationPoint(clientPoint);
 		mCalibrationMapper.addSourcePoint(serverPoint);
 	}
+
+	/***************
+	 * Abstract methods****************
+	 * 
+	 * /** Main calibration method
+	 * 
+	 * @throws IOException
+	 */
+	public abstract void calibrate() throws IOException;
+
+	/**
+	 * Get current pupil coordinates sample from EyeDroid core
+	 * 
+	 * @return Sampled coordinates
+	 */
+	protected abstract Point getSampleFromCore();
 }

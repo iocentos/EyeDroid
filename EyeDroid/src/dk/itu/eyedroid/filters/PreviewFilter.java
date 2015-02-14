@@ -11,6 +11,7 @@ import dk.itu.eyedroid.Constants;
 import dk.itu.eyedroid.demo.MainActivity;
 import dk.itu.spcl.jlpf.common.Bundle;
 import dk.itu.spcl.jlpf.core.Filter;
+
 /**
  * Show preview. Draws a point over the original streamed video
  */

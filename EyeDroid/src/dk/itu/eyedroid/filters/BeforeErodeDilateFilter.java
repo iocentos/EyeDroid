@@ -6,13 +6,13 @@ import android.util.Log;
 import dk.itu.eyedroid.Constants;
 import dk.itu.spcl.jlpf.common.Bundle;
 import dk.itu.spcl.jlpf.core.Filter;
+
 /**
- * Algorithm step: 2
- * Erode-dilation. Edore (3 times) and dilation (2 times) is performed both 
- * before and after the threshold step. This step is used in order to smooth 
- * the corners in the image blobs.
+ * Algorithm step: 2 Erode-dilation. Edore (3 times) and dilation (2 times) is
+ * performed both before and after the threshold step. This step is used in
+ * order to smooth the corners in the image blobs.
  */
-public class BeforeErodeDilateFilter extends Filter{
+public class BeforeErodeDilateFilter extends Filter {
 
 	@Override
 	protected Bundle execute(Bundle arg0) {

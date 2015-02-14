@@ -17,14 +17,20 @@ import android.util.Log;
 import dk.itu.eyedroid.io.GlassConfig;
 import dk.itu.eyedroid.io.calibration.CalibrationMapper;
 
+/**
+ * Defines the communication protocol between the glass client an the system
+ * when performing an experiment. This experiment shows random dots on the
+ * Google glass display and sample coordinates from the core. It was done to
+ * evaluate the accuracy of the system.
+ */
 public class NETExperimentControllerGlass extends NETExperimentController {
 
-	public static final String TAG = "Experiment";			//Log TAG
-	public static final String FILE_NAME_PREFIX = "/exp_";	//File prefix	
+	public static final String TAG = "Experiment"; // Log TAG
+	public static final String FILE_NAME_PREFIX = "/exp_"; // File prefix
 
 	/**
-	 * Default constructor
-	 * Calibration mapper
+	 * Default constructor Calibration mapper
+	 * 
 	 * @param mapper
 	 */
 	public NETExperimentControllerGlass(CalibrationMapper mapper) {
@@ -33,6 +39,7 @@ public class NETExperimentControllerGlass extends NETExperimentController {
 
 	/**
 	 * Experiment process
+	 * 
 	 * @throws IOException
 	 */
 	public void experiment() throws IOException {
@@ -48,16 +55,17 @@ public class NETExperimentControllerGlass extends NETExperimentController {
 			mExperimentCallbacks.onExperimentStarted();
 
 		try {
-			//Start experiment
+			// Start experiment
 			super.mServer.send(GlassConfig.TO_CLIENT_EXPERIMENT, -1, -1);
 
+			// Wait for client...
 			try {
 				Thread.sleep(2000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 
-			//Send points to glass and sample
+			// Send points to glass and sample
 			int counter = 0;
 			while (counter < GlassConfig.EXPERIMENT_POINTS.length) {
 
@@ -66,30 +74,35 @@ public class NETExperimentControllerGlass extends NETExperimentController {
 					message = super.mServer.read();
 				}
 				if (GlassConfig.TO_EYEDROID_READY != message[0]) {
-					Log.i(GlassConfig.TAG,
-							"Mesasge is not TO_EYEDROID_READY " + message[0]);
+					Log.i(GlassConfig.TAG, "Mesasge is not TO_EYEDROID_READY "
+							+ message[0]);
 					continue;
 				}
 
-				//Get the experiment point and send it to the client
+				// Get the experiment point and send it to the client
 				Point clientPoint = destinationPoints[counter];
-				super.mServer.send(GlassConfig.TO_CLIENT_EXPERIMENT, (int) clientPoint.x, (int) clientPoint.y);
+				super.mServer.send(GlassConfig.TO_CLIENT_EXPERIMENT,
+						(int) clientPoint.x, (int) clientPoint.y);
 
-				//Sample point from core
+				// Sample point from core
 				final Point sampledPoint = getSampleFromCore();
 				sampledPoints[counter] = sampledPoint;
 
-				//Map sampled point
-				final int[] mappedPoint = super.getCalibrationMapper().map((float)sampledPoint.x, (float)sampledPoint.y);
-				sampledMappedPoints[counter] = new Point(mappedPoint[0],mappedPoint[1]);
+				// Map sampled point
+				final int[] mappedPoint = super.getCalibrationMapper().map(
+						(float) sampledPoint.x, (float) sampledPoint.y);
+				sampledMappedPoints[counter] = new Point(mappedPoint[0],
+						mappedPoint[1]);
 
 				counter++;
 			}
 
 			if (!error) {
-				super.mServer.send(GlassConfig.TO_CLIENT_EXPERIMENT_STOP, -1, -1);
+				super.mServer.send(GlassConfig.TO_CLIENT_EXPERIMENT_STOP, -1,
+						-1);
 
-				saveExperimentFile(createExperimentOutput(destinationPoints, sampledPoints, sampledMappedPoints));
+				saveExperimentFile(createExperimentOutput(destinationPoints,
+						sampledPoints, sampledMappedPoints));
 
 				if (super.mExperimentCallbacks != null)
 					super.mExperimentCallbacks.onExperimentFinished();
@@ -117,7 +130,7 @@ public class NETExperimentControllerGlass extends NETExperimentController {
 		}
 
 		for (int j = 0; j < GlassConfig.NO_SAMPLES; j++) {
-			//Thread.currentThread();
+			// Thread.currentThread();
 			try {
 				Thread.sleep(GlassConfig.WAIT_TO_SAMPLE);
 				if (mOutputProtocol != null) {
@@ -128,45 +141,61 @@ public class NETExperimentControllerGlass extends NETExperimentController {
 			} catch (InterruptedException e) {
 			}
 		}
-		return new Point(sumX / GlassConfig.NO_SAMPLES, sumY / GlassConfig.NO_SAMPLES);
+		return new Point(sumX / GlassConfig.NO_SAMPLES, sumY
+				/ GlassConfig.NO_SAMPLES);
 	}
 
-	private String createExperimentOutput(Point[] destinationPoints, Point[] sampledPoints, Point[] sampledMappedPoints){
+	private String createExperimentOutput(Point[] destinationPoints,
+			Point[] sampledPoints, Point[] sampledMappedPoints) {
 
 		String content = "Point no.\t\tDestination\t\tSample\t\tMapped sample\t\t|Destination-Mapped sample|\n";
 
 		for (int i = 0; i < destinationPoints.length; i++) {
-			content += String.format("%d \t\t (%2f, %2f) \t\t  (%2f, %2f) \t\t  (%2f, %2f) \t\t  (%2f, %2f)\n",
-					i,
-					destinationPoints[i].x, destinationPoints[i].y,
-					sampledPoints[i].x, sampledPoints[i].y,
-					sampledMappedPoints[i].x, sampledMappedPoints[i].y,
-					Math.abs(destinationPoints[i].x - sampledMappedPoints[i].x),
-					Math.abs(destinationPoints[i].y - sampledMappedPoints[i].y)
-					);
+			content += String
+					.format("%d \t\t (%2f, %2f) \t\t  (%2f, %2f) \t\t  (%2f, %2f) \t\t  (%2f, %2f)\n",
+							i,
+							destinationPoints[i].x,
+							destinationPoints[i].y,
+							sampledPoints[i].x,
+							sampledPoints[i].y,
+							sampledMappedPoints[i].x,
+							sampledMappedPoints[i].y,
+							Math.abs(destinationPoints[i].x
+									- sampledMappedPoints[i].x),
+							Math.abs(destinationPoints[i].y
+									- sampledMappedPoints[i].y));
 		}
 		return content;
 	}
 
-	private void saveExperimentFile(String content){
+	/**
+	 * Save the experiment results in a file
+	 * 
+	 * @param content
+	 *            Experiment content
+	 */
+	private void saveExperimentFile(String content) {
 
-		String fileName = Environment.getExternalStorageDirectory().getAbsolutePath().concat(FILE_NAME_PREFIX);
+		String fileName = Environment.getExternalStorageDirectory()
+				.getAbsolutePath().concat(FILE_NAME_PREFIX);
 
-		//Add date time to file name		
-		DateFormat dateFormat = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss", Locale.getDefault());
+		// Add date time to file name
+		DateFormat dateFormat = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss",
+				Locale.getDefault());
 		Date date = new Date();
 		fileName = fileName.concat(dateFormat.format(date));
 
 		Log.i(TAG, fileName);
-		if(createFile(fileName)){
-			Log.i(TAG , "Experiment file was created successully");
+		if (createFile(fileName)) {
+			Log.i(TAG, "Experiment file was created successully");
 			writeExperimentToFile(fileName, content);
-		}else
-			Log.i(TAG , "Experiment file not created");
+		} else
+			Log.i(TAG, "Experiment file not created");
 	}
 
 	/**
 	 * Create new file
+	 * 
 	 * @return Is file created?
 	 */
 	private boolean createFile(String fileName) {
@@ -174,7 +203,7 @@ public class NETExperimentControllerGlass extends NETExperimentController {
 		try {
 			if (!file.exists())
 				file.createNewFile();
-			else{
+			else {
 				file.delete();
 				file.createNewFile();
 			}
@@ -188,13 +217,23 @@ public class NETExperimentControllerGlass extends NETExperimentController {
 		}
 	}
 
+	/**
+	 * Write content into file.
+	 * 
+	 * @param fileName
+	 *            Experiment file name
+	 * @param content
+	 *            Experiment content
+	 */
 	private void writeExperimentToFile(String fileName, String content) {
 		PrintWriter writer = null;
 		try {
 			File file = new File(fileName);
-			writer = new PrintWriter(new BufferedWriter(new FileWriter(file, true)));
+			writer = new PrintWriter(new BufferedWriter(new FileWriter(file,
+					true)));
 			writer.print(content);
 			writer.close();
-		} catch (IOException e) {}
+		} catch (IOException e) {
+		}
 	}
 }

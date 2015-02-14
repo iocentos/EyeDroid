@@ -9,7 +9,6 @@ import dk.itu.eyedroid.io.experiment.NETExperimentController;
 
 /**
  * Handle network communication messages from Glass client TCPtestClient client:
- * https://github.com/dmardanbeigi/GlassGaze
  */
 public class OutputNetProtocolControllerGlass extends
 		OutputNetProtocolController {
@@ -78,7 +77,8 @@ public class OutputNetProtocolControllerGlass extends
 		case GlassConfig.TO_EYEDROID_EXPERIMENT_START:
 			Log.i(GlassConfig.TAG,
 					"Server received TO_EYEDROID_EXPERIMENT_START");
-			if (super.mCalibrationController.getCalibrationMapper().isCalibrated())
+			if (super.mCalibrationController.getCalibrationMapper()
+					.isCalibrated())
 				super.mExperimentController.experiment();
 			break;
 

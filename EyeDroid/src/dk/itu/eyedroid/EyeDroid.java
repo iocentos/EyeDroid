@@ -25,28 +25,35 @@ import dk.itu.spcl.jlpf.io.OutputWriter;
  */
 public class EyeDroid {
 
-	private ProcessingCore core;			//Processing core
-	private IOController ioController;		//IO controller intsance
-	private PreviewFilter mPreviewFilter;	//Display preview filter
-	private Context mContext;				//Application context
+	private ProcessingCore core; // Processing core
+	private IOController ioController; // IO controller intsance
+	private PreviewFilter mPreviewFilter; // Display preview filter
+	private Context mContext; // Application context
 
-	private static final int CORE_QUEUE_SIZE = 10;			//Pipe capacity
-	private static final int NUM_OF_THREADS = 3;			//No of threads to run the processing filters
-	private static final boolean ENABLE_STATISTICS= false;	//Enable/disable statistics
+	private static final int CORE_QUEUE_SIZE = 10; // Pipe capacity
+	private static final int NUM_OF_THREADS = 3; // No of threads to run the
+													// processing filters
+	private static final boolean ENABLE_STATISTICS = false; // Enable/disable
+															// statistics
 
 	/**
 	 * Deault constructor
-	 * @param context Application context
+	 * 
+	 * @param context
+	 *            Application context
 	 */
-	public EyeDroid(Context context){
+	public EyeDroid(Context context) {
 		this.mContext = context;
 		core = new ProcessingCore(CORE_QUEUE_SIZE);
 	}
 
 	/**
 	 * Attach IO protocols to core
-	 * @param reader Source
-	 * @param writer Sink
+	 * 
+	 * @param reader
+	 *            Source
+	 * @param writer
+	 *            Sink
 	 */
 	public void setIOProtocols(InputReader reader, OutputWriter writer) {
 		ioController = new IOAndroidController(core, reader, writer);
@@ -54,10 +61,12 @@ public class EyeDroid {
 
 	/**
 	 * Add coordinates result preview to application
-	 * @param imageView Preview image view
+	 * 
+	 * @param imageView
+	 *            Preview image view
 	 * @return Preview filter
 	 */
-	public PreviewFilter addAndGetPreview(ImageView imageView){
+	public PreviewFilter addAndGetPreview(ImageView imageView) {
 		if (imageView != null) {
 			mPreviewFilter = new PreviewFilter(mContext, imageView);
 			mPreviewFilter.setFilterName("Preview filter");
@@ -67,7 +76,7 @@ public class EyeDroid {
 	}
 
 	/**
-	 * Parallel algorithm execution setup. Processing algorithm is decomposed in 
+	 * Parallel algorithm execution setup. Processing algorithm is decomposed in
 	 * 3 composites and executed in 3 threads. Each composite a thread.
 	 */
 	private void setUpParallelAlgorithm() {
@@ -127,9 +136,10 @@ public class EyeDroid {
 
 		core.start(NUM_OF_THREADS);
 
-		if(ENABLE_STATISTICS)
-			core.enableStatistics(new LoggerFileStatistics(LoggerFileStatistics.STATISTICS_FULL_PATH), 5000);
-		
+		if (ENABLE_STATISTICS)
+			core.enableStatistics(new LoggerFileStatistics(
+					LoggerFileStatistics.STATISTICS_FULL_PATH), 5000);
+
 		ioController.start();
 	}
 

@@ -16,11 +16,13 @@ import dk.itu.spcl.jlpf.core.ProcessingCore;
  */
 public class LoggerLogStatistcs implements ProcessingCore.StatisticsCallback {
 
-	public static final String TAG = "Statistics";	//Log Tag
+	public static final String TAG = "Statistics"; // Log Tag
 
 	/**
 	 * Update statisctics log
-	 * @param arg0 JLPF CoreStatistics 
+	 * 
+	 * @param arg0
+	 *            JLPF CoreStatistics
 	 */
 	@Override
 	public void onStatisticsUpdates(CoreStatistics arg0) {

@@ -13,15 +13,16 @@ import android.util.Log;
  */
 public class Timer {
 
-	private static Timer mInstance;												//Timer instance
-	public static final String FILE_NAME = "/EyeDroid";							//File name to store statisctics
-	public static final String TAG = "Statistics";								//Log Tag
-	public static final String STATISTICS_FULL_PATH = Environment				//File path
+	private static Timer mInstance; // Timer instance
+	public static final String FILE_NAME = "/EyeDroid"; // File name to store
+														// statisctics
+	public static final String TAG = "Statistics"; // Log Tag
+	public static final String STATISTICS_FULL_PATH = Environment // File path
 			.getExternalStorageDirectory().getAbsolutePath().concat(FILE_NAME);
 
-	private final boolean mFileExists;											//Flag
-	private long mStartTime;													//TImer start time
-	
+	private final boolean mFileExists; // Flag
+	private long mStartTime; // TImer start time
+
 	/**
 	 * Timer default constructor. Starts a new timer
 	 */
@@ -36,6 +37,7 @@ public class Timer {
 
 	/**
 	 * Timer singleton instance
+	 * 
 	 * @return Timer instance
 	 */
 	public static Timer getInstance() {
@@ -46,6 +48,7 @@ public class Timer {
 
 	/**
 	 * Create timing file
+	 * 
 	 * @return Is file created?
 	 */
 	public boolean createFile() {
@@ -69,19 +72,22 @@ public class Timer {
 
 	/**
 	 * Computes time and writes it into a file
-	 * @param finalTime Ending time
+	 * 
+	 * @param finalTime
+	 *            Ending time
 	 */
-	synchronized public void computeTimes( long finalTime ) {
+	synchronized public void computeTimes(long finalTime) {
 
 		if (mFileExists) {
 			File file = new File(STATISTICS_FULL_PATH);
 
 			PrintWriter writer = null;
-			try {	
+			try {
 				writer = new PrintWriter(new FileWriter(file));
 				writer.println("Time : " + (finalTime - mStartTime));
 				writer.close();
-			} catch (IOException e) {}
+			} catch (IOException e) {
+			}
 		}
 	}
 }

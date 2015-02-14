@@ -25,27 +25,31 @@ import dk.itu.spcl.jlpf.core.ProcessingCore;
 public class LoggerFileStatistics implements ProcessingCore.StatisticsCallback {
 
 	private String mFileName;
-	public static final String FILE_NAME = "/statistics";	//File prefix	
-	public static final String TAG = "Statistics";			//Log TAG
-    public static final String STATISTICS_FULL_PATH = 		//File system path
-    		Environment.getExternalStorageDirectory().getAbsolutePath().concat(FILE_NAME);
-    private final boolean mFileExists;						//Flag
+	public static final String FILE_NAME = "/statistics"; // File prefix
+	public static final String TAG = "Statistics"; // Log TAG
+	public static final String STATISTICS_FULL_PATH = // File system path
+	Environment.getExternalStorageDirectory().getAbsolutePath()
+			.concat(FILE_NAME);
+	private final boolean mFileExists; // Flag
 
-    /**
-     * Default constructor. Creates a new statistics file
-     * @param fileName File name to create
-     */
+	/**
+	 * Default constructor. Creates a new statistics file
+	 * 
+	 * @param fileName
+	 *            File name to create
+	 */
 	public LoggerFileStatistics(String fileName) {
 		this.mFileName = fileName;
 		mFileExists = createFile();
-		if( mFileExists)
-			Log.i(TAG , "File was created successully");
+		if (mFileExists)
+			Log.i(TAG, "File was created successully");
 		else
-			Log.i(TAG , "Could not create file");
+			Log.i(TAG, "Could not create file");
 	}
 
 	/**
 	 * Create new file
+	 * 
 	 * @return Is file created?
 	 */
 	public boolean createFile() {
@@ -53,7 +57,7 @@ public class LoggerFileStatistics implements ProcessingCore.StatisticsCallback {
 		try {
 			if (!file.exists())
 				file.createNewFile();
-			else{
+			else {
 				file.delete();
 				file.createNewFile();
 			}
@@ -97,14 +101,16 @@ public class LoggerFileStatistics implements ProcessingCore.StatisticsCallback {
 					b.append(statistics.pipeSizes[i] + "----->");
 				}
 
-				b.append(statistics.pipeSizes[statistics.pipesCount - 1] + "  Sink");
-				
+				b.append(statistics.pipeSizes[statistics.pipesCount - 1]
+						+ "  Sink");
+
 				writer.println(b.toString());
 				writer.println();
 				writer.println();
 				writer.println();
 				writer.close();
-			} catch (IOException e) {}
+			} catch (IOException e) {
+			}
 
 		}// end of if
 	}

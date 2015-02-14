@@ -8,12 +8,11 @@ import org.opencv.core.Rect;
 
 import android.util.SparseArray;
 
+/**
+ * Calibration mapper is used to translate pupil coordinates using an
+ * homography. I.e. translate coordinates to fit into google glass display.
+ */
 public abstract class CalibrationMapper {
-
-	protected boolean isCalibrated;
-	
-	protected int presentationScreenHeight;
-	protected int presentationScreenWidth;
 
 	/*
 	 * Calibration points sent to the client. The client should present these
@@ -21,55 +20,115 @@ public abstract class CalibrationMapper {
 	 * sample the coordinates.
 	 */
 	protected SparseArray<Point> calibPoints;
+	protected boolean isCalibrated; // Is EyeDroid calibrated
+	protected int presentationScreenHeight; // Client screen height
+	protected int presentationScreenWidth; // Client screen widht
+	protected Rect presentationScreen; // Display rectangle (screen)
+	protected final int numberOfCalibrationPoints; // No. of calibration points
+	protected List<Point> sourcePoints = new LinkedList<Point>(); // Source
+																	// MatOfPoints
+																	// list
+	protected List<Point> destinationPoints = new LinkedList<Point>(); // Destination
+																		// MatOfPoints
+																		// list
 
-	/*
-	 * The rectangle of the screen on the client.
+	/**
+	 * @return Is calibrated?
 	 */
-	protected Rect presentationScreen;
+	public boolean isCalibrated() {
+		return isCalibrated;
+	}
 
-	protected final int numberOfCalibrationPoints;
-
-	/*
-	 * List of points to create the source MatOfPoints
+	/**
+	 * Default constructor
+	 * 
+	 * @param n
+	 * @param m
+	 * @param presentationScreenWidth
+	 * @param presentationScreenHeight
 	 */
-	protected List<Point> sourcePoints = new LinkedList<Point>();
-
-	/*
-	 * List of points to create the destination MatOfPoints
-	 */
-	protected List<Point> destinationPoints = new LinkedList<Point>();
-
 	public CalibrationMapper(int n, int m, int presentationScreenWidth,
 			int presentationScreenHeight) {
 		this.presentationScreenHeight = presentationScreenHeight;
 		this.presentationScreenWidth = presentationScreenWidth;
 		numberOfCalibrationPoints = n * m;
-	
 		calibPoints = new SparseArray<Point>();
-
 		computeCalibrationPoints(n, m);
-
 		isCalibrated = false;
-
 	}
 
+	/**
+	 * Add source point to mapper
+	 * 
+	 * @param point
+	 *            Point to be added
+	 */
 	public void addSourcePoint(Point point) {
 		sourcePoints.add(point);
 	}
 
+	/**
+	 * Add destination point
+	 * 
+	 * @param point
+	 *            Point to be added
+	 */
 	public void addDestinationPoint(Point point) {
 		destinationPoints.add(point);
 	}
 
+	/**
+	 * Main calibration method
+	 */
 	public final void calibrate() {
 		doCalibration();
 		isCalibrated = true;
 	}
 
 	/*
+	 * Calculates the error point from the center of the screen. Updates the
+	 * error values so that the next time the map method is called the errors
+	 * are subtracted.
+	 */
+	public abstract void correctError(int inputX, int inputY);
+
+	/**
+	 * Get calibration points
+	 * 
+	 * @return Calibration points
+	 */
+	public int getTotalCalibrationPoints() {
+		return numberOfCalibrationPoints;
+	}
+
+	/**
+	 * Get calibration point
+	 * 
+	 * @param index
+	 *            Point index
+	 * @return Point
+	 */
+	public Point getCalibrationPoint(int index) {
+		return calibPoints.get(index);
+	}
+
+	/**
+	 * Clean mapper;
+	 */
+	public abstract void clean();
+
+	// *************Abstract methods*********************
+
+	/**
 	 * Actual mapping method. Arguments are the input coordinates taken from
 	 * server. The Absolute coordinates given by the core. Any previous errors
 	 * are also passed in order to be subtracted.
+	 * 
+	 * @param inputX
+	 *            X coordinate to be mapped
+	 * @param inputY
+	 *            Y coordinate to be mapped
+	 * @return Mapped coordinate
 	 */
 	public abstract int[] map(float inputX, float inputY);
 
@@ -81,27 +140,11 @@ public abstract class CalibrationMapper {
 
 	/*
 	 * Creates the calibration points and saves them in the array
+	 * 
+	 * @param n
+	 * 
+	 * @param m
 	 */
 	protected abstract void computeCalibrationPoints(int n, int m);
 
-	/*
-	 * Calculates the error point from the center of the screen. Updates the
-	 * error values so that the next time the map method is called the errors
-	 * are subtracted.
-	 */
-	public abstract void correctError(int inputX, int inputY);
-
-	public boolean isCalibrated() {
-		return isCalibrated;
-	}
-
-	public int getTotalCalibrationPoints() {
-		return numberOfCalibrationPoints;
-	}
-
-	public Point getCalibrationPoint(int index) {
-		return calibPoints.get(index);
-	}
-	
-	public abstract void clean();
 }
