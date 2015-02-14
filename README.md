@@ -1,7 +1,7 @@
 EyeDroid
 ========
 
-<img src="Images/EyeDroid_logo.png?raw=true" height="150" width="150"/>
+<img src="Images/EyeDroid_logo.PNG?raw=true" height="150" width="150"/>
 
 WHAT IS EYEDROID?
 --------------
@@ -15,7 +15,7 @@ SOFTWARE ARCHITECTURE
 
 The software architecture of the EyeDroid application is designed based on pipes and filters design pattern and implemented on top of the [Java Lightweight Processing Framework] (https://github.com/centosGit/JLPF). The main eye tracking algorithm is decomposed into steps (filters), grouped into three compistes and executed in parallel (a thread per composite).
 
-<img src="Images/EyeDroid_SoftwareArchitecture.png?raw=true" height="300"/>
+<img src="Images/EyeDroid_SoftwareArchitecture.PNG?raw=true" height="300"/>
 
 SOFTWARE DEPENDENCIES
 ---------
@@ -33,7 +33,7 @@ HARDWARE
 The hardware requirements in the current implementation of the EyeDroid eye tracker are an Android mobile device (minimum API level 15)and a head mounted USB 2.0 infrared camera connected directly to the phone. The recommended camera resolution.
 is 640 × 480 pixels. 
 
-<img src="Images/EyeDroid_Hardware.png?raw=true" height="150"/>
+<img src="Images/EyeDroid_Hardware.PNG?raw=true" height="150"/>
 
 HOW TO USE?
 ---------
@@ -52,7 +52,7 @@ The changes made are listed bellow:
 -Changes in calibration process were made in order to fit EyeDroid.
 -An activity was added to conduct an experiment. The experiment consisted in showing a set of random dots on the glass display while   coordinates were sampled from EyeDroid in order to evaluate the system accuracy.
 
-<img src="Images/EyeDroid_GlassGaze.png?raw=true" height="300"/>
+<img src="Images/EyeDroid_GlassGaze.PNG?raw=true" height="300"/>
 
 Collaborators:
 --------------
