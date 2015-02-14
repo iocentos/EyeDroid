@@ -1,7 +1,7 @@
 EyeDroid
 ========
 
-<img src="Images/EyeDroid_logo.PNG?raw=true" height="150" width="150"/>
+<img src="Images/EyeDroid_logo.png?raw=true" height="150" width="150"/>
 
 WHAT IS EYEDROID?
 --------------
