@@ -15,7 +15,7 @@ SOFTWARE ARCHITECTURE
 
 The software architecture of the EyeDroid application is designed based on pipes and filters design pattern and implemented on top of the [Java Lightweight Processing Framework] (https://github.com/centosGit/JLPF). The main eye tracking algorithm is decomposed into steps (filters), grouped into three compistes and executed in parallel (a thread per composite).
 
-<img src="Images/EyeDroid_SoftwareArchitecture.PNG?raw=true" height="250"/>
+<img src="Images/EyeDroid_SoftwareArchitecture.PNG?raw=true" height="280"/>
 
 SOFTWARE DEPENDENCIES
 ---------
