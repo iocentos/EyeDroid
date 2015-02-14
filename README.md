@@ -33,7 +33,7 @@ HARDWARE
 The hardware requirements in the current implementation of the EyeDroid eye tracker are an Android mobile device (minimum API level 15)and a head mounted USB 2.0 infrared camera connected directly to the phone. The recommended camera resolution.
 is 640 × 480 pixels. 
 
-<img src="Images/EyeDroid_Hardware.PNG?raw=true" height="150"/>
+<img src="Images/EyeDroid_Hardware.PNG?raw=true" height="300"/>
 
 HOW TO USE?
 ---------
