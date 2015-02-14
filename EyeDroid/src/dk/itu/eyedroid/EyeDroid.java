@@ -11,7 +11,6 @@ import dk.itu.eyedroid.filters.PreviewFilter;
 import dk.itu.eyedroid.filters.RGB2GRAYFilter;
 import dk.itu.eyedroid.filters.ThresholdFilter;
 import dk.itu.eyedroid.io.IOAndroidController;
-import dk.itu.spcl.jlpf.core.Filter;
 import dk.itu.spcl.jlpf.core.FilterComposite;
 import dk.itu.spcl.jlpf.core.ProcessingCore;
 import dk.itu.spcl.jlpf.io.IOController;
@@ -24,11 +23,10 @@ public class EyeDroid {
 	private IOController ioController;
 	private PreviewFilter mPreviewFilter;
 	private Context mContext;
-
 	private static final int CORE_QUEUE_SIZE = 10;
 	private static final int NUM_OF_THREADS = 3;
 
-	public EyeDroid(Context context){
+	public EyeDroid(Context context) {
 		this.mContext = context;
 		core = new ProcessingCore(CORE_QUEUE_SIZE);
 	}
@@ -37,7 +35,7 @@ public class EyeDroid {
 		ioController = new IOAndroidController(core, reader, writer);
 	}
 
-	public PreviewFilter addAndGetPreview(ImageView imageView){
+	public PreviewFilter addAndGetPreview(ImageView imageView) {
 		if (imageView != null) {
 			mPreviewFilter = new PreviewFilter(mContext, imageView);
 			mPreviewFilter.setFilterName("Preview filter");
@@ -89,7 +87,6 @@ public class EyeDroid {
 		core.addFilter(compo1);
 		core.addFilter(compo2);
 		core.addFilter(compo3);
-
 	}
 
 	public void start() {

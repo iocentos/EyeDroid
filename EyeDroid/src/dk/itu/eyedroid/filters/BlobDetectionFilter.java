@@ -7,8 +7,8 @@ import dk.itu.eyedroid.Constants;
 import dk.itu.spcl.jlpf.common.Bundle;
 import dk.itu.spcl.jlpf.core.Filter;
 
-public class BlobDetectionFilter extends Filter{
-	
+public class BlobDetectionFilter extends Filter {
+
 	private long mDetectedCirles;
 
 	@Override
@@ -18,7 +18,7 @@ public class BlobDetectionFilter extends Filter{
 		Mat gray = (Mat) arg0.get(Constants.SOURCE_MAT_GRAY);
 		long pupilRoiRect = (Long) arg0.get(Constants.PUPIL_ROI_RECT);
 		arg0 = null;
-		
+
 		mDetectedCirles = blobDetection(gray.getNativeObjAddr());
 
 		Bundle newBundle = new Bundle();
@@ -27,10 +27,9 @@ public class BlobDetectionFilter extends Filter{
 		newBundle.put(Constants.PUPIL_ROI_RECT, pupilRoiRect);
 		newBundle.put(Constants.DETECTED_CIRCLES, mDetectedCirles);
 		Log.i(RGB2GRAYFilter.TAG, this.getFilterName());
-	
+
 		return newBundle;
 	}
 
-	
 	public static native long blobDetection(long frame);
 }

@@ -6,14 +6,17 @@ import dk.itu.eyedroid.io.IORunner;
 import dk.itu.spcl.jlpf.io.IOController;
 
 /**
- * Reading thread implementation. Implements reader initialization and execution from IORunner.
+ * Reading thread implementation. Implements reader initialization and execution
+ * from IORunner.
  */
 
 public class ReadingThread extends IORunner {
 
 	/**
 	 * Default constructor.
-	 * @param controller IO controller instance
+	 * 
+	 * @param controller
+	 *            IO controller instance
 	 */
 	public ReadingThread(IOController controller) {
 		super(controller);
@@ -23,10 +26,10 @@ public class ReadingThread extends IORunner {
 	 * Initialize reader
 	 */
 	@Override
-	public void onInit() throws IOException{
+	public void onInit() throws IOException {
 		ioController.getInputReader().initReader();
 	}
-	
+
 	/**
 	 * Write from input protocol.
 	 */

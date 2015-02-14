@@ -3,50 +3,36 @@ package dk.itu.eyedroid.io.protocols;
 import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
 
-import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.CameraBridgeViewBase;
 import org.opencv.android.CameraBridgeViewBase.CvCameraViewFrame;
 import org.opencv.android.CameraBridgeViewBase.CvCameraViewListener2;
-import org.opencv.android.LoaderCallbackInterface;
-import org.opencv.android.OpenCVLoader;
 import org.opencv.android.Utils;
 import org.opencv.core.Mat;
 
-import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.util.Log;
 import dk.itu.eyedroid.Constants;
 import dk.itu.eyedroid.filters.RGB2GRAYFilter;
 import dk.itu.spcl.jlpf.common.Bundle;
 import dk.itu.spcl.jlpf.io.IOProtocolReader;
 
-public class InputStreamCamera implements IOProtocolReader,
-		CvCameraViewListener2 {
+public class InputStreamCamera implements IOProtocolReader,CvCameraViewListener2 {
 
 	private static final String TAG = "InputStreamCamera";
-
 	private CameraBridgeViewBase mOpenCvCameraView;
-	private Context mContext;
-
 	private int mCameraId;
-
 	private Mat rgba;
 	private Mat gray;
-
 	private CountDownLatch startGate;
 	private CountDownLatch endGate;
 
 	private Bitmap mBitmap;
 
-	public InputStreamCamera(Context context, CameraBridgeViewBase camera,
-			int camId) {
-		mContext = context;
+	public InputStreamCamera(CameraBridgeViewBase camera, int camId) {
 		mOpenCvCameraView = camera;
 		mCameraId = camId;
 		startGate = new CountDownLatch(1);
 		endGate = new CountDownLatch(1);
-
 	}
 
 	@Override
@@ -57,14 +43,9 @@ public class InputStreamCamera implements IOProtocolReader,
 
 	@Override
 	public void init() {
-
 		mOpenCvCameraView.setCameraIndex(mCameraId);
-
 		mOpenCvCameraView.setCvCameraViewListener(this);
-
 		mOpenCvCameraView.enableView();
-		
-		
 	}
 
 	@Override
@@ -110,15 +91,13 @@ public class InputStreamCamera implements IOProtocolReader,
 		gray = inputFrame.gray();
 
 		try {
-			mBitmap = Bitmap.createBitmap(rgba.cols(), rgba.rows(),
-					Bitmap.Config.ARGB_8888);
-			
+			mBitmap = Bitmap.createBitmap(rgba.cols(), rgba.rows(), Bitmap.Config.ARGB_8888);
+
 			Bitmap temp = Bitmap.createScaledBitmap(mBitmap, 640, 480, false);
 			Log.i(RGB2GRAYFilter.TAG, "W :" + temp.getWidth() + " H : " + temp.getHeight());
-			
+
 			mBitmap = temp;
-			
-			
+
 			Utils.matToBitmap(rgba, mBitmap);
 		} catch (Exception ex) {
 			System.out.println(ex.getMessage());

@@ -14,25 +14,20 @@ import dk.itu.spcl.jlpf.core.ProcessingCore;
 public class FileStatisticsLogger implements ProcessingCore.StatisticsCallback {
 
 	private String mFileName;
-	
-	
 	public static final String FILE_NAME = "/Skata";
-	
 	public static final String TAG = "Statistics";
-	
-    public static final String STATISTICS_FULL_PATH = 
-    		Environment.getExternalStorageDirectory().getAbsolutePath().concat(FILE_NAME);
-    
-    
-    private final boolean mFileExists;
+	public static final String STATISTICS_FULL_PATH = Environment
+			.getExternalStorageDirectory().getAbsolutePath().concat(FILE_NAME);
+
+	private final boolean mFileExists;
 
 	public FileStatisticsLogger(String fileName) {
 		this.mFileName = fileName;
 		mFileExists = createFile();
-		if( mFileExists)
-			Log.i(TAG , "File was created successully");
+		if (mFileExists)
+			Log.i(TAG, "File was created successully");
 		else
-			Log.i(TAG , "Could not create file");
+			Log.i(TAG, "Could not create file");
 	}
 
 	public boolean createFile() {
@@ -40,7 +35,7 @@ public class FileStatisticsLogger implements ProcessingCore.StatisticsCallback {
 		try {
 			if (!file.exists())
 				file.createNewFile();
-			else{
+			else {
 				file.delete();
 				file.createNewFile();
 			}
@@ -81,18 +76,16 @@ public class FileStatisticsLogger implements ProcessingCore.StatisticsCallback {
 					b.append(statistics.pipeSizes[i] + "----->");
 				}
 
-				b.append(statistics.pipeSizes[statistics.pipesCount - 1] + "  Sink");
-				
+				b.append(statistics.pipeSizes[statistics.pipesCount - 1]
+						+ "  Sink");
+
 				writer.println(b.toString());
 				writer.println();
 				writer.println();
 				writer.println();
 				writer.close();
 			} catch (IOException e) {
-				if (writer != null)
-					writer.close();
-			}// end of catch
-
+			}
 		}// end of if
 	}
 }

@@ -1,13 +1,9 @@
 package statistics;
 
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 
 import android.os.Environment;
 import android.util.Log;
@@ -15,18 +11,13 @@ import android.util.Log;
 public class Timer {
 
 	private static Timer mInstance;
-
 	public static final String FILE_NAME = "/EyeDroid";
-
 	public static final String TAG = "Statistics";
-
 	public static final String STATISTICS_FULL_PATH = Environment
 			.getExternalStorageDirectory().getAbsolutePath().concat(FILE_NAME);
-
 	private final boolean mFileExists;
-
 	private long mStartTime;
-	
+
 	private Timer() {
 		mFileExists = createFile();
 		mStartTime = System.currentTimeMillis();
@@ -62,24 +53,20 @@ public class Timer {
 		}
 	}
 
-	synchronized public void computeTimes( long finalTime ) {
+	synchronized public void computeTimes(long finalTime) {
 
 		if (mFileExists) {
 			File file = new File(STATISTICS_FULL_PATH);
 
-			List<Long> times = new LinkedList<Long>();
-
 			PrintWriter writer = null;
 			try {
-				
+
 				writer = new PrintWriter(new FileWriter(file));
 				writer.println("Time : " + (finalTime - mStartTime));
 
 				writer.close();
 			} catch (IOException e) {
-				writer.close();
 			}
-
 		}
 	}
 }

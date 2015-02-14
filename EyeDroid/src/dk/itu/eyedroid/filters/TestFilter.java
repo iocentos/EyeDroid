@@ -28,9 +28,9 @@ public class TestFilter extends Filter {
 			});
 
 		}
-		
+
 		arg0 = null;
-		
+
 		return null;
 	}
 
