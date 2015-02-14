@@ -18,7 +18,7 @@ import dk.itu.spcl.jlpf.io.IOProtocolWriter;
  * result.
  */
 
-public class OutputNetTCPProtocol implements IOProtocolWriter {
+public class OutputTCPNet implements IOProtocolWriter {
 
 	private final int mPort; 				// Server port
 	private ServerSocket serverSocket; 		// Server socket for new incomming connections
@@ -35,7 +35,7 @@ public class OutputNetTCPProtocol implements IOProtocolWriter {
 	 * @param port
 	 *            Server listener port
 	 */
-	public OutputNetTCPProtocol(int port) {
+	public OutputTCPNet(int port) {
 		mPort = port;
 		isConnectionSet = new AtomicBoolean();
 		isConnectionSet.set(false);

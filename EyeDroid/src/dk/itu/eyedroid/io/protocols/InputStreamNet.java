@@ -10,12 +10,12 @@ import dk.itu.eyedroid.Constants;
 import dk.itu.spcl.jlpf.common.Bundle;
 import dk.itu.spcl.jlpf.io.IOProtocolReader;
 
-public class InputNetStreamingProtocol implements IOProtocolReader {
+public class InputStreamNet implements IOProtocolReader {
 
 	private String mUrl;
 	private MjpegInputStream mInputStream;
 
-	public InputNetStreamingProtocol(String url) {
+	public InputStreamNet(String url) {
 		mUrl = url;
 	}
 

@@ -9,6 +9,7 @@ import org.opencv.android.CameraBridgeViewBase.CvCameraViewListener2;
 import org.opencv.android.Utils;
 import org.opencv.core.Mat;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.util.Log;
 import dk.itu.eyedroid.Constants;
@@ -16,31 +17,42 @@ import dk.itu.eyedroid.filters.RGB2GRAYFilter;
 import dk.itu.spcl.jlpf.common.Bundle;
 import dk.itu.spcl.jlpf.io.IOProtocolReader;
 
-public class InputStreamCamera implements IOProtocolReader,CvCameraViewListener2 {
+/**
+ * Read video streaming from built-in cameras
+ */
+public class InputStreamCamera implements IOProtocolReader,
+		CvCameraViewListener2 {
 
-	private static final String TAG = "InputStreamCamera";
-	private CameraBridgeViewBase mOpenCvCameraView;
-	private int mCameraId;
-	private Mat rgba;
-	private Mat gray;
+	private static final String TAG = "InputStreamCamera"; // Log Tag
+	private CameraBridgeViewBase mOpenCvCameraView; // OpenCV camera bridge
+	private int mCameraId; // Camera device id.
+	private Mat rgba; // RGBA original image
+	private Mat gray; // Grey scale image
 	private CountDownLatch startGate;
 	private CountDownLatch endGate;
-
 	private Bitmap mBitmap;
 
-	public InputStreamCamera(CameraBridgeViewBase camera, int camId) {
+	/**
+	 * Default constructor
+	 * 
+	 * @param context
+	 *            Application context
+	 * @param camera
+	 *            OpenCV camera bridge
+	 * @param camId
+	 *            Camera id
+	 */
+	public InputStreamCamera(Context context, CameraBridgeViewBase camera,
+			int camId) {
 		mOpenCvCameraView = camera;
 		mCameraId = camId;
 		startGate = new CountDownLatch(1);
 		endGate = new CountDownLatch(1);
 	}
 
-	@Override
-	public void cleanup() {
-		Log.i(TAG, "cleaning up opencv reader");
-		mOpenCvCameraView.disableView();
-	}
-
+	/**
+	 * Init protocol reader. Setup camera
+	 */
 	@Override
 	public void init() {
 		mOpenCvCameraView.setCameraIndex(mCameraId);
@@ -48,6 +60,9 @@ public class InputStreamCamera implements IOProtocolReader,CvCameraViewListener2
 		mOpenCvCameraView.enableView();
 	}
 
+	/**
+	 * Read frame from camera and produce a bundle
+	 */
 	@Override
 	public Bundle read() throws IOException {
 
@@ -64,10 +79,17 @@ public class InputStreamCamera implements IOProtocolReader,CvCameraViewListener2
 			e.printStackTrace();
 			throw new IOException();
 		}
-
 		return bundle;
 	}
 
+	/**
+	 * Set RGBA and grey scale when camera view starts
+	 * 
+	 * @param width
+	 *            Display width
+	 * @param height
+	 *            Display height
+	 */
 	@Override
 	public void onCameraViewStarted(int width, int height) {
 		Log.i(TAG, "started");
@@ -75,6 +97,9 @@ public class InputStreamCamera implements IOProtocolReader,CvCameraViewListener2
 		gray = new Mat();
 	}
 
+	/**
+	 * Release RGBA and grey scale when camera stops
+	 */
 	@Override
 	public void onCameraViewStopped() {
 		Log.i(TAG, "stopped");
@@ -83,6 +108,13 @@ public class InputStreamCamera implements IOProtocolReader,CvCameraViewListener2
 
 	}
 
+	/**
+	 * Executed when a frame is receieved
+	 * 
+	 * @param inputFrame
+	 *            Frame from camera
+	 * @return mat Frame mat object
+	 */
 	@Override
 	public Mat onCameraFrame(CvCameraViewFrame inputFrame) {
 		Log.i(TAG, "got frame");
@@ -91,13 +123,14 @@ public class InputStreamCamera implements IOProtocolReader,CvCameraViewListener2
 		gray = inputFrame.gray();
 
 		try {
-			mBitmap = Bitmap.createBitmap(rgba.cols(), rgba.rows(), Bitmap.Config.ARGB_8888);
+			mBitmap = Bitmap.createBitmap(rgba.cols(), rgba.rows(),
+					Bitmap.Config.ARGB_8888);
 
 			Bitmap temp = Bitmap.createScaledBitmap(mBitmap, 640, 480, false);
-			Log.i(RGB2GRAYFilter.TAG, "W :" + temp.getWidth() + " H : " + temp.getHeight());
+			Log.i(RGB2GRAYFilter.TAG,
+					"W :" + temp.getWidth() + " H : " + temp.getHeight());
 
 			mBitmap = temp;
-
 			Utils.matToBitmap(rgba, mBitmap);
 		} catch (Exception ex) {
 			System.out.println(ex.getMessage());
@@ -114,4 +147,12 @@ public class InputStreamCamera implements IOProtocolReader,CvCameraViewListener2
 		return null;
 	}
 
+	/**
+	 * Cleanup reader
+	 */
+	@Override
+	public void cleanup() {
+		Log.i(TAG, "cleaning up opencv reader");
+		mOpenCvCameraView.disableView();
+	}
 }
