@@ -56,9 +56,9 @@ The changes made are listed bellow:
 
 Collaborators:
 --------------
-Daniel Garcia <dgac@itu.dk>
-Ioannis Sintos <isin@itu.dk>
-Diako Mardanbegi <dima@itu.dk>
-Shahram Jalalinia <jsha@itu.dk>
+-Daniel Garcia <dgac@itu.dk>
+-Ioannis Sintos <isin@itu.dk>
+-Diako Mardanbegi <dima@itu.dk>
+-Shahram Jalalinia <jsha@itu.dk>
 
 [IT University of Copenhagen](www.itu.dk/en)
