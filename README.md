@@ -43,6 +43,15 @@ HOW TO USE?
 - Download the source code and open the solution in a compliant [Eclipse](https://eclipse.org/) version. Add a project dependency to OpenCV library.
 - Compile and install the app on an Android Device.
 
+HOW TO CONNECT A CLIENT
+---------
+
+In order to start consuming coordinates from EyeDroid, any client can connect via TCP protocol to the port 5000. After connecting, the client will automatically start receiving the resulting coordinates.
+The result format consists in a byte array of three integers (12 bytes in total), where:
+-The first 4 bytes is a testing message (integer).
+-The second 4 bytes is the X-axis coordinate (integer).
+-The third 4 bytes is the Y-axis coordinate (integer).
+
 GLASS GAZE INTEGRATION
 ---------
 
