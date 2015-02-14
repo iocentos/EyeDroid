@@ -43,10 +43,6 @@ HOW TO USE?
 - Download the source code and open the solution in a compliant [Eclipse](https://eclipse.org/) version. Add a project dependency to OpenCV library.
 - Compile and install the app on an Android Device.
 
-HOW TO CONNECT A CLIENT?
----------
-Pending...
-
 GLASS GAZE INTEGRATION
 ---------
 
