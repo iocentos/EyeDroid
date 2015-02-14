@@ -76,6 +76,7 @@ void EyeDroid::thresholdImage(cv::Mat& input, cv::Mat& output) {
 
 }
 
+/*
 std::vector<cv::Vec3f> EyeDroid::detectBlobs(cv::Mat& output) {
 
 	std::vector<cv::Vec3f> circles;
@@ -88,9 +89,45 @@ std::vector<cv::Vec3f> EyeDroid::detectBlobs(cv::Mat& output) {
 			Config::BlobDetection::THRESHOLD_CENTER,
 			Config::BlobDetection::MIN_BLOB_SIZE,
 			Config::BlobDetection::MAX_BLOB_SIZE);
+	return circles;
+}
+*/
 
-//	HoughCircles(output, circles, CV_HOUGH_GRADIENT, 2, output.rows/8, 200, 100,
-//			0, 0);
+std::vector<cv::Vec3f> EyeDroid::detectBlobs(cv::Mat& output) {
+
+	cv::SimpleBlobDetector::Params params;
+	params.minDistBetweenBlobs = 40.0f;
+	params.filterByInertia = false;
+	params.filterByConvexity = false;
+	params.minConvexity = 1;
+	params.maxConvexity = 10000;
+	params.filterByColor = 0;
+	params.filterByCircularity = false;
+	params.filterByArea = true;
+	params.minArea = 2000.0f;
+	params.maxArea = 20000.0f;
+
+	std::vector<cv::Vec3f> circles;
+
+	cv::SimpleBlobDetector blob_detector(params);
+
+	// detect!
+	std::vector<cv::KeyPoint> keypoints;
+	blob_detector.detect(output, keypoints);
+
+
+	cv::Vec3f* array = new cv::Vec3f[keypoints.size()];
+
+	for (int i=0; i<keypoints.size(); i++){
+
+		cv::Vec3f p;
+		p[0] = keypoints[i].pt.x;
+		p[1] = keypoints[i].pt.y;
+		p[2] = 30;
+		array[i] = p;
+	}
+
+	circles.insert(circles.begin() , array , array + keypoints.size());
 	return circles;
 }
 
