@@ -48,17 +48,17 @@ HOW TO CONNECT A CLIENT
 
 In order to start consuming coordinates from EyeDroid, any client can connect via TCP protocol to the port 5000. After connecting, the client will automatically start receiving the resulting coordinates.
 The result format consists in a byte array of three integers (12 bytes in total), where:
--The first 4 bytes is a testing message (integer).
--The second 4 bytes is the X-axis coordinate (integer).
--The third 4 bytes is the Y-axis coordinate (integer).
+- The first 4 bytes is a testing message (integer).
+- The second 4 bytes is the X-axis coordinate (integer).
+- The third 4 bytes is the Y-axis coordinate (integer).
 
 GLASS GAZE INTEGRATION
 ---------
 
 In this project [branch](https://github.com/centosGit/EyeDroid/tree/experiment), EyeDroid is integrated to the [GLAZZ GAZE application client] (https://github.com/dmardanbeigi/GlassGaze). The original project was forked and small modifications were done in order to provide extra functionallity.
 The changes made are listed bellow:
--Changes in calibration process were made in order to fit EyeDroid.
--An activity was added to conduct an experiment. The experiment consisted in showing a set of random dots on the glass display while   coordinates were sampled from EyeDroid in order to evaluate the system accuracy.
+- Changes in calibration process were made in order to fit EyeDroid.
+- An activity was added to conduct an experiment. The experiment consisted in showing a set of random dots on the glass display while coordinates were sampled from EyeDroid in order to evaluate the system accuracy.
 
 <img src="Images/EyeDroid_GlassGaze.PNG?raw=true" height="300"/>
 
