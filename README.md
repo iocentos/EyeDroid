@@ -43,14 +43,18 @@ HOW TO USE?
 - Download the source code and open the solution in a compliant [Eclipse](https://eclipse.org/) version. Add a project dependency to OpenCV library.
 - Compile and install the app on an Android Device.
 
+HOW TO CONNECT A CLIENT?
+---------
+Pending...
+
 GLASS GAZE INTEGRATION
 ---------
 
 In this project branch, EyeDroid is integrated to the [GLAZZ GAZE application client] (https://github.com/dmardanbeigi/GlassGaze).
 The original project was forked and small modifications were done in order to provide extra functionallity.
 The changes made are listed bellow:
--Changes in calibration process were made in order to fit EyeDroid.
--An activity was added to conduct an experiment. The experiment consisted in showing a set of random dots on the glass display while   coordinates were sampled from EyeDroid in order to evaluate the system accuracy.
+- Changes in calibration process were made in order to fit EyeDroid.
+- An activity was added to conduct an experiment. The experiment consisted in showing a set of random dots on the glass display while   coordinates were sampled from EyeDroid in order to evaluate the system accuracy.
 
 <img src="Images/EyeDroid_GlassGaze.PNG?raw=true" height="250"/>
 
