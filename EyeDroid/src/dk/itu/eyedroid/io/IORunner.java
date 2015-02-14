@@ -8,14 +8,15 @@ import dk.itu.spcl.jlpf.io.IOController;
  * thrown during the initialization of either reader or writer, IO controller is
  * stopped.
  */
-
 public abstract class IORunner extends Thread {
 
-	private final int MAX_TRIALS = 3; 		// Maximum number of allowed attempts to initialize the RW protocols
-	private final int TIMEOUT = 500; 		// Timeout to retry inititalization
-	private int attempt_count = 1; 			// Fail counter
-	protected IOController ioController; 			// Reference to IO Controller
-	private volatile boolean mIsStopped = false; 	// Running state flag.
+	private final int MAX_TRIALS = 3; // Maximum number of allowed attempts to
+										// initialize the RW protocols
+	private final int TIMEOUT = 500; // Timeout to retry inititalization
+	private int attempt_count = 1; // Fail counter
+
+	protected IOController ioController; // Reference to IO Controller
+	private volatile boolean mIsStopped = false; // Running state flag.
 
 	/**
 	 * Default constructor.

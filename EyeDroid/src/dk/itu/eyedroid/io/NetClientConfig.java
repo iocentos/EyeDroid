@@ -1,4 +1,4 @@
-package dk.itu.eyedroid;
+package dk.itu.eyedroid.io;
 
 /**
  * Network client configuration. Allows to configure calibration type. Define

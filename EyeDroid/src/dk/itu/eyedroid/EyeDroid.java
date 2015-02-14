@@ -17,24 +17,54 @@ import dk.itu.spcl.jlpf.io.IOController;
 import dk.itu.spcl.jlpf.io.InputReader;
 import dk.itu.spcl.jlpf.io.OutputWriter;
 
+/**
+ * EyeDroid core implementation. IO controller is defined to read from source
+ * and produce to destination. Core and IO controller are based on JLPF library.
+ * PIpes and filters arquitecture
+ */
 public class EyeDroid {
 
-	private ProcessingCore core;
-	private IOController ioController;
-	private PreviewFilter mPreviewFilter;
-	private Context mContext;
-	private static final int CORE_QUEUE_SIZE = 10;
-	private static final int NUM_OF_THREADS = 3;
+	private ProcessingCore core; // Processing core
+	private IOController ioController; // IO controller intsance
+	private PreviewFilter mPreviewFilter; // Display preview filter
+	private Context mContext; // Application context
 
+	private static final int CORE_QUEUE_SIZE = 10; // Pipe capacity
+	private static final int NUM_OF_THREADS = 3; // No of threads to run the
+	// processing filters
+	private static final boolean ENABLE_STATISTICS = false; // Enable/disable
+	// statistics
+
+	/**
+	 * Deault constructor
+	 * 
+	 * @param context
+	 *            Application context
+	 */
 	public EyeDroid(Context context) {
 		this.mContext = context;
 		core = new ProcessingCore(CORE_QUEUE_SIZE);
 	}
 
+	/**
+	 * Attach IO protocols to core
+	 * 
+	 * @param reader
+	 *            Source
+	 * @param writer
+	 *            Sink
+	 */
 	public void setIOProtocols(InputReader reader, OutputWriter writer) {
 		ioController = new IOAndroidController(core, reader, writer);
 	}
 
+	/**
+	 * Add coordinates result preview to application
+	 * 
+	 * @param imageView
+	 *            Preview image view
+	 * @return Preview filter
+	 */
 	public PreviewFilter addAndGetPreview(ImageView imageView) {
 		if (imageView != null) {
 			mPreviewFilter = new PreviewFilter(mContext, imageView);
@@ -44,6 +74,10 @@ public class EyeDroid {
 		return null;
 	}
 
+	/**
+	 * Parallel algorithm execution setup. Processing algorithm is decomposed in
+	 * 3 composites and executed in 3 threads. Each composite a thread.
+	 */
 	private void setUpParallelAlgorithm() {
 		RGB2GRAYFilter rgb2gray = new RGB2GRAYFilter();
 		rgb2gray.setFilterName("RGB2Gray");
@@ -89,6 +123,9 @@ public class EyeDroid {
 		core.addFilter(compo3);
 	}
 
+	/**
+	 * Start EyeDroid
+	 */
 	public void start() {
 		if (core == null || ioController == null)
 			throw new RuntimeException(
@@ -97,11 +134,18 @@ public class EyeDroid {
 		setUpParallelAlgorithm();
 
 		core.start(NUM_OF_THREADS);
+
+		if (ENABLE_STATISTICS)
+			core.start(NUM_OF_THREADS);
 		// core.enableStatistics(new FileStatisticsLogger(
 		// FileStatisticsLogger.STATISTICS_FULL_PATH), 5000);
+
 		ioController.start();
 	}
 
+	/**
+	 * Stop EyeDroid
+	 */
 	public void stop() {
 		core.stop();
 		ioController.stop();

@@ -10,6 +10,9 @@ import dk.itu.eyedroid.Constants;
 import dk.itu.spcl.jlpf.common.Bundle;
 import dk.itu.spcl.jlpf.core.Filter;
 
+/**
+ * Algorithm step: 8 Detect pupil and draw it on preview
+ */
 public class DetectAndDrawPupilFilter extends Filter {
 
 	@Override
@@ -38,5 +41,4 @@ public class DetectAndDrawPupilFilter extends Filter {
 
 	public static native void detectPupilAndDraw(long originalFrame,
 			long processedFrame, long pupilRoi, long detectedCircles);
-
 }

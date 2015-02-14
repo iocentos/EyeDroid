@@ -30,25 +30,14 @@ import dk.itu.eyedroid.R;
  */
 public class NavigationDrawerFragment extends Fragment {
 
-	/**
-	 * Remember the position of the selected item.
-	 */
+	// Remember the position of the selected item.
 	private static final String STATE_SELECTED_POSITION = "selected_navigation_drawer_position";
-
-	/**
-	 * Per the design guidelines, you should show the drawer on launch until the
-	 * user manually expands it. This shared preference tracks this.
-	 */
+	// Per the design guidelines, you should show the drawer on launch until the
+	// user manually expands it. This shared preference tracks this.
 	private static final String PREF_USER_LEARNED_DRAWER = "navigation_drawer_learned";
-
-	/**
-	 * A pointer to the current callbacks instance (the Activity).
-	 */
+	// A pointer to the current callbacks instance (the Activity.
 	private NavigationDrawerCallbacks mCallbacks;
-
-	/**
-	 * Helper component that ties the action bar to the navigation drawer.
-	 */
+	// Helper component that ties the action bar to the navigation drawer.
 	private ActionBarDrawerToggle mDrawerToggle;
 
 	private DrawerLayout mDrawerLayout;
@@ -58,9 +47,6 @@ public class NavigationDrawerFragment extends Fragment {
 	private int mCurrentSelectedPosition = 0;
 	private boolean mFromSavedInstanceState;
 	private boolean mUserLearnedDrawer;
-
-	public NavigationDrawerFragment() {
-	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -165,7 +151,7 @@ public class NavigationDrawerFragment extends Fragment {
 				}
 
 				getActivity().invalidateOptionsMenu(); // calls
-														// onPrepareOptionsMenu()
+				// onPrepareOptionsMenu()
 			}
 
 			@Override
@@ -187,7 +173,7 @@ public class NavigationDrawerFragment extends Fragment {
 				}
 
 				getActivity().invalidateOptionsMenu(); // calls
-														// onPrepareOptionsMenu()
+				// onPrepareOptionsMenu()
 			}
 		};
 
@@ -270,7 +256,6 @@ public class NavigationDrawerFragment extends Fragment {
 		if (mDrawerToggle.onOptionsItemSelected(item)) {
 			return true;
 		}
-
 		return super.onOptionsItemSelected(item);
 	}
 

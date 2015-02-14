@@ -8,7 +8,7 @@ import java.nio.ByteBuffer;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import dk.itu.eyedroid.Constants;
-import dk.itu.eyedroid.NetClientConfig;
+import dk.itu.eyedroid.io.NetClientConfig;
 import dk.itu.spcl.jlpf.common.Bundle;
 import dk.itu.spcl.jlpf.io.IOProtocolWriter;
 

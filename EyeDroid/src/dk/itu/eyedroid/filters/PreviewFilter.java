@@ -12,14 +12,14 @@ import dk.itu.eyedroid.demo.MainActivity;
 import dk.itu.spcl.jlpf.common.Bundle;
 import dk.itu.spcl.jlpf.core.Filter;
 
+/**
+ * Show preview. Draws a point over the original streamed video
+ */
 public class PreviewFilter extends Filter {
 
 	private Context mContext;
-
 	private AtomicBoolean mIsPreviewShown;
-
 	private ImageView mImageView;
-
 	private boolean mLogoFlag = false;
 
 	public PreviewFilter(Context context, ImageView imageView) {
@@ -53,7 +53,6 @@ public class PreviewFilter extends Filter {
 				});
 			}
 		}
-
 		return arg0;
 	}
 

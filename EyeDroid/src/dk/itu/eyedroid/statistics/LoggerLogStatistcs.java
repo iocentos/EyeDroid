@@ -1,13 +1,29 @@
-package statistics;
+package dk.itu.eyedroid.statistics;
 
 import android.util.Log;
 import dk.itu.spcl.jlpf.core.CoreStatistics;
 import dk.itu.spcl.jlpf.core.ProcessingCore;
 
-public class LogStatistcsLogger implements ProcessingCore.StatisticsCallback {
+/*
+ *A logger that can be user with the processing core.
+ *The logger will print in a nice format the state of the core at a specific moment.
+ *It will print the size of the queues in every step, the number of
+ *executions of each filter and the average execution time of each filter 
+ *in the standard android logger with the tag Statistics.
+ *
+ *It is enabled as follows with 5000 being the interval for the statistics thread
+ *core.enableStatistics(new LogStatisticsLogger(), 5000);
+ */
+public class LoggerLogStatistcs implements ProcessingCore.StatisticsCallback {
 
-	public static final String TAG = "Statistics";
+	public static final String TAG = "Statistics"; // Log Tag
 
+	/**
+	 * Update statisctics log
+	 * 
+	 * @param arg0
+	 *            JLPF CoreStatistics
+	 */
 	@Override
 	public void onStatisticsUpdates(CoreStatistics arg0) {
 		StringBuilder builder = new StringBuilder();
@@ -42,5 +58,4 @@ public class LogStatistcsLogger implements ProcessingCore.StatisticsCallback {
 		Log.i(TAG, builder.toString());
 		Log.i(TAG, builder.toString());
 	}
-
 }

@@ -1,12 +1,12 @@
 /*
  * Config.cpp
- *
- *  Created on: Nov 18, 2014
- *      Author: centos
  */
 
 #include "Config.h"
 
+/*
+ * Default EyeDroid image processing methods configuration.
+ */
 namespace IMGP {
 volatile int Config::ErodeDilate::BEFORE_THRESHOLD_ERODE = 3;
 volatile int Config::ErodeDilate::BEFORE_THRESHOLD_DILATE = 2;
@@ -20,6 +20,7 @@ volatile int Config::PupilROI::ROI_CONSTANT_W = 400;
 volatile int Config::PupilROI::ROI_CONSTANT_H = 350;
 volatile int Config::PupilROI::ROI_PUPIL_FOUND_W = 80;
 volatile int Config::PupilROI::ROI_PUPIL_FOUND_H = 80;
+volatile bool Config::PupilROI::DYNAMIC_ROI_ENABLED = false;
 
 volatile int Config::Thresshold::LOWER_LIMIT = 70;
 

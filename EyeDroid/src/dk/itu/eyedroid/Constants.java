@@ -1,5 +1,8 @@
 package dk.itu.eyedroid;
 
+/**
+ * EyeDroid constants
+ */
 public class Constants {
 
 	public static final String SOURCE_BITMAP = "source_bitmap";
@@ -15,5 +18,4 @@ public class Constants {
 
 	public static final String PUPIL_ROI_RECT = "pupil_roi_rect";
 	public static final String DETECTED_CIRCLES = "detected_circles";
-
 }

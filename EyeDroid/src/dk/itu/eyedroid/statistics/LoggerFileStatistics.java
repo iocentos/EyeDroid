@@ -1,4 +1,4 @@
-package statistics;
+package dk.itu.eyedroid.statistics;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -11,17 +11,34 @@ import android.util.Log;
 import dk.itu.spcl.jlpf.core.CoreStatistics;
 import dk.itu.spcl.jlpf.core.ProcessingCore;
 
-public class FileStatisticsLogger implements ProcessingCore.StatisticsCallback {
+/*
+ *A logger that can be user with the processing core.
+ *The logger will print in a nice format the state of the core at a specific moment.
+ *It will print the size of the queues in every step, the number of
+ *executions of each filter and the average execution time of each filter 
+ *in an external file that can be reviewed later.
+ *
+ *It is enabled as follows with 5000 being the interval for the statistics thread
+ *		core.enableStatistics(new LoggerFileStatistics(
+ *		LoggerFileStatistics.STATISTICS_FULL_PATH), 5000);
+ */
+public class LoggerFileStatistics implements ProcessingCore.StatisticsCallback {
 
 	private String mFileName;
-	public static final String FILE_NAME = "/Skata";
-	public static final String TAG = "Statistics";
-	public static final String STATISTICS_FULL_PATH = Environment
-			.getExternalStorageDirectory().getAbsolutePath().concat(FILE_NAME);
+	public static final String FILE_NAME = "/statistics"; // File prefix
+	public static final String TAG = "Statistics"; // Log TAG
+	public static final String STATISTICS_FULL_PATH = // File system path
+	Environment.getExternalStorageDirectory().getAbsolutePath()
+			.concat(FILE_NAME);
+	private final boolean mFileExists; // Flag
 
-	private final boolean mFileExists;
-
-	public FileStatisticsLogger(String fileName) {
+	/**
+	 * Default constructor. Creates a new statistics file
+	 * 
+	 * @param fileName
+	 *            File name to create
+	 */
+	public LoggerFileStatistics(String fileName) {
 		this.mFileName = fileName;
 		mFileExists = createFile();
 		if (mFileExists)
@@ -30,6 +47,11 @@ public class FileStatisticsLogger implements ProcessingCore.StatisticsCallback {
 			Log.i(TAG, "Could not create file");
 	}
 
+	/**
+	 * Create new file
+	 * 
+	 * @return Is file created?
+	 */
 	public boolean createFile() {
 		File file = new File(mFileName);
 		try {
@@ -49,6 +71,9 @@ public class FileStatisticsLogger implements ProcessingCore.StatisticsCallback {
 		}
 	}
 
+	/**
+	 * Update statistics log file
+	 */
 	@Override
 	public void onStatisticsUpdates(CoreStatistics statistics) {
 		if (mFileExists) {
@@ -86,6 +111,7 @@ public class FileStatisticsLogger implements ProcessingCore.StatisticsCallback {
 				writer.close();
 			} catch (IOException e) {
 			}
+
 		}// end of if
 	}
 }

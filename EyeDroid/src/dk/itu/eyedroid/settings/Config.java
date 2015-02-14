@@ -1,6 +1,28 @@
 package dk.itu.eyedroid.settings;
 
+/*
+ *This class is a wrapper around the Config.h file in the c++ code.
+ *The getters and setters of the class will modify the configuration
+ *of the image processing c++ methods at runtime.
+ *
+ * The class is used by the settings activity.
+ * 
+ * WARNING
+ * There is no checking for the values before they are set in the
+ * image processing methods. The settings activity is using sliders to 
+ * set all these values usually ranging from 0 to max.
+ * The real ranges of these values is not the same so if not set
+ * to correct value it might cause the application to crash.
+ * 
+ * The default configuration of EyeDroid has been configured with these
+ * values based on experimentation. If you wish to experiment to tune 
+ * the image processing methods use the settings activity to change the values
+ * at runtime and once you find your configuration you can hardcode it both here
+ * in the Config file and in the jni/Config.h file.
+ */
 public class Config {
+
+	// Algorithm configuration parameters
 
 	public static final int BEFORE_THRESHOLD_ERODE = 0;
 	public static final int BEFORE_THRESHOLD_DILATE = 1;
@@ -24,6 +46,14 @@ public class Config {
 	public static final int THRESHOLD_CENTER = 16;
 	public static final int SCALE_FACTOR = 17;
 
+	/**
+	 * Set configuration value
+	 * 
+	 * @param key
+	 *            Key
+	 * @param value
+	 *            Value
+	 */
 	public static void setConfigValue(int key, int value) {
 
 		switch (key) {
@@ -44,20 +74,16 @@ public class Config {
 			break;
 		case Config.ROI_CONSTANT_Y:
 			setConstantRoi_Y(value);
-
 			break;
 		case Config.ROI_CONSTANT_X:
 			setConstantRoi_X(value);
-
 			break;
 		case Config.ROI_CONSTANT_W:
 			setConstantRoi_W(value);
 			break;
-
 		case Config.ROI_CONSTANT_H:
 			setConstantRoi_H(value);
 			break;
-
 		case Config.ROI_PUPIL_FOUND_W:
 			setPupilFoundRoi_W(value);
 			break;
@@ -70,7 +96,6 @@ public class Config {
 		case Config.MIN_NEIGHBOR_DISTANCE_FACTOR:
 			setMinNeighborBlob(value);
 			break;
-
 		case Config.MIN_BLOB_SIZE:
 			setMinBlobSize(value);
 			break;
@@ -83,17 +108,21 @@ public class Config {
 		case Config.THRESHOLD_CENTER:
 			setThresholdCenter(value);
 			break;
-
 		case Config.SCALE_FACTOR:
 			setScaleFactor(value);
 			break;
-
 		default:
 			break;
 		}
-
 	}
 
+	/**
+	 * Get value
+	 * 
+	 * @param key
+	 *            Key
+	 * @return Value
+	 */
 	public static int getConfigValue(int key) {
 
 		int value = 0;
@@ -239,5 +268,4 @@ public class Config {
 	public static native void setThresholdCenter(int value);
 
 	public static native void setScaleFactor(int value);
-
 }
