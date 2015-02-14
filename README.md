@@ -55,7 +55,7 @@ The result format consists in a byte array of three integers (12 bytes in total)
 GLASS GAZE INTEGRATION
 ---------
 
-In this project [branch](https://github.com/centosGit/EyeDroid/tree/experiment), EyeDroid is integrated to the [GLAZZ GAZE application client] (https://github.com/dmardanbeigi/GlassGaze). The original project was forked and small modifications were done in order to provide extra functionallity.
+In [experiment branch](https://github.com/centosGit/EyeDroid/tree/experiment), EyeDroid is integrated to the [GLAZZ GAZE application client] (https://github.com/dmardanbeigi/GlassGaze). The original project was forked and small modifications were done in order to provide extra functionallity.
 The changes made are listed bellow:
 - Changes in calibration process were made in order to fit EyeDroid.
 - An activity was added to conduct an experiment. The experiment consisted in showing a set of random dots on the glass display while coordinates were sampled from EyeDroid in order to evaluate the system accuracy.
