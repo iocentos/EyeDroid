@@ -60,7 +60,7 @@ public class NETExperimentControllerGlass extends NETExperimentController {
 
 			// Wait for client...
 			try {
-				Thread.sleep(2000);
+				Thread.sleep(3000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -148,22 +148,17 @@ public class NETExperimentControllerGlass extends NETExperimentController {
 	private String createExperimentOutput(Point[] destinationPoints,
 			Point[] sampledPoints, Point[] sampledMappedPoints) {
 
-		String content = "Point no.\t\tDestination\t\tSample\t\tMapped sample\t\t|Destination-Mapped sample|\n";
+		String content = "Point no,GlassX,GlassY,SampleX,SampleY,MappedX,MappedY,DeltaX,DeltaY\n";
 
 		for (int i = 0; i < destinationPoints.length; i++) {
-			content += String
-					.format("%d \t\t (%2f, %2f) \t\t  (%2f, %2f) \t\t  (%2f, %2f) \t\t  (%2f, %2f)\n",
-							i,
-							destinationPoints[i].x,
-							destinationPoints[i].y,
-							sampledPoints[i].x,
-							sampledPoints[i].y,
-							sampledMappedPoints[i].x,
-							sampledMappedPoints[i].y,
-							Math.abs(destinationPoints[i].x
-									- sampledMappedPoints[i].x),
-							Math.abs(destinationPoints[i].y
-									- sampledMappedPoints[i].y));
+			content += String.format("%d,%2.0f,%2.0f,%2f,%2.0f,%2.0f,%2.0f,%2.0f,%2.0f\n",
+					i,
+					destinationPoints[i].x, destinationPoints[i].y,
+					sampledPoints[i].x, sampledPoints[i].y,
+					sampledMappedPoints[i].x, sampledMappedPoints[i].y,
+					Math.abs(destinationPoints[i].x - sampledMappedPoints[i].x),
+					Math.abs(destinationPoints[i].y - sampledMappedPoints[i].y)
+					);
 		}
 		return content;
 	}
@@ -184,6 +179,7 @@ public class NETExperimentControllerGlass extends NETExperimentController {
 				Locale.getDefault());
 		Date date = new Date();
 		fileName = fileName.concat(dateFormat.format(date));
+		fileName = fileName.concat(".csv");
 
 		Log.i(TAG, fileName);
 		if (createFile(fileName)) {
