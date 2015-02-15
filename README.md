@@ -30,7 +30,7 @@ OpenCV Library 2.4.9 <br/>
 HARDWARE
 --------------
 
-The hardware requirements in the current implementation of the EyeDroid eye tracker are an Android mobile device (minimum API level 15)and a head mounted USB 2.0 infrared camera connected directly to the phone. The recommended camera resolution.
+The hardware requirements in the current implementation of the EyeDroid eye tracker are an Android mobile device (minimum API level 15) and a head mounted USB 2.0 infrared camera connected directly to the phone. The recommended camera resolution.
 is 640 × 480 pixels. 
 
 <img src="Images/EyeDroid_Hardware.PNG?raw=true" height="250"/>
@@ -40,13 +40,22 @@ HOW TO USE?
 
 - Download, install and configure OpenCV library. Full instruction and more detailes can be found at [Open CV Eclipse tutorial] (http://docs.opencv.org/doc/tutorials/introduction/android_binary_package/O4A_SDK.html).
 - Download, and configure Android NDK. Full instruction and more detailes can be found at [Using the NDK plugin](http://tools.android.com/recent/usingthendkplugin).
-- Download the source code and open the solution in a compliant [Eclipse](https://eclipse.org/) version. Add a project dependency to OpenCV library.
-- Compile and install the app on an Android Device.
+- Download EyeDroid source code and open the solution in a compliant [Eclipse](https://eclipse.org/) version. Add a project dependency to OpenCV library.
+- Checkout the glassgaze_demo branch using the following command.
+```
+  git checkout -b eyedroid_demo --track origin/glassgaze_demo
+```
+- Download [GlassGaze](https://github.com/centosGit/GlassGaze) source code and open the solution in a compliant [Android Studio](http://developer.android.com/sdk/index.html) version. The source code for the GlassGaze has been configured as a separate submodule in this repository. So the easiest way to obtain it is to execute the following commands (after checking out the glassgaze_demo branch)
+```
+  git submodule init && git submodule update
+```
+- Compile and install the EyeDroid app on an Android Device.
+- Compile and install the GlassGaze app on a Google Glass.
 
 GLASS GAZE INTEGRATION
 ---------
 
-In this project branch, EyeDroid is integrated to the [GLAZZ GAZE application client] (https://github.com/dmardanbeigi/GlassGaze).
+In this project branch, EyeDroid is integrated to the [GLAZZ GAZE application client] (https://github.com/centosGit/GlassGaze).
 The original project was forked and small modifications were done in order to provide extra functionallity.
 The changes made are listed bellow:
 - Changes in calibration process were made in order to fit EyeDroid.
@@ -58,4 +67,4 @@ Collaborators:
 --------------
 Daniel Garcia <dgac@itu.dk>, Ioannis Sintos <isin@itu.dk>, Diako Mardanbegi <dima@itu.dk>, Shahram Jalalinia <jsha@itu.dk>
 
-[IT University of Copenhagen](www.itu.dk/en)
+[IT University of Copenhagen](http://www.itu.dk/en)
