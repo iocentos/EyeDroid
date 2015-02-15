@@ -1,12 +1,8 @@
 /*
  * EyeDroid.cpp
- *
- *  Created on: Nov 2, 2014
- *      Author: centos
  */
 
 #include "EyeDroid.h"
-
 
 namespace IMGP {
 
@@ -17,14 +13,13 @@ cv::Rect EyeDroid::getPupilRoi(cv::Mat& input, bool useDiameter) {
 	Eye* tempEye = new Eye();
 	Eye::getInstance(tempEye);
 
-	if (tempEye->isPupilFound()) {
-//	if( false ){
+	if (tempEye->isPupilFound() && Config::PupilROI::DYNAMIC_ROI_ENABLED) {
 		int W = 0;
 		int H = 0;
 		if (useDiameter) {
 			W = (tempEye->getPupilDiameter() > 0) ?
 					(int) tempEye->getPupilDiameter()
-							* Config::PupilROI::DIAMETER_FACTOR :
+					* Config::PupilROI::DIAMETER_FACTOR :
 					Config::PupilROI::ROI_PUPIL_FOUND_W;
 
 			H = Config::PupilROI::ROI_PUPIL_FOUND_H;
@@ -35,10 +30,10 @@ cv::Rect EyeDroid::getPupilRoi(cv::Mat& input, bool useDiameter) {
 
 		if (tempEye->getPupil_X() - (W / 2) > 0
 				&& tempEye->getPupil_Y() - (H / 2) > 0
-				&& tempEye->getPupil_X() + (W / 2) < input.cols
-				&& tempEye->getPupil_Y() + (H / 2) < input.rows) {
+				&& tempEye->getPupil_X() + (W + 200 - (W / 2)) < input.cols
+				&& tempEye->getPupil_Y() + (H + 150 - (H / 2)) < input.rows) {
 			pupilROI = new cv::Rect(tempEye->getPupil_X() - (W / 2),
-					tempEye->getPupil_Y() - (H / 2), W, H);
+					tempEye->getPupil_Y() - (H / 2), W + 200, H + 150);
 		} else {
 			pupilROI = new cv::Rect(Config::PupilROI::ROI_CONSTANT_X,
 					Config::PupilROI::ROI_CONSTANT_Y,
@@ -75,22 +70,62 @@ void EyeDroid::thresholdImage(cv::Mat& input, cv::Mat& output) {
 			CV_THRESH_BINARY);
 
 }
+//
+//std::vector<cv::Vec3f> EyeDroid::detectBlobs(cv::Mat& output) {
+//
+//	std::vector<cv::Vec3f> circles;
+//
+//	// Apply the Hough Transform to find the circles
+//	HoughCircles(output, circles, CV_HOUGH_GRADIENT,
+//			Config::BlobDetection::SCALE_FACTOR,
+//			output.rows / Config::BlobDetection::MIN_NEIGHBOR_DISTANCE_FACTOR,
+//			Config::BlobDetection::UPPER_THRESHOLD,
+//			Config::BlobDetection::THRESHOLD_CENTER,
+//			Config::BlobDetection::MIN_BLOB_SIZE,
+//			Config::BlobDetection::MAX_BLOB_SIZE);
+//
+//	//	HoughCircles(output, circles, CV_HOUGH_GRADIENT, 2, output.rows/8, 200, 100,
+//	//			0, 0);
+//	return circles;
+//}
+
 
 std::vector<cv::Vec3f> EyeDroid::detectBlobs(cv::Mat& output) {
 
+
+	cv::SimpleBlobDetector::Params params;
+	params.minDistBetweenBlobs = 40.0f;
+	params.filterByInertia = false;
+	params.filterByConvexity = false;
+	params.minConvexity = 1;
+	params.maxConvexity = 10000;
+	params.filterByColor = 0;
+	params.filterByCircularity = false;
+	params.filterByArea = true;
+	params.minArea = 2000.0f;
+	params.maxArea = 20000.0f;
+
 	std::vector<cv::Vec3f> circles;
 
-	// Apply the Hough Transform to find the circles
-	HoughCircles(output, circles, CV_HOUGH_GRADIENT,
-			Config::BlobDetection::SCALE_FACTOR,
-			output.rows / Config::BlobDetection::MIN_NEIGHBOR_DISTANCE_FACTOR,
-			Config::BlobDetection::UPPER_THRESHOLD,
-			Config::BlobDetection::THRESHOLD_CENTER,
-			Config::BlobDetection::MIN_BLOB_SIZE,
-			Config::BlobDetection::MAX_BLOB_SIZE);
+	cv::SimpleBlobDetector blob_detector(params);
 
-//	HoughCircles(output, circles, CV_HOUGH_GRADIENT, 2, output.rows/8, 200, 100,
-//			0, 0);
+	// detect!
+	std::vector<cv::KeyPoint> keypoints;
+	blob_detector.detect(output, keypoints);
+
+
+	cv::Vec3f* array = new cv::Vec3f[keypoints.size()];
+
+	for (int i=0; i<keypoints.size(); i++){
+
+		cv::Vec3f p;
+		p[0] = keypoints[i].pt.x;
+		p[1] = keypoints[i].pt.y;
+		p[2] = 30;
+		array[i] = p;
+	}
+
+	circles.insert(circles.begin() , array , array + keypoints.size());
 	return circles;
 }
 
@@ -115,7 +150,7 @@ void EyeDroid::detectPupil(cv::Mat& input, std::vector<cv::Vec3f> circles) {
 
 			double dist = sqrt(
 					pow(center.x - input.cols / 2, 2)
-							+ pow(center.y - input.rows / 2, 2));
+					+ pow(center.y - input.rows / 2, 2));
 
 			if (dist < minDist) {
 				minDist = dist;

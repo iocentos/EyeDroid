@@ -1,8 +1,5 @@
 /*
  * Eye.h
- *
- *  Created on: Nov 2, 2014
- *      Author: centos
  */
 
 #include <pthread.h>
@@ -11,6 +8,11 @@
 
 namespace IMGP{
 
+/*
+ * Eye class to hold all the information about the found pupil.
+ * It implements the singleton pattern and the instance is guarded
+ * by a lock since the object can be accessed by two threads.
+ */
 class Eye {
 private:
 	bool pupilFound;

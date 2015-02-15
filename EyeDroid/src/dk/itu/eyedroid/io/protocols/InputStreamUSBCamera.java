@@ -6,25 +6,26 @@ import org.opencv.android.Utils;
 import org.opencv.core.Mat;
 import org.opencv.core.Rect;
 
-import dk.itu.eyedroid.Constants;
-import dk.itu.eyedroid.R;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.util.Log;
+import dk.itu.eyedroid.Constants;
 import dk.itu.spcl.jlpf.common.Bundle;
 import dk.itu.spcl.jlpf.io.IOProtocolReader;
 
+/**
+ * Read video streaming from USB camera.
+ */
 public class InputStreamUSBCamera implements IOProtocolReader {
 
-	private static final boolean DEBUG = true;
-	private static final String TAG = "UsbWebCam";
-	protected Context context;
+	private static final boolean DEBUG = true; // Debug mode
+	private static final String TAG = "UsbWebCam"; // Log TAG
+	protected Context context; // Application context
 	Thread mainLoop = null;
 	private Bitmap bmp = null;
 
-	private boolean cameraExists = false;
-	private boolean shouldStop = false;
+	private boolean cameraExists = false; // Camera exists?
+	private boolean shouldStop = false; // Stop flag
 
 	// /dev/videox (x=cameraId+cameraBase) is used.
 	// In some omap devices, system uses /dev/video[0-3],
@@ -56,24 +57,26 @@ public class InputStreamUSBCamera implements IOProtocolReader {
 
 	public native void pixeltobmp(Bitmap bitmap);
 
+	/**
+	 * Default constructor
+	 * 
+	 * @param context
+	 *            Application context
+	 * @param cameraId
+	 *            Camera device Id
+	 */
 	public InputStreamUSBCamera(Context context, int cameraId) {
 		this.context = context;
 		this.cameraId = cameraId;
 	}
 
-	@Override
-	public void cleanup() {
-		Log.i(TAG, "Cleaning up usb camera with device id " + cameraId);
-		if (DEBUG)
-			Log.d(TAG, "surfaceDestroyed");
-		stopCamera();
-
-	}
-
+	/**
+	 * Set permissions to read from USB cam and initiliaze the reader
+	 */
 	@Override
 	public void init() throws IOException {
 
-		Process sh = Runtime.getRuntime().exec(
+		Runtime.getRuntime().exec(
 				new String[] {
 						"su",
 						"-c",
@@ -86,15 +89,14 @@ public class InputStreamUSBCamera implements IOProtocolReader {
 			bmp = Bitmap.createBitmap(IMG_WIDTH, IMG_HEIGHT,
 					Bitmap.Config.ARGB_8888);
 		}
+
 		// /dev/videox (x=cameraId + cameraBase) is used
 		int ret = prepareCameraWithBase(cameraId, cameraBase);
 
 		if (ret != -1) {
 			cameraExists = true;
 			Log.i(TAG, "Usb camera with device id " + cameraId + " is open");
-		}
-
-		else {
+		} else {
 			Log.i(TAG, "Usb camera with device id " + cameraId
 					+ "Could not open");
 			throw new IOException("Could not open usb camera with device id "
@@ -102,6 +104,11 @@ public class InputStreamUSBCamera implements IOProtocolReader {
 		}
 	}
 
+	/**
+	 * Read frame and create a bundle
+	 * 
+	 * @return Frame Bundle
+	 */
 	@Override
 	public Bundle read() throws IOException {
 		// obtaining a camera image (pixel data are stored in an array in JNI).
@@ -109,7 +116,7 @@ public class InputStreamUSBCamera implements IOProtocolReader {
 			processCamera();
 			// camera image to bmp
 			pixeltobmp(bmp);
-			
+
 			Mat mat = new Mat();
 			Utils.bitmapToMat(bmp, mat);
 
@@ -120,8 +127,17 @@ public class InputStreamUSBCamera implements IOProtocolReader {
 			bundle.put(Constants.SOURCE_BITMAP, bmp);
 			return bundle;
 		}
-
 		throw new IOException("Usb camera is not open. Could not read frame");
 	}
 
+	/**
+	 * Cleanup reader
+	 */
+	@Override
+	public void cleanup() {
+		Log.i(TAG, "Cleaning up usb camera with device id " + cameraId);
+		if (DEBUG)
+			Log.d(TAG, "surfaceDestroyed");
+		stopCamera();
+	}
 }

@@ -14,7 +14,7 @@ extern "C" {
  * Signature: ()I
  */
 JNIEXPORT jint JNICALL Java_dk_itu_eyedroid_settings_Config_getBeforeErode
-  (JNIEnv *, jclass);
+(JNIEnv *, jclass);
 
 /*
  * Class:     dk_itu_eyedroid_settings_Config
@@ -22,7 +22,7 @@ JNIEXPORT jint JNICALL Java_dk_itu_eyedroid_settings_Config_getBeforeErode
  * Signature: ()I
  */
 JNIEXPORT jint JNICALL Java_dk_itu_eyedroid_settings_Config_getBeforeDilate
-  (JNIEnv *, jclass);
+(JNIEnv *, jclass);
 
 /*
  * Class:     dk_itu_eyedroid_settings_Config
@@ -30,7 +30,7 @@ JNIEXPORT jint JNICALL Java_dk_itu_eyedroid_settings_Config_getBeforeDilate
  * Signature: ()I
  */
 JNIEXPORT jint JNICALL Java_dk_itu_eyedroid_settings_Config_getAfterErode
-  (JNIEnv *, jclass);
+(JNIEnv *, jclass);
 
 /*
  * Class:     dk_itu_eyedroid_settings_Config
@@ -38,7 +38,7 @@ JNIEXPORT jint JNICALL Java_dk_itu_eyedroid_settings_Config_getAfterErode
  * Signature: ()I
  */
 JNIEXPORT jint JNICALL Java_dk_itu_eyedroid_settings_Config_getAfterDilate
-  (JNIEnv *, jclass);
+(JNIEnv *, jclass);
 
 /*
  * Class:     dk_itu_eyedroid_settings_Config
@@ -46,7 +46,7 @@ JNIEXPORT jint JNICALL Java_dk_itu_eyedroid_settings_Config_getAfterDilate
  * Signature: ()I
  */
 JNIEXPORT jint JNICALL Java_dk_itu_eyedroid_settings_Config_getDiameterFactor
-  (JNIEnv *, jclass);
+(JNIEnv *, jclass);
 
 /*
  * Class:     dk_itu_eyedroid_settings_Config
@@ -54,7 +54,7 @@ JNIEXPORT jint JNICALL Java_dk_itu_eyedroid_settings_Config_getDiameterFactor
  * Signature: ()I
  */
 JNIEXPORT jint JNICALL Java_dk_itu_eyedroid_settings_Config_getConstantRoi_1X
-  (JNIEnv *, jclass);
+(JNIEnv *, jclass);
 
 /*
  * Class:     dk_itu_eyedroid_settings_Config
@@ -62,7 +62,7 @@ JNIEXPORT jint JNICALL Java_dk_itu_eyedroid_settings_Config_getConstantRoi_1X
  * Signature: ()I
  */
 JNIEXPORT jint JNICALL Java_dk_itu_eyedroid_settings_Config_getConstantRoi_1Y
-  (JNIEnv *, jclass);
+(JNIEnv *, jclass);
 
 /*
  * Class:     dk_itu_eyedroid_settings_Config
@@ -70,7 +70,7 @@ JNIEXPORT jint JNICALL Java_dk_itu_eyedroid_settings_Config_getConstantRoi_1Y
  * Signature: ()I
  */
 JNIEXPORT jint JNICALL Java_dk_itu_eyedroid_settings_Config_getConstantRoi_1W
-  (JNIEnv *, jclass);
+(JNIEnv *, jclass);
 
 /*
  * Class:     dk_itu_eyedroid_settings_Config
@@ -78,7 +78,7 @@ JNIEXPORT jint JNICALL Java_dk_itu_eyedroid_settings_Config_getConstantRoi_1W
  * Signature: ()I
  */
 JNIEXPORT jint JNICALL Java_dk_itu_eyedroid_settings_Config_getConstantRoi_1H
-  (JNIEnv *, jclass);
+(JNIEnv *, jclass);
 
 /*
  * Class:     dk_itu_eyedroid_settings_Config
@@ -86,7 +86,7 @@ JNIEXPORT jint JNICALL Java_dk_itu_eyedroid_settings_Config_getConstantRoi_1H
  * Signature: ()I
  */
 JNIEXPORT jint JNICALL Java_dk_itu_eyedroid_settings_Config_getPupilFoundRoi_1W
-  (JNIEnv *, jclass);
+(JNIEnv *, jclass);
 
 /*
  * Class:     dk_itu_eyedroid_settings_Config
@@ -94,7 +94,7 @@ JNIEXPORT jint JNICALL Java_dk_itu_eyedroid_settings_Config_getPupilFoundRoi_1W
  * Signature: ()I
  */
 JNIEXPORT jint JNICALL Java_dk_itu_eyedroid_settings_Config_getPupilFoundRoi_1H
-  (JNIEnv *, jclass);
+(JNIEnv *, jclass);
 
 /*
  * Class:     dk_itu_eyedroid_settings_Config
@@ -102,7 +102,7 @@ JNIEXPORT jint JNICALL Java_dk_itu_eyedroid_settings_Config_getPupilFoundRoi_1H
  * Signature: ()I
  */
 JNIEXPORT jint JNICALL Java_dk_itu_eyedroid_settings_Config_getThresholdLimit
-  (JNIEnv *, jclass);
+(JNIEnv *, jclass);
 
 /*
  * Class:     dk_itu_eyedroid_settings_Config
@@ -110,7 +110,7 @@ JNIEXPORT jint JNICALL Java_dk_itu_eyedroid_settings_Config_getThresholdLimit
  * Signature: ()I
  */
 JNIEXPORT jint JNICALL Java_dk_itu_eyedroid_settings_Config_getMinNeighborBlob
-  (JNIEnv *, jclass);
+(JNIEnv *, jclass);
 
 /*
  * Class:     dk_itu_eyedroid_settings_Config
@@ -118,7 +118,7 @@ JNIEXPORT jint JNICALL Java_dk_itu_eyedroid_settings_Config_getMinNeighborBlob
  * Signature: ()I
  */
 JNIEXPORT jint JNICALL Java_dk_itu_eyedroid_settings_Config_getMinBlobSize
-  (JNIEnv *, jclass);
+(JNIEnv *, jclass);
 
 /*
  * Class:     dk_itu_eyedroid_settings_Config
@@ -126,7 +126,7 @@ JNIEXPORT jint JNICALL Java_dk_itu_eyedroid_settings_Config_getMinBlobSize
  * Signature: ()I
  */
 JNIEXPORT jint JNICALL Java_dk_itu_eyedroid_settings_Config_getMaxBlobSize
-  (JNIEnv *, jclass);
+(JNIEnv *, jclass);
 
 /*
  * Class:     dk_itu_eyedroid_settings_Config
@@ -134,7 +134,7 @@ JNIEXPORT jint JNICALL Java_dk_itu_eyedroid_settings_Config_getMaxBlobSize
  * Signature: ()I
  */
 JNIEXPORT jint JNICALL Java_dk_itu_eyedroid_settings_Config_getUpperThreshold
-  (JNIEnv *, jclass);
+(JNIEnv *, jclass);
 
 /*
  * Class:     dk_itu_eyedroid_settings_Config
@@ -142,7 +142,7 @@ JNIEXPORT jint JNICALL Java_dk_itu_eyedroid_settings_Config_getUpperThreshold
  * Signature: ()I
  */
 JNIEXPORT jint JNICALL Java_dk_itu_eyedroid_settings_Config_getThresholdCenter
-  (JNIEnv *, jclass);
+(JNIEnv *, jclass);
 
 /*
  * Class:     dk_itu_eyedroid_settings_Config
@@ -150,7 +150,7 @@ JNIEXPORT jint JNICALL Java_dk_itu_eyedroid_settings_Config_getThresholdCenter
  * Signature: ()I
  */
 JNIEXPORT jint JNICALL Java_dk_itu_eyedroid_settings_Config_getScaleFactor
-  (JNIEnv *, jclass);
+(JNIEnv *, jclass);
 
 /*
  * Class:     dk_itu_eyedroid_settings_Config
@@ -158,7 +158,7 @@ JNIEXPORT jint JNICALL Java_dk_itu_eyedroid_settings_Config_getScaleFactor
  * Signature: (I)V
  */
 JNIEXPORT void JNICALL Java_dk_itu_eyedroid_settings_Config_setBeforeErode
-  (JNIEnv *, jclass, jint);
+(JNIEnv *, jclass, jint);
 
 /*
  * Class:     dk_itu_eyedroid_settings_Config
@@ -166,7 +166,7 @@ JNIEXPORT void JNICALL Java_dk_itu_eyedroid_settings_Config_setBeforeErode
  * Signature: (I)V
  */
 JNIEXPORT void JNICALL Java_dk_itu_eyedroid_settings_Config_setBeforeDilate
-  (JNIEnv *, jclass, jint);
+(JNIEnv *, jclass, jint);
 
 /*
  * Class:     dk_itu_eyedroid_settings_Config
@@ -174,7 +174,7 @@ JNIEXPORT void JNICALL Java_dk_itu_eyedroid_settings_Config_setBeforeDilate
  * Signature: (I)V
  */
 JNIEXPORT void JNICALL Java_dk_itu_eyedroid_settings_Config_setAfterErode
-  (JNIEnv *, jclass, jint);
+(JNIEnv *, jclass, jint);
 
 /*
  * Class:     dk_itu_eyedroid_settings_Config
@@ -182,7 +182,7 @@ JNIEXPORT void JNICALL Java_dk_itu_eyedroid_settings_Config_setAfterErode
  * Signature: (I)V
  */
 JNIEXPORT void JNICALL Java_dk_itu_eyedroid_settings_Config_setAfterDilate
-  (JNIEnv *, jclass, jint);
+(JNIEnv *, jclass, jint);
 
 /*
  * Class:     dk_itu_eyedroid_settings_Config
@@ -190,7 +190,7 @@ JNIEXPORT void JNICALL Java_dk_itu_eyedroid_settings_Config_setAfterDilate
  * Signature: (I)V
  */
 JNIEXPORT void JNICALL Java_dk_itu_eyedroid_settings_Config_setDiameterFactor
-  (JNIEnv *, jclass, jint);
+(JNIEnv *, jclass, jint);
 
 /*
  * Class:     dk_itu_eyedroid_settings_Config
@@ -198,7 +198,7 @@ JNIEXPORT void JNICALL Java_dk_itu_eyedroid_settings_Config_setDiameterFactor
  * Signature: (I)V
  */
 JNIEXPORT void JNICALL Java_dk_itu_eyedroid_settings_Config_setConstantRoi_1X
-  (JNIEnv *, jclass, jint);
+(JNIEnv *, jclass, jint);
 
 /*
  * Class:     dk_itu_eyedroid_settings_Config
@@ -206,7 +206,7 @@ JNIEXPORT void JNICALL Java_dk_itu_eyedroid_settings_Config_setConstantRoi_1X
  * Signature: (I)V
  */
 JNIEXPORT void JNICALL Java_dk_itu_eyedroid_settings_Config_setConstantRoi_1Y
-  (JNIEnv *, jclass, jint);
+(JNIEnv *, jclass, jint);
 
 /*
  * Class:     dk_itu_eyedroid_settings_Config
@@ -214,7 +214,7 @@ JNIEXPORT void JNICALL Java_dk_itu_eyedroid_settings_Config_setConstantRoi_1Y
  * Signature: (I)V
  */
 JNIEXPORT void JNICALL Java_dk_itu_eyedroid_settings_Config_setConstantRoi_1W
-  (JNIEnv *, jclass, jint);
+(JNIEnv *, jclass, jint);
 
 /*
  * Class:     dk_itu_eyedroid_settings_Config
@@ -222,7 +222,7 @@ JNIEXPORT void JNICALL Java_dk_itu_eyedroid_settings_Config_setConstantRoi_1W
  * Signature: (I)V
  */
 JNIEXPORT void JNICALL Java_dk_itu_eyedroid_settings_Config_setConstantRoi_1H
-  (JNIEnv *, jclass, jint);
+(JNIEnv *, jclass, jint);
 
 /*
  * Class:     dk_itu_eyedroid_settings_Config
@@ -230,7 +230,7 @@ JNIEXPORT void JNICALL Java_dk_itu_eyedroid_settings_Config_setConstantRoi_1H
  * Signature: (I)V
  */
 JNIEXPORT void JNICALL Java_dk_itu_eyedroid_settings_Config_setPupilFoundRoi_1W
-  (JNIEnv *, jclass, jint);
+(JNIEnv *, jclass, jint);
 
 /*
  * Class:     dk_itu_eyedroid_settings_Config
@@ -238,7 +238,7 @@ JNIEXPORT void JNICALL Java_dk_itu_eyedroid_settings_Config_setPupilFoundRoi_1W
  * Signature: (I)V
  */
 JNIEXPORT void JNICALL Java_dk_itu_eyedroid_settings_Config_setPupilFoundRoi_1H
-  (JNIEnv *, jclass, jint);
+(JNIEnv *, jclass, jint);
 
 /*
  * Class:     dk_itu_eyedroid_settings_Config
@@ -246,7 +246,7 @@ JNIEXPORT void JNICALL Java_dk_itu_eyedroid_settings_Config_setPupilFoundRoi_1H
  * Signature: (I)V
  */
 JNIEXPORT void JNICALL Java_dk_itu_eyedroid_settings_Config_setThresholdLimit
-  (JNIEnv *, jclass, jint);
+(JNIEnv *, jclass, jint);
 
 /*
  * Class:     dk_itu_eyedroid_settings_Config
@@ -254,7 +254,7 @@ JNIEXPORT void JNICALL Java_dk_itu_eyedroid_settings_Config_setThresholdLimit
  * Signature: (I)V
  */
 JNIEXPORT void JNICALL Java_dk_itu_eyedroid_settings_Config_setMinNeighborBlob
-  (JNIEnv *, jclass, jint);
+(JNIEnv *, jclass, jint);
 
 /*
  * Class:     dk_itu_eyedroid_settings_Config
@@ -262,7 +262,7 @@ JNIEXPORT void JNICALL Java_dk_itu_eyedroid_settings_Config_setMinNeighborBlob
  * Signature: (I)V
  */
 JNIEXPORT void JNICALL Java_dk_itu_eyedroid_settings_Config_setMinBlobSize
-  (JNIEnv *, jclass, jint);
+(JNIEnv *, jclass, jint);
 
 /*
  * Class:     dk_itu_eyedroid_settings_Config
@@ -270,7 +270,7 @@ JNIEXPORT void JNICALL Java_dk_itu_eyedroid_settings_Config_setMinBlobSize
  * Signature: (I)V
  */
 JNIEXPORT void JNICALL Java_dk_itu_eyedroid_settings_Config_setMaxBlobSize
-  (JNIEnv *, jclass, jint);
+(JNIEnv *, jclass, jint);
 
 /*
  * Class:     dk_itu_eyedroid_settings_Config
@@ -278,7 +278,7 @@ JNIEXPORT void JNICALL Java_dk_itu_eyedroid_settings_Config_setMaxBlobSize
  * Signature: (I)V
  */
 JNIEXPORT void JNICALL Java_dk_itu_eyedroid_settings_Config_setUpperThreshold
-  (JNIEnv *, jclass, jint);
+(JNIEnv *, jclass, jint);
 
 /*
  * Class:     dk_itu_eyedroid_settings_Config
@@ -286,7 +286,7 @@ JNIEXPORT void JNICALL Java_dk_itu_eyedroid_settings_Config_setUpperThreshold
  * Signature: (I)V
  */
 JNIEXPORT void JNICALL Java_dk_itu_eyedroid_settings_Config_setThresholdCenter
-  (JNIEnv *, jclass, jint);
+(JNIEnv *, jclass, jint);
 
 /*
  * Class:     dk_itu_eyedroid_settings_Config
@@ -294,7 +294,7 @@ JNIEXPORT void JNICALL Java_dk_itu_eyedroid_settings_Config_setThresholdCenter
  * Signature: (I)V
  */
 JNIEXPORT void JNICALL Java_dk_itu_eyedroid_settings_Config_setScaleFactor
-  (JNIEnv *, jclass, jint);
+(JNIEnv *, jclass, jint);
 
 #ifdef __cplusplus
 }

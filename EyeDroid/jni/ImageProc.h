@@ -37,8 +37,8 @@
 #define SUCCESS_LOCAL 0
 
 struct buffer {
-        void *                  start;
-        size_t                  length;
+	void *                  start;
+	size_t                  length;
 };
 
 static char            dev_name[16];

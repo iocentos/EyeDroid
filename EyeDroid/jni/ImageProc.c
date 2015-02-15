@@ -20,7 +20,7 @@ int checkCamerabase(void){
 	struct stat st;
 	int i;
 	int start_from_4 = 1;
-	
+
 	/* if /dev/video[0-3] exist, camerabase=4, otherwise, camrerabase = 0 */
 	for(i=0 ; i<4 ; i++){
 		sprintf(dev_name,"/dev/video%d",i);
@@ -89,7 +89,7 @@ int initdevice(void)
 		LOGE("%s does not support streaming i/o", dev_name);
 		return ERROR_LOCAL;
 	}
-	
+
 	CLEAR (cropcap);
 
 	cropcap.type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
@@ -100,10 +100,10 @@ int initdevice(void)
 
 		if (-1 == xioctl (fd, VIDIOC_S_CROP, &crop)) {
 			switch (errno) {
-				case EINVAL:
-					break;
-				default:
-					break;
+			case EINVAL:
+				break;
+			default:
+				break;
 			}
 		}
 	} else {
@@ -155,7 +155,7 @@ int initmmap(void)
 	if (req.count < 2) {
 		LOGE("Insufficient buffer memory on %s", dev_name);
 		return ERROR_LOCAL;
- 	}
+	}
 
 	buffers = calloc (req.count, sizeof (*buffers));
 
@@ -167,7 +167,7 @@ int initmmap(void)
 	for (n_buffers = 0; n_buffers < req.count; ++n_buffers) {
 		struct v4l2_buffer buf;
 
-		 CLEAR (buf);
+		CLEAR (buf);
 
 		buf.type        = V4L2_BUF_TYPE_VIDEO_CAPTURE;
 		buf.memory      = V4L2_MEMORY_MMAP;
@@ -178,11 +178,11 @@ int initmmap(void)
 
 		buffers[n_buffers].length = buf.length;
 		buffers[n_buffers].start =
-		mmap (NULL ,
-			buf.length,
-			PROT_READ | PROT_WRITE,
-			MAP_SHARED,
-			fd, buf.m.offset);
+				mmap (NULL ,
+						buf.length,
+						PROT_READ | PROT_WRITE,
+						MAP_SHARED,
+						fd, buf.m.offset);
 
 		if (MAP_FAILED == buffers[n_buffers].start)
 			return errnoexit ("mmap");
@@ -257,7 +257,7 @@ int readframeonce(void)
 
 void processimage (const void *p)
 {
-		yuyv422toABGRY((unsigned char *)p);
+	yuyv422toABGRY((unsigned char *)p);
 }
 
 int readframe(void)
@@ -273,11 +273,11 @@ int readframe(void)
 
 	if (-1 == xioctl (fd, VIDIOC_DQBUF, &buf)) {
 		switch (errno) {
-			case EAGAIN:
-				return 0;
-			case EIO:
-			default:
-				return errnoexit ("VIDIOC_DQBUF");
+		case EAGAIN:
+			return 0;
+		case EIO:
+		default:
+			return errnoexit ("VIDIOC_DQBUF");
 		}
 	}
 
@@ -348,7 +348,7 @@ void yuyv422toABGRY(unsigned char *src)
 	}
 	int *lrgb = NULL;
 	int *lybuf = NULL;
-		
+
 	lrgb = &rgb[0];
 	lybuf = &ybuf[0];
 
@@ -422,7 +422,7 @@ Java_dk_itu_eyedroid_io_protocols_InputStreamUSBCamera_pixeltobmp( JNIEnv* env,j
 		LOGE("AndroidBitmap_getInfo() failed ! error=%d", ret);
 		return;
 	}
-    
+
 	width = info.width;
 	height = info.height;
 
@@ -486,18 +486,18 @@ Java_dk_itu_eyedroid_io_protocols_InputStreamUSBCamera_prepareCamera( JNIEnv* en
 
 jint 
 Java_dk_itu_eyedroid_io_protocols_InputStreamUSBCamera_prepareCameraWithBase( JNIEnv* env,jobject thiz, jint videoid, jint videobase){
-	
-		int ret;
 
-		camerabase = videobase;
-	
-		return Java_dk_itu_eyedroid_io_protocols_InputStreamUSBCamera_prepareCamera(env,thiz,videoid);
-	
+	int ret;
+
+	camerabase = videobase;
+
+	return Java_dk_itu_eyedroid_io_protocols_InputStreamUSBCamera_prepareCamera(env,thiz,videoid);
+
 }
 
 void 
 Java_dk_itu_eyedroid_io_protocols_InputStreamUSBCamera_processCamera( JNIEnv* env,
-										jobject thiz){
+		jobject thiz){
 
 	readframeonce();
 }
@@ -513,7 +513,7 @@ Java_dk_itu_eyedroid_io_protocols_InputStreamUSBCamera_stopCamera(JNIEnv* env,jo
 
 	if(rgb) free(rgb);
 	if(ybuf) free(ybuf);
-        
+
 	fd = -1;
 
 }

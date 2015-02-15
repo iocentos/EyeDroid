@@ -23,7 +23,7 @@ extern "C" {
  * Signature: (JJ)J
  */
 JNIEXPORT jlong JNICALL Java_dk_itu_eyedroid_filters_RGB2GRAYFilter_rgb2gray
-  (JNIEnv *, jclass, jlong, jlong);
+(JNIEnv *, jclass, jlong, jlong);
 
 
 /*
@@ -32,7 +32,7 @@ JNIEXPORT jlong JNICALL Java_dk_itu_eyedroid_filters_RGB2GRAYFilter_rgb2gray
  * Signature: (J)V
  */
 JNIEXPORT void JNICALL Java_dk_itu_eyedroid_filters_BeforeErodeDilateFilter_beforeErodeDilate
-  (JNIEnv *, jclass, jlong);
+(JNIEnv *, jclass, jlong);
 
 
 /*
@@ -41,7 +41,7 @@ JNIEXPORT void JNICALL Java_dk_itu_eyedroid_filters_BeforeErodeDilateFilter_befo
  * Signature: (J)V
  */
 JNIEXPORT void JNICALL Java_dk_itu_eyedroid_filters_ThresholdFilter_thresholdFrame
-  (JNIEnv *, jclass, jlong);
+(JNIEnv *, jclass, jlong);
 
 
 /*
@@ -50,7 +50,7 @@ JNIEXPORT void JNICALL Java_dk_itu_eyedroid_filters_ThresholdFilter_thresholdFra
  * Signature: (J)V
  */
 JNIEXPORT void JNICALL Java_dk_itu_eyedroid_filters_AfterErodeDilateFilter_afterErodeDilate
-  (JNIEnv *, jclass, jlong);
+(JNIEnv *, jclass, jlong);
 
 
 /*
@@ -59,7 +59,7 @@ JNIEXPORT void JNICALL Java_dk_itu_eyedroid_filters_AfterErodeDilateFilter_after
  * Signature: (J)J
  */
 JNIEXPORT jlong JNICALL Java_dk_itu_eyedroid_filters_BlobDetectionFilter_blobDetection
-  (JNIEnv *, jclass, jlong);
+(JNIEnv *, jclass, jlong);
 
 /*
  * Class:     dk_itu_eyedroid_filters_DetectAndDrawPupilFilter
@@ -67,8 +67,24 @@ JNIEXPORT jlong JNICALL Java_dk_itu_eyedroid_filters_BlobDetectionFilter_blobDet
  * Signature: (JJJJ)V
  */
 JNIEXPORT void JNICALL Java_dk_itu_eyedroid_filters_DetectAndDrawPupilFilter_detectPupilAndDraw
-  (JNIEnv *, jclass, jlong, jlong, jlong, jlong);
+(JNIEnv *, jclass, jlong, jlong, jlong, jlong);
 
+
+/*
+ * Class:     dk_itu_eyedroid_filters_CoordinatesFilter
+ * Method:    getCoordinates_X
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_dk_itu_eyedroid_filters_CoordinatesFilter_getCoordinates_1X
+(JNIEnv *, jclass);
+
+/*
+ * Class:     dk_itu_eyedroid_filters_CoordinatesFilter
+ * Method:    getCoordinates_Y
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_dk_itu_eyedroid_filters_CoordinatesFilter_getCoordinates_1Y
+(JNIEnv *, jclass);
 
 
 #ifdef __cplusplus
