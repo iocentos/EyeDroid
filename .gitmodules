@@ -1,0 +1,3 @@
+[submodule "GlassGaze"]
+	path = GlassGaze
+	url = git@github.com:centosGit/GlassGaze.git
