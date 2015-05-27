@@ -8,12 +8,12 @@ WHAT IS EYEDROID?
 
 EyeDroid is a mobile Android platform eye tracking system designed to be used with a USB connected head mounted camera. EyeDroid receives video streaming from the user’s eye as input, process it and sends the resulting 2-axis coordinates to networked clients. Unlike other eye tracking systems which use a stationary processing server, EyeDroid performs all its processing workload in a mobile device and sends the resulting coordinates to a network client. For this reason, EyeDroid supports user's mobility when used along wearable and mobile devices.
 
-EyeDroid also provides alternative video streaming inputs, such as built-int smartphone front/back cameras. Because the Android platform does not provide support to connect an external USB camera, the OS needs to own root access to the phone and use customized camera video drivers. On EyeDroid, [open source third party drivers were used.] (http://brain.cc.kogakuin.ac.jp/research/usb-e.html)
+EyeDroid also provides alternative video streaming inputs, such as built-in smartphone front/back cameras. Because the Android platform does not provide support to connect an external USB camera, the OS needs to own root access to the phone and use customized camera video drivers. On EyeDroid, [open source third party drivers were used.] (http://brain.cc.kogakuin.ac.jp/research/usb-e.html)
 
 SOFTWARE ARCHITECTURE
 --------------
 
-The software architecture of the EyeDroid application is designed based on pipes and filters design pattern and implemented on top of the [Java Lightweight Processing Framework] (https://github.com/centosGit/JLPF). The main eye tracking algorithm is decomposed into steps (filters), grouped into three compistes and executed in parallel (a thread per composite).
+The software architecture of the EyeDroid application is designed based on pipes and filters design pattern and implemented on top of the [Java Lightweight Processing Framework] (https://github.com/centosGit/JLPF). The main eye tracking algorithm is decomposed into steps (filters), grouped into three composites and executed in parallel (a thread per composite).
 
 <img src="Images/EyeDroid_SoftwareArchitecture.PNG?raw=true" height="300"/>
 
@@ -38,8 +38,8 @@ is 640 × 480 pixels.
 HOW TO USE?
 ---------
 
-- Download, install and configure OpenCV library. Full instruction and more detailes can be found at [Open CV Eclipse tutorial] (http://docs.opencv.org/doc/tutorials/introduction/android_binary_package/O4A_SDK.html).
-- Download, and configure Android NDK. Full instruction and more detailes can be found at [Using the NDK plugin](http://tools.android.com/recent/usingthendkplugin).
+- Download, install and configure OpenCV library. Full instruction and more details can be found at [Open CV Eclipse tutorial] (http://docs.opencv.org/doc/tutorials/introduction/android_binary_package/O4A_SDK.html).
+- Download, and configure Android NDK. Full instruction and more details can be found at [Using the NDK plugin](http://tools.android.com/recent/usingthendkplugin).
 - Download the source code and open the solution in a compliant [Eclipse](https://eclipse.org/) version. Add a project dependency to OpenCV library.
 - Compile and install the app on an Android Device.
 
@@ -55,7 +55,7 @@ The result format consists in a byte array of three integers (12 bytes in total)
 GLASS GAZE INTEGRATION
 ---------
 
-In [glassgaze_demo branch](https://github.com/centosGit/EyeDroid/tree/glassgaze_demo), EyeDroid is integrated to the [GLAZZ GAZE application client] (https://github.com/centosGit/GlassGaze). The original project was forked and small modifications were done in order to provide extra functionallity.
+In [glassgaze_demo branch](https://github.com/centosGit/EyeDroid/tree/glassgaze_demo), EyeDroid is integrated to the [GLAZZ GAZE application client] (https://github.com/centosGit/GlassGaze). The original project was forked and small modifications were done in order to provide extra functionality.
 The changes made are listed bellow:
 - Changes in calibration process were made in order to fit EyeDroid.
 - An activity was added to conduct an experiment. The experiment consisted in showing a set of random dots on the glass display while coordinates were sampled from EyeDroid in order to evaluate the system accuracy.
